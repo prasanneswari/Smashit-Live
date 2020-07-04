@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HomeScreen.homefragment.HashTagsDisplay"
+    android:background="@drawable/border"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/backbtn"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:onClick="finishActivity"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:elevation="15sp"
+                android:layout_margin="5sp"
+                android:background="@drawable/hashtagsclickback"
+                >
+            </ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:weightSum="1"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.7"
+                    android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hashtags"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:id="@+id/hashtags"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rubik_medium"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/views"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:id="@+id/views"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/rubik"
+                    android:textColor="@color/hintcolor"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.3"
+                    android:orientation="horizontal"
+                    android:background="@drawable/hasttag_boder"
+                    android:gravity="center"
+                    android:id="@+id/hashtaglay"
+                    >
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/shareicon"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/share"
+                        android:fontFamily="@font/rubik"
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/white"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view_1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="data.json"
+                app:lottie_loop="true"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/hashtagslist">
+        </androidx.recyclerview.widget.RecyclerView>
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/hashtagvideo"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:paddingBottom="30dp"
+                android:id="@+id/hashvideo"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

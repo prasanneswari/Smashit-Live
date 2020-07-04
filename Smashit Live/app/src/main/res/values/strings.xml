@@ -1,0 +1,912 @@
+<resources>
+    <string name="app_name">VASmash</string>
+
+    <string name="facebook_app_id">989903808129041</string>
+    <string name="fb_login_protocol_scheme">fb989903808129041</string>
+    <string name="server_client_id">897587571357-j8flo514651bmovph5u948a2tt768sd7.apps.googleusercontent.com</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <integer name="btnplusview">1</integer>
+    <integer name="btnpluspos">2</integer>
+
+    <string name="font_family">Rubik</string>
+    <string name="number_picker_formatter">%02d</string>
+    <string name="select_video_text">Select 1 min video</string>
+    <string name="video_length_validation">Video should be of minimum 3 seconds</string>
+    <string name="app_provider">com.demo.videotrimmer.provider</string>
+
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+    <string name="msg_camera_storage_setting">Linebully requires to access camera service so you can upload best pictures, Turn on camera and storage permission from setting.</string>
+
+    <string name="settings">Settings</string>
+    <string name="msg_permission_rationale">Linebully requires to access camera service so you can upload best pictures, Turn on camera and storage permission from setting.</string>
+
+    <string name="choose_video">Choose Video</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="take_Video">Take Video</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="take_video">Take Video</string>
+    <string name="ok">Ok</string>
+
+
+    <string name="email">Email / Phone Number</string>
+    <string name="Password">Password</string>
+    <string name="Login">Login</string>
+    <string name="signin">LOG IN</string>
+    <string name="guest">OR Login as Guest User</string>
+    <string name="donthaveaccount">Don’t have an account?</string>
+    <string name="signup">SIGN UP</string>
+    <string name="forgotpwd">Forgot Password</string>
+    <string name="enterphone">Enter Phone Number</string>
+    <string name="entermail">Enter Email</string>
+    <string name="getstarted">GET STARTED</string>
+    <string name="SignUp">Sign Up</string>
+    <string name="newpwd">Set New Password</string>
+    <string name="enternewpwd">Enter New Password</string>
+    <string name="ConfirmPassword">Confirm Password</string>
+    <string name="Save">Save</string>
+    <string name="OTP">OTP</string>
+    <string name="otpsent">OTP sent to you email check your email</string>
+    <string name="continuebtn">CONTINUE</string>
+    <string name="resendotp">Resend OTP in</string>
+    <string name="displayname">Display Name</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="country">Country</string>
+    <string name="language">Language</string>
+    <string name="chooselaung">Choose Preferred Language</string>
+    <string name="category">Category</string>
+    <string name="choosecat">Choose Preferred Category</string>
+    <string name="walletbal">Wallet Balance</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="likes">Likes</string>
+    <string name="create">Create</string>
+    <string name="created">Created</string>
+    <string name="liked">Liked</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="posts">Posts</string>
+    <string name="enterusername">Enter Username</string>
+    <string name="city">City</string>
+    <string name="enternumber">Enter Number</string>
+    <string name="updateprofile">Update Profile</string>
+    <string name="you">You</string>
+    <string name="love">Love</string>
+    <string name="earnings">Earnings</string>
+    <string name="claim">Claim</string>
+    <string name="hashtags">#HashTags</string>
+    <string name="share">Share</string>
+    <string name="views">0 Views</string>
+    <string name="wallet">Wallet</string>
+    <string name="viewtransaction">View Transaction History</string>
+    <string name="vasmash">VA-Smash</string>
+    <string name="search">Search</string>
+    <string name="post">Post</string>
+    <string name="desofvideo">Description of video</string>
+    <string name="whocanview">Who can view this video</string>
+    <string name="Public">Public</string>
+    <string name="contentpreference">Content Preferences</string>
+    <string name="submit">Submit</string>
+    <string name="timer">Timer</string>
+    <string name="flip">Flip</string>
+    <string name="filters">Filters</string>
+    <string name="speed">Speed</string>
+    <string name="effects">Effects</string>
+    <string name="done">done</string>
+    <string name="sticker">sticker</string>
+    <string name="text">Text</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="startshooting">Start Shooting</string>
+    <string name="addsounds">Add Sounds</string>
+    <string name="trending">Trending</string>
+    <string name="upload">upload</string>
+    <string name="editvideo">Edit Video</string>
+    <string name="selectvideo_text">select_video_text</string>
+    <string name="usesound">Use this sound</string>
+    <string name="sounds">Original Sound</string>
+
+
+    <string-array name="CountryCodes">
+        <item>93,AF</item>
+        <item>355,AL</item>
+        <item>213,DZ</item>
+        <item>376,AD</item>
+        <item>244,AO</item>
+        <item>672,AQ</item>
+        <item>54,AR</item>
+        <item>374,AM</item>
+        <item>297,AW</item>
+        <item>61,AU</item>
+        <item>43,AT</item>
+        <item>994,AZ</item>
+        <item>973,BH</item>
+        <item>880,BD</item>
+        <item>375,BY</item>
+        <item>32,BE</item>
+        <item>501,BZ</item>
+        <item>229,BJ</item>
+        <item>975,BT</item>
+        <item>591,BO</item>
+        <item>387,BA</item>
+        <item>267,BW</item>
+        <item>55,BR</item>
+        <item>673,BN</item>
+        <item>359,BG</item>
+        <item>226,BF</item>
+        <item>95,MM</item>
+        <item>257,BI</item>
+        <item>855,KH</item>
+        <item>237,CM</item>
+        <item>1,CA</item>
+        <item>238,CV</item>
+        <item>236,CF</item>
+        <item>235,TD</item>
+        <item>56,CL</item>
+        <item>86,CN</item>
+        <item>61,CX</item>
+        <item>61,CC</item>
+        <item>57,CO</item>
+        <item>269,KM</item>
+        <item>242,CG</item>
+        <item>243,CD</item>
+        <item>682,CK</item>
+        <item>506,CR</item>
+        <item>385,HR</item>
+        <item>53,CU</item>
+        <item>357,CY</item>
+        <item>420,CZ</item>
+        <item>45,DK</item>
+        <item>253,DJ</item>
+        <item>670,TL</item>
+        <item>593,EC</item>
+        <item>20,EG</item>
+        <item>503,SV</item>
+        <item>240,GQ</item>
+        <item>291,ER</item>
+        <item>372,EE</item>
+        <item>251,ET</item>
+        <item>500,FK</item>
+        <item>298,FO</item>
+        <item>679,FJ</item>
+        <item>358,FI</item>
+        <item>33,FR</item>
+        <item>689,PF</item>
+        <item>241,GA</item>
+        <item>220,GM</item>
+        <item>995,GE</item>
+        <item>49,DE</item>
+        <item>233,GH</item>
+        <item>350,GI</item>
+        <item>30,GR</item>
+        <item>299,GL</item>
+        <item>502,GT</item>
+        <item>224,GN</item>
+        <item>245,GW</item>
+        <item>592,GY</item>
+        <item>509,HT</item>
+        <item>504,HN</item>
+        <item>852,HK</item>
+        <item>36,HU</item>
+        <item>91,IN</item>
+        <item>62,ID</item>
+        <item>98,IR</item>
+        <item>964,IQ</item>
+        <item>353,IE</item>
+        <item>44,IM</item>
+        <item>972,IL</item>
+        <item>39,IT</item>
+        <item>225,CI</item>
+        <item>81,JP</item>
+        <item>962,JO</item>
+        <item>7,KZ</item>
+        <item>254,KE</item>
+        <item>686,KI</item>
+        <item>965,KW</item>
+        <item>996,KG</item>
+        <item>856,LA</item>
+        <item>371,LV</item>
+        <item>961,LB</item>
+        <item>266,LS</item>
+        <item>231,LR</item>
+        <item>218,LY</item>
+        <item>423,LI</item>
+        <item>370,LT</item>
+        <item>352,LU</item>
+        <item>853,MO</item>
+        <item>389,MK</item>
+        <item>261,MG</item>
+        <item>265,MW</item>
+        <item>60,MY</item>
+        <item>960,MV</item>
+        <item>223,ML</item>
+        <item>356,MT</item>
+        <item>692,MH</item>
+        <item>222,MR</item>
+        <item>230,MU</item>
+        <item>262,YT</item>
+        <item>52,MX</item>
+        <item>691,FM</item>
+        <item>373,MD</item>
+        <item>377,MC</item>
+        <item>976,MN</item>
+        <item>382,ME</item>
+        <item>212,MA</item>
+        <item>258,MZ</item>
+        <item>264,NA</item>
+        <item>674,NR</item>
+        <item>977,NP</item>
+        <item>31,NL</item>
+        <item>599,AN</item>
+        <item>687,NC</item>
+        <item>64,NZ</item>
+        <item>505,NI</item>
+        <item>227,NE</item>
+        <item>234,NG</item>
+        <item>683,NU</item>
+        <item>850,KP</item>
+        <item>47,NO</item>
+        <item>968,OM</item>
+        <item>92,PK</item>
+        <item>680,PW</item>
+        <item>507,PA</item>
+        <item>675,PG</item>
+        <item>595,PY</item>
+        <item>51,PE</item>
+        <item>63,PH</item>
+        <item>870,PN</item>
+        <item>48,PL</item>
+        <item>351,PT</item>
+        <item>1,PR</item>
+        <item>974,QA</item>
+        <item>40,RO</item>
+        <item>7,RU</item>
+        <item>250,RW</item>
+        <item>590,BL</item>
+        <item>685,WS</item>
+        <item>378,SM</item>
+        <item>239,ST</item>
+        <item>966,SA</item>
+        <item>221,SN</item>
+        <item>381,RS</item>
+        <item>248,SC</item>
+        <item>232,SL</item>
+        <item>65,SG</item>
+        <item>421,SK</item>
+        <item>386,SI</item>
+        <item>677,SB</item>
+        <item>252,SO</item>
+        <item>27,ZA</item>
+        <item>82,KR</item>
+        <item>34,ES</item>
+        <item>94,LK</item>
+        <item>290,SH</item>
+        <item>508,PM</item>
+        <item>249,SD</item>
+        <item>597,SR</item>
+        <item>268,SZ</item>
+        <item>46,SE</item>
+        <item>41,CH</item>
+        <item>963,SY</item>
+        <item>886,TW</item>
+        <item>992,TJ</item>
+        <item>255,TZ</item>
+        <item>66,TH</item>
+        <item>228,TG</item>
+        <item>690,TK</item>
+        <item>676,TO</item>
+        <item>216,TN</item>
+        <item>90,TR</item>
+        <item>993,TM</item>
+        <item>688,TV</item>
+        <item>971,AE</item>
+        <item>256,UG</item>
+        <item>44,GB</item>
+        <item>380,UA</item>
+        <item>598,UY</item>
+        <item>1,US</item>
+        <item>998,UZ</item>
+        <item>678,VU</item>
+        <item>39,VA</item>
+        <item>58,VE</item>
+        <item>84,VN</item>
+        <item>681,WF</item>
+        <item>967,YE</item>
+        <item>260,ZM</item>
+        <item>263,ZW</item>
+        <item>1684,AS</item>
+        <item>1264,AI</item>
+        <item>1268,AG</item>
+        <item>1242,BS</item>
+        <item>1246,BB</item>
+        <item>1441,BM</item>
+        <item>5997,BQ</item>
+        <item>0,BV</item>
+        <item>246,IO</item>
+        <item>0,UM</item>
+        <item>1284,VG</item>
+        <item>1 340,VI</item>
+        <item>1345,CY</item>
+        <item>1767,DM</item>
+        <item>1809,DO</item>
+        <item>594,GF</item>
+        <item>0,AF</item>
+        <item>1473,GD</item>
+        <item>1671,GU</item>
+        <item>0,HM</item>
+        <item>379,VA</item>
+        <item>354,IS</item>
+        <item>1876,JM</item>
+        <item>76,KZ</item>
+        <item>596,MQ</item>
+        <item>1664,MS</item>
+        <item>1670,MP</item>
+        <item>970,PE</item>
+        <item>1787,PR</item>
+        <item>383,XK</item>
+        <item>1869,KN</item>
+        <item>1758,LC</item>
+        <item>1784,VC</item>
+        <item>1721,SX</item>
+        <item>211,SS</item>
+        <item>4779,SJ</item>
+        <item>1868,TT</item>
+        <item>1649,TC</item>
+    </string-array>
+
+
+    <!-- Labels next to the start and end time edit boxes -->
+    <string name="start_label">Start:</string>
+    <string name="end_label">End:</string>
+
+    <string name="edit_intent">Edit</string>
+
+    <string name="time_seconds">seconds</string>
+
+    <!-- After you save a notification or ringtone and have more options
+         for what to do with them -->
+    <string name="what_to_do_with_ringtone">Saved!  Make this your default ringtone or assign it to a contact?</string>
+    <string name="set_default_notification">Saved!  Make this your default notification?</string>
+
+    <string name="make_default_ringtone_button">Make Default</string>
+    <string name="choose_contact_ringtone_button">Assign to Contact</string>
+    <string name="do_nothing_with_ringtone_button">Close</string>
+
+    <!-- Progress dialog text for loading, recording, or saving... -->
+    <string name="progress_dialog_loading">Loading…</string>
+    <string name="progress_dialog_recording">Recording…</string>
+    <string name="progress_dialog_saving">Saving…</string>
+    <string name="progress_dialog_cancel">Cancel</string>
+    <string name="progress_dialog_stop">Stop</string>
+
+    <!-- Image button descriptions for accessibility -->
+
+    <string name="start_marker">Start marker</string>
+    <string name="end_marker">End marker</string>
+    <string name="rewind">Rewind</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="ffwd">Fast forward</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="zoom_out">Zoom Out</string>
+    <string name="save_button">Save</string>
+
+    <!--
+     Menu items
+     -->
+
+    <string name="menu_save">Save</string>
+    <string name="menu_reset">Reset</string>
+    <string name="menu_about">About</string>
+    <string name="menu_show_all_audio">Show All Audio</string>
+
+    <!--
+     Context menu items
+     -->
+
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_default_ringtone">Set as Default Ringtone</string>
+    <string name="context_menu_contact">Assign to Contact</string>
+    <string name="context_menu_default_notification">Set as Default Notification</string>
+
+    <!--
+     File Save dialog
+     -->
+
+    <string name="file_save_title">Save As:</string>
+    <string name="file_save_button_save">Save</string>
+    <string name="file_save_button_cancel">Cancel</string>
+
+    <string name="ringtone_type_label">Type:</string>
+
+    <string name="type_music">Music</string>
+    <string name="type_alarm">Alarm</string>
+    <string name="type_notification">Notification</string>
+    <string name="type_ringtone">Ringtone</string>
+
+    <string name="ringtone_name_label">Name:</string>
+
+    <string name="artist_name">Ringdroid</string>
+
+    <!--
+     Delete confirmation dialog
+     -->
+
+    <string name="delete_ringtone">Delete Ringtone</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="delete_notification">Delete Notification</string>
+    <string name="delete_music">Delete Music</string>
+    <string name="delete_audio">Delete Audio</string>
+
+    <string name="confirm_delete_ringdroid">Are you sure?</string>
+    <string name="confirm_delete_non_ringdroid">Are you sure?  This file was not created using Ringdroid!</string>
+
+    <string name="delete_ok_button">Delete</string>
+    <string name="delete_cancel_button">Cancel</string>
+
+    <string name="delete_failed">Unable to delete file</string>
+
+    <!--
+     Success and error messages
+     -->
+
+    <string name="alert_title_success">Success</string>
+    <string name="alert_title_failure">Error</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="alert_yes_button">Yes, please!</string>
+    <string name="alert_no_button">No, thanks.</string>
+
+    <string name="save_success_message">Saved!</string>
+    <string name="default_ringtone_success_message">Changed default ringtone</string>
+    <string name="default_notification_success_message">Changed default notification sound</string>
+    <string name="play_error">Unable to play this media file</string>
+    <string name="no_unique_filename">Unable to find unique filename</string>
+    <string name="record_error">Error recording audio</string>
+    <string name="too_small_error">Can\'t save a file that small, try making it longer.</string>
+    <string name="write_error">Error writing file</string>
+    <string name="read_error">Error reading file</string>
+
+    <string name="no_space_error">Your SD card is full, there is not enough space to save this file.</string>
+
+    <string name="bad_extension_error">Sorry, Ringdroid is not yet able to edit files of type</string>
+    <string name="no_extension_error">Sorry, Ringdroid can\'t edit a file if it doesn\'t have an extension like .mp3 or .wav</string>
+
+    <!--
+     Choose Contact Activity
+     -->
+
+    <string name="choose_contact_title">Assign ringtone to which contact?</string>
+    <string name="success_contact_ringtone">Successfully assigned ringtone to:</string>
+
+    <!--
+     About
+     -->
+
+    <string name="about_title">About Ringdroid</string>
+    <string name="about_text"><![CDATA[Use Ringdroid to edit MP3, OGG, WAV, AAC, and AMR audio files and create ringtones, alarms, and notifications from them.\n\nTip: copy audio files to your SD card using a USB cable.\n\nTip: tap anywhere on the waveform to start playing at that position.\n\nTip: while playing, tap the word Start or End to quickly set the start and end markers to the current playback time.\n\nVersion %s\n\nDeveloper: Dominic Mazzoni, Nicolas Faralli\nGraphics: Joseph Wain\nSupport and evangelizing: Eugene Koh\nEnhancements: Dan Klufas\n\nRingdroid is free software, distributed under the Apache 2.0 license.  Source code is on github.com/google/ringdroid\n]]></string>
+
+
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="title">ImageCropper</string>
+    <string name="rotate">Rotate</string>
+    <string name="reset">Reset</string>
+    <string name="crop">Crop</string>
+    <string name="loading">Loading</string>
+    <string name="saving">Saving</string>
+    <string-array name="photo_editor_emoji">
+
+        <!-- Smiles -->
+        <item>u+1f604</item>
+        <item>u+1f603</item>
+        <item>u+1f600</item>
+        <item>u+1f60a</item>
+        <item>u+263a</item>
+        <item>u+1f609</item>
+        <item>u+1f60d</item>
+        <item>u+1f618</item>
+        <item>u+1f61a</item>
+        <item>u+1f617</item>
+        <item>u+1f619</item>
+        <item>u+1f61c</item>
+        <item>u+1f61d</item>
+        <item>u+1f61b</item>
+        <item>u+1f633</item>
+        <item>u+1f601</item>
+        <item>u+1f614</item>
+        <item>u+1f60c</item>
+        <item>u+1f612</item>
+        <item>u+1f61e</item>
+        <item>u+1f623</item>
+        <item>u+1f622</item>
+        <item>u+1f602</item>
+        <item>u+1f62d</item>
+        <item>u+1f62a</item>
+        <item>u+1f625</item>
+        <item>u+1f630</item>
+        <item>u+1f605</item>
+        <item>u+1f613</item>
+        <item>u+1f629</item>
+        <item>u+1f62b</item>
+        <item>u+1f628</item>
+        <item>u+1f631</item>
+        <item>u+1f620</item>
+        <item>u+1f621</item>
+        <item>u+1f624</item>
+
+        <!--People -->
+        <item>u+1f616</item>
+        <item>u+1f606</item>
+        <item>u+1f60b</item>
+        <item>u+1f637</item>
+        <item>u+1f60e</item>
+        <item>u+1f634</item>
+        <item>u+1f635</item>
+        <item>u+1f632</item>
+        <item>u+1f61f</item>
+        <item>u+1f626</item>
+        <item>u+1f627</item>
+        <item>u+1f608</item>
+        <item>u+1f47f</item>
+        <item>u+1f62e</item>
+        <item>u+1f62c</item>
+        <item>u+1f610</item>
+        <item>u+1f615</item>
+        <item>u+1f62f</item>
+        <item>u+1f636</item>
+        <item>u+1f607</item>
+        <item>u+1f60f</item>
+        <item>u+1f611</item>
+        <item>u+1f472</item>
+        <item>u+1f473</item>
+        <item>u+1f46e</item>
+        <item>u+1f477</item>
+        <item>u+1f482</item>
+        <item>u+1f476</item>
+        <item>u+1f466</item>
+        <item>u+1f467</item>
+        <item>u+1f468</item>
+        <item>u+1f469</item>
+        <item>u+1f474</item>
+        <item>u+1f475</item>
+        <item>u+1f471</item>
+        <item>u+1f47c</item>
+        <item>u+1f478</item>
+        <item>u+1f63a</item>
+        <item>u+1f638</item>
+        <item>u+1f63b</item>
+        <item>u+1f63d</item>
+        <item>u+1f63c</item>
+        <item>u+1f640</item>
+        <item>u+1f63f</item>
+        <item>u+1f639</item>
+        <item>u+1f63e</item>
+        <item>u+1f479</item>
+        <item>u+1f47a</item>
+        <item>u+1f648</item>
+        <item>u+1f649</item>
+        <item>u+1f64a</item>
+        <item>u+1f480</item>
+        <item>u+1f47d</item>
+        <item>u+1f4a9</item>
+        <item>u+1f525</item>
+        <item>u+2728</item>
+        <item>u+1f31f</item>
+        <item>u+1f4ab</item>
+        <item>u+1f4a5</item>
+        <item>u+1f4a2</item>
+        <item>u+1f4a6</item>
+        <item>u+1f4a7</item>
+        <item>u+1f4a4</item>
+        <item>u+1f4a8</item>
+        <item>u+1f442</item>
+        <item>u+1f440</item>
+        <item>u+1f443</item>
+        <item>u+1f445</item>
+        <item>u+1f444</item>
+        <item>u+1f44d</item>
+        <item>u+1f44e</item>
+        <item>u+1f44c</item>
+        <item>u+1f44a</item>
+        <item>u+270a</item>
+        <item>u+270c</item>
+        <item>u+1f44b</item>
+        <item>u+270b</item>
+        <item>u+1f450</item>
+        <item>u+1f446</item>
+        <item>u+1f447</item>
+        <item>u+1f449</item>
+        <item>u+1f448</item>
+        <item>u+1f64c</item>
+        <item>u+1f64f</item>
+        <item>u+261d</item>
+        <item>u+1f44f</item>
+        <item>u+1f4aa</item>
+        <item>u+1f6b6</item>
+        <item>u+1f3c3</item>
+        <item>u+1f483</item>
+        <item>u+1f46b</item>
+        <item>u+1f46a</item>
+        <item>u+1f46c</item>
+        <item>u+1f46d</item>
+        <item>u+1f48f</item>
+        <item>u+1f491</item>
+        <item>u+1f46f</item>
+        <item>u+1f646</item>
+        <item>u+1f645</item>
+        <item>u+1f481</item>
+        <item>u+1f64b</item>
+        <item>u+1f486</item>
+        <item>u+1f487</item>
+        <item>u+1f485</item>
+        <item>u+1f470</item>
+        <item>u+1f64e</item>
+        <item>u+1f64d</item>
+        <item>u+1f647</item>
+        <item>u+1f3a9</item>
+        <item>u+1f451</item>
+        <item>u+1f452</item>
+        <item>u+1f45f</item>
+        <item>u+1f45e</item>
+        <item>u+1f461</item>
+        <item>u+1f460</item>
+        <item>u+1f462</item>
+        <item>u+1f455</item>
+        <item>u+1f454</item>
+        <item>u+1f45a</item>
+        <item>u+1f457</item>
+        <item>u+1f3bd</item>
+        <item>u+1f456</item>
+        <item>u+1f458</item>
+        <item>u+1f459</item>
+        <item>u+1f4bc</item>
+        <item>u+1f45c</item>
+        <item>u+1f45d</item>
+        <item>u+1f45b</item>
+        <item>u+1f453</item>
+        <item>u+1f380</item>
+        <item>u+1f302</item>
+        <item>u+1f484</item>
+        <item>u+1f49b</item>
+        <item>u+1f499</item>
+        <item>u+1f49c</item>
+        <item>u+1f49a</item>
+        <item>u+2764</item>
+        <item>u+1f494</item>
+        <item>u+1f497</item>
+        <item>u+1f493</item>
+        <item>u+1f495</item>
+        <item>u+1f496</item>
+        <item>u+1f49e</item>
+        <item>u+1f498</item>
+        <item>u+1f48c</item>
+        <item>u+1f48b</item>
+        <item>u+1f48d</item>
+        <item>u+1f48e</item>
+        <item>u+1f464</item>
+        <item>u+1f465</item>
+        <item>u+1f4ac</item>
+        <item>u+1f463</item>
+        <item>u+1f4ad</item>
+
+        <!--  Nature-->
+        <item>u+1f436</item>
+        <item>u+1f43a</item>
+        <item>u+1f431</item>
+        <item>u+1f42d</item>
+        <item>u+1f439</item>
+        <item>u+1f430</item>
+        <item>u+1f438</item>
+        <item>u+1f42f</item>
+        <item>u+1f428</item>
+        <item>u+1f43b</item>
+        <item>u+1f437</item>
+        <item>u+1f43d</item>
+        <item>u+1f42e</item>
+        <item>u+1f417</item>
+        <item>u+1f435</item>
+        <item>u+1f412</item>
+        <item>u+1f434</item>
+        <item>u+1f411</item>
+        <item>u+1f418</item>
+        <item>u+1f43c</item>
+        <item>u+1f427</item>
+        <item>u+1f426</item>
+        <item>u+1f424</item>
+        <item>u+1f425</item>
+        <item>u+1f423</item>
+        <item>u+1f414</item>
+        <item>u+1f40d</item>
+        <item>u+1f422</item>
+        <item>u+1f41b</item>
+        <item>u+1f41d</item>
+        <item>u+1f41c</item>
+        <item>u+1f41e</item>
+        <item>u+1f40c</item>
+        <item>u+1f419</item>
+        <item>u+1f41a</item>
+        <item>u+1f420</item>
+        <item>u+1f41f</item>
+        <item>u+1f42c</item>
+        <item>u+1f433</item>
+        <item>u+1f40b</item>
+        <item>u+1f404</item>
+        <item>u+1f40f</item>
+        <item>u+1f400</item>
+        <item>u+1f403</item>
+        <item>u+1f405</item>
+        <item>u+1f407</item>
+        <item>u+1f409</item>
+        <item>u+1f40e</item>
+        <item>u+1f410</item>
+        <item>u+1f413</item>
+        <item>u+1f415</item>
+        <item>u+1f416</item>
+        <item>u+1f401</item>
+        <item>u+1f402</item>
+        <item>u+1f432</item>
+        <item>u+1f421</item>
+        <item>u+1f40a</item>
+        <item>u+1f42b</item>
+        <item>u+1f42a</item>
+        <item>u+1f406</item>
+        <item>u+1f408</item>
+        <item>u+1f429</item>
+        <item>u+1f43e</item>
+        <item>u+1f490</item>
+        <item>u+1f338</item>
+        <item>u+1f337</item>
+        <item>u+1f340</item>
+        <item>u+1f339</item>
+        <item>u+1f33b</item>
+        <item>u+1f33a</item>
+        <item>u+1f341</item>
+        <item>u+1f343</item>
+        <item>u+1f342</item>
+        <item>u+1f33f</item>
+        <item>u+1f33e</item>
+        <item>u+1f344</item>
+        <item>u+1f335</item>
+        <item>u+1f334</item>
+        <item>u+1f332</item>
+        <item>u+1f333</item>
+        <item>u+1f330</item>
+        <item>u+1f331</item>
+        <item>u+1f33c</item>
+        <item>u+1f310</item>
+        <item>u+1f31e</item>
+        <item>u+1f31d</item>
+        <item>u+1f31a</item>
+        <item>u+1f311</item>
+        <item>u+1f312</item>
+        <item>u+1f313</item>
+        <item>u+1f314</item>
+        <item>u+1f315</item>
+        <item>u+1f316</item>
+        <item>u+1f317</item>
+        <item>u+1f318</item>
+        <item>u+1f31c</item>
+        <item>u+1f31b</item>
+        <item>u+1f319</item>
+        <item>u+1f30d</item>
+        <item>u+1f30e</item>
+        <item>u+1f30f</item>
+        <item>u+1f30b</item>
+        <item>u+1f30c</item>
+        <item>u+1f320</item>
+        <item>u+2b50</item>
+        <item>u+2600</item>
+        <item>u+26c5</item>
+        <item>u+2601</item>
+        <item>u+26a1</item>
+        <item>u+2614</item>
+        <item>u+2744</item>
+        <item>u+26c4</item>
+        <item>u+1f300</item>
+        <item>u+1f301</item>
+        <item>u+1f308</item>
+        <item>u+1f30a</item>
+
+        <!--Places-->
+        <item>u+1f3e0</item>
+        <item>u+1f3e1</item>
+        <item>u+1f3eb</item>
+        <item>u+1f3e2</item>
+        <item>u+1f3e3</item>
+        <item>u+1f3e5</item>
+        <item>u+1f3e6</item>
+        <item>u+1f3ea</item>
+        <item>u+1f3e9</item>
+        <item>u+1f3e8</item>
+        <item>u+1f492</item>
+        <item>u+26ea</item>
+        <item>u+1f3ec</item>
+        <item>u+1f3e4</item>
+        <item>u+1f307</item>
+        <item>u+1f306</item>
+        <item>u+1f3ef</item>
+        <item>u+1f3f0</item>
+        <item>u+26fa</item>
+        <item>u+1f3ed</item>
+        <item>u+1f5fc</item>
+        <item>u+1f5fe</item>
+        <item>u+1f5fb</item>
+        <item>u+1f304</item>
+        <item>u+1f305</item>
+        <item>u+1f303</item>
+        <item>u+1f5fd</item>
+        <item>u+1f309</item>
+        <item>u+1f3a0</item>
+        <item>u+1f3a1</item>
+        <item>u+26f2</item>
+        <item>u+1f3a2</item>
+        <item>u+1f6a2</item>
+        <item>u+26f5</item>
+        <item>u+1f6a4</item>
+        <item>u+1f6a3</item>
+        <item>u+2693</item>
+        <item>u+1f680</item>
+        <item>u+2708</item>
+        <item>u+1f4ba</item>
+        <item>u+1f681</item>
+        <item>u+1f682</item>
+        <item>u+1f68a</item>
+        <item>u+1f689</item>
+        <item>u+1f69e</item>
+        <item>u+1f686</item>
+        <item>u+1f684</item>
+        <item>u+1f685</item>
+        <item>u+1f688</item>
+        <item>u+1f687</item>
+        <item>u+1f69d</item>
+        <item>u+1f68b</item>
+        <item>u+1f683</item>
+        <item>u+1f68e</item>
+        <item>u+1f68c</item>
+        <item>u+1f68d</item>
+        <item>u+1f699</item>
+        <item>u+1f698</item>
+        <item>u+1f697</item>
+        <item>u+1f695</item>
+        <item>u+1f696</item>
+        <item>u+1f69b</item>
+        <item>u+1f69a</item>
+        <item>u+1f6a8</item>
+        <item>u+1f693</item>
+        <item>u+1f694</item>
+        <item>u+1f692</item>
+        <item>u+1f691</item>
+        <item>u+1f690</item>
+        <item>u+1f6b2</item>
+        <item>u+1f6a1</item>
+        <item>u+1f69f</item>
+        <item>u+1f6a0</item>
+        <item>u+1f69c</item>
+        <item>u+1f488</item>
+        <item>u+1f68f</item>
+        <item>u+1f3ab</item>
+        <item>u+1f6a6</item>
+        <item>u+1f6a5</item>
+        <item>u+26a0</item>
+        <item>u+1f6a7</item>
+        <item>u+1f530</item>
+        <item>u+26fd</item>
+        <item>u+1f3ee</item>
+        <item>u+1f3b0</item>
+        <item>u+2668</item>
+        <item>u+1f5ff</item>
+        <item>u+1f3aa</item>
+        <item>u+1f3ad</item>
+        <item>u+1f4cd</item>
+        <item>u+1f6a9</item>
+    </string-array>
+
+
+</resources>

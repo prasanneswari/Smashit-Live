@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#26282F"
+    android:orientation="vertical"
+    android:id="@+id/rootlay"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            >
+            <!--
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_back"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:onClick="finishActivity"
+                            />
+            -->
+
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/profileback"
+                android:onClick="finishActivity"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/uploadpictureold"
+                android:id="@+id/imagelay"
+                android:scaleType="fitXY"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#E626282F">
+
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:layout_centerInParent="true">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image_placeholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/uploadimgback"
+                        android:paddingBottom="20dp"
+                        android:src="@drawable/uploadpictureold" />
+
+                    <ImageButton
+                        android:id="@+id/upload_pic_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:background="@color/white"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/uploadicon"
+                        />
+<!--
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:id="@+id/progressBar"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+-->
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@drawable/continubuttom"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/regprofileback"
+                android:orientation="vertical"
+                android:weightSum="7.5"
+                android:layout_marginBottom="10dp"
+
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/username_text_input_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="@string/enterusername"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/username"
+                            android:fontFamily="@font/rubik"
+                            app:backgroundTint="@color/hintcolor"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="@string/entermail"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/emialid"
+                            android:fontFamily="@font/rubik"
+                            app:backgroundTint="@color/hintcolor"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="dob"
+                            android:textColor="@color/hintcolor"
+                            android:fontFamily="@font/rubik"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gender "
+                            android:textColor="@color/hintcolor"
+                            android:fontFamily="@font/rubik"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik"
+                            android:id="@+id/gendername"
+                            android:textColor="#576176"
+
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:orientation="vertical"
+                        >
+
+                        <!-- <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="Date Of Birth"
+                             android:textColor="#576176"
+                             android:padding="10sp"/>-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            >
+                            <EditText
+                                android:id="@+id/date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/hintcolor"
+                                android:textColor="@color/white"
+                                android:inputType="text"
+                                android:focusable="false"
+                                android:layout_gravity="center"
+                                android:gravity="left"
+                                android:padding="10dp"
+                                android:fontFamily="@font/rubik"
+                                app:backgroundTint="@color/hintcolor"
+
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="vertical">
+                        <!--  <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="Gender"
+                              android:textColor="#576176"
+                              android:padding="10sp"/>-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:layout_gravity="left"
+                            android:gravity="center"
+                            >
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/femaleicon"
+                                android:id="@+id/maleimg"
+                                android:onClick="onRadioButtonClicked"
+                                android:layout_gravity="center"
+
+
+                                />
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/maleicon"
+                                android:id="@+id/femaleimg"
+                                android:onClick="onRadioButtonClicked"
+
+                                />
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/transgendericon"
+                                android:id="@+id/otherimg"
+                                android:onClick="onRadioButtonClicked"
+
+                                />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_margin="10dp">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/genderback"
+                                android:layout_marginRight="5dp"
+                                android:id="@+id/male"
+                                />
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/genderback"
+                                android:layout_marginRight="5dp"
+                                android:id="@+id/female"
+
+                                />
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/genderback"
+                                android:id="@+id/other"
+                                />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel"
+
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="@string/city"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/city"
+                            android:fontFamily="@font/rubik"
+                            android:inputType="text"
+                            app:backgroundTint="@color/hintcolor"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="@string/country"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/reg_contry"
+                            android:focusable="false"
+                            android:fontFamily="@font/rubik"
+                            app:backgroundTint="@color/hintcolor"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:theme="@style/TextLabel"
+                        >
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:hint="@string/country"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/countrycode"
+                            android:fontFamily="@font/rubik"
+                            android:inputType="number"
+                            app:backgroundTint="@color/hintcolor"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:theme="@style/TextLabel"
+                        >
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="@string/enternumber"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:id="@+id/contactno"
+                            android:fontFamily="@font/rubik"
+                            android:inputType="number"
+                            app:backgroundTint="@color/hintcolor"
+                            android:focusable="true"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <Button
+                        android:id="@+id/updatebtn"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:text="@string/updateprofile"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        android:fontFamily="@font/rubik_medium"
+                        android:background="@drawable/btn_bg_selector"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

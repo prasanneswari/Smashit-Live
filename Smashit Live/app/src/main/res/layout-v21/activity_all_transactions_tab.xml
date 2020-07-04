@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WalletScreen.AllTransactionsTab"
+    android:background="@drawable/launchingback"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <Button
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:background="@drawable/backbtn"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:onClick="finishActivity"
+
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All Transactions"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+        <View
+            android:layout_width="30dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            android:layout_marginTop="5dp"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/searchdatalay"
+        android:visibility="visible"
+        >
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayouttrade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#26282F"
+            app:tabTextColor="#576176"
+            app:tabSelectedTextColor="@color/white"
+            app:tabGravity="fill"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab"
+            >
+        </com.google.android.material.tabs.TabLayout>
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPagertrade"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayouttrade"
+            tools:layout_editor_absoluteX="8dp"
+            android:layout_gravity="center"
+            android:background="#F6F5F5">
+        </androidx.viewpager.widget.ViewPager>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/searchlistlay"
+        android:visibility="gone"
+        android:layout_margin="10dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/searchlist"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/searchindividuallay"
+        android:visibility="gone"
+        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="search name"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rubik"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/searchnametxt"
+                android:textSize="14dp"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:src="@drawable/continubuttom"
+                android:layout_marginLeft="10dp"
+
+                />
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

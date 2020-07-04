@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10sp"
+    android:id="@+id/lang_lay"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:layout_gravity="center"
+            android:gravity="left"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lang_mod"
+                android:text="language"
+                android:textColor="@color/white"
+                android:gravity="left"
+                android:layout_gravity="center"
+                android:padding="5sp"
+                android:fontFamily="@font/rubik"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <CheckBox
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/lang_checkbox"
+                android:layout_alignRight="@id/lang_mod"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:button="@null"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+<!--
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#26282F"
+        />
+-->
+
+</LinearLayout>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".createcontent.Sounds.PostSoundActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/displayoutput"
+        android:background="@drawable/border"
+        android:paddingLeft="10sp"
+        android:paddingTop="10sp"
+        >
+
+        <ImageView
+            android:id="@+id/content_back"
+            android:layout_width="wrap_content"
+            android:layout_height="35sp"
+            android:layout_margin="5sp"
+            android:padding="5sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_contentbk" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="70sp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create sounds "
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                />
+            <View
+                android:layout_width="30sp"
+                android:layout_height="3sp"
+                android:background="@color/white"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="20sp">
+                <EditText
+                    android:id="@+id/sound_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:gravity="top"
+                    android:backgroundTint="@color/transparent"
+                    android:layout_weight="0.5"
+                    android:layout_marginBottom="15sp"/>
+                <EditText
+                    android:id="@+id/sound_album"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Album Name"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:gravity="top"
+                    android:backgroundTint="@color/transparent"
+                    android:layout_weight="0.5"
+                    android:layout_marginBottom="15sp"/>
+                <EditText
+                    android:id="@+id/sound_artist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Artist Name"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:gravity="top"
+                    android:backgroundTint="@color/transparent"
+                    android:layout_weight="0.5"
+                    android:layout_marginBottom="15sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sound_languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Laguages"
+                android:textColor="@color/white"
+                android:layout_weight="3"
+                android:drawableRight="@drawable/ic_content_back"
+                android:layout_margin="10sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/sound_catagories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categories"
+                android:textColor="@color/white"
+                android:layout_weight="3"
+                android:drawableRight="@drawable/ic_content_back"
+                android:layout_margin="10sp"
+                android:visibility="gone"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10sp">
+                <TextView
+                    android:id="@+id/sound_lang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Language"
+                    android:textColor="@color/white"
+                    android:padding="10sp"
+                    android:background="@drawable/homeback"
+                    />
+                <TextView
+                    android:id="@+id/sound_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:textColor="@color/white"
+                    android:padding="10sp"
+
+
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="50sp">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/sound_listview_langes"
+                    android:paddingLeft="10sp">
+
+                </ListView>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/sound_listview_cate"
+                    android:paddingLeft="10sp"
+                    android:visibility="gone">
+
+
+                </ListView>
+                <!--                <ProgressBar-->
+                <!--                    style="?android:attr/progressBarStyleLarge"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:id="@+id/progressBar2"-->
+                <!--                    android:progressDrawable="@drawable/circular_progress_bar"-->
+                <!--                    android:layout_centerInParent="true"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    />-->
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:background="@drawable/border"
+            >
+            <Button
+                android:id="@+id/sendsound"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:text="Post"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="10sp"
+                android:layout_weight="2"
+                android:background="@drawable/btn_bg_selector"
+                />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

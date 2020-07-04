@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/layoutbg"
+        android:layout_margin="5dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:fontFamily="@font/rubik_medium"
+                android:textColor="@color/redcolor"
+                android:textSize="20dp"
+                android:id="@+id/text"
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/editborder"
+                >
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/reason"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/editborder"
+                android:hint="Description"
+                android:textColor="@color/black"
+                android:fontFamily="@font/rubik"
+                android:padding="10dp"
+                android:singleLine="false"
+                android:layout_marginTop="10dp"
+                android:id="@+id/des"
+                android:layout_gravity="top"
+                android:gravity="top"
+
+                />
+
+        </LinearLayout>
+
+<!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+-->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@drawable/continubuttom"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:layout_marginRight="20dp"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textColor="@color/black"
+                android:fontFamily="@font/rubik"
+                android:textSize="18dp"
+                android:id="@+id/nobtn"
+                android:background="@color/transparent"
+                android:textAllCaps="false"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:textColor="@color/black"
+                android:fontFamily="@font/rubik"
+                android:textSize="18dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/reportbtn"
+                android:background="@color/transparent"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/homescreenback"
+    android:id="@+id/root">
+
+    <TextView
+        android:id="@+id/home_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_bold"
+        android:text="0"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/home_type"
+        android:text="0"
+        />
+    <!--
+            <VideoView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/home_video"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+    -->
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_video"
+        android:layout_centerInParent="true"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        app:show_timeout="1000"
+        app:controller_layout_id="@layout/item_player_controler"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/home_imageview"
+        />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:src="@drawable/likeimg"
+        android:id="@+id/loteanimation"
+        android:visibility="gone"
+
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/pauseicon"
+        android:id="@+id/pauseimg"
+        android:visibility="gone"
+
+        />
+
+
+    <!--
+            <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:lottie_autoPlay="true"
+                android:layout_centerInParent="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/love"
+                android:id="@+id/loteanimation"
+                android:visibility="gone"/>
+    -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="right"
+        android:id="@+id/leftlay"
+        android:layout_marginRight="5dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="bottom">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="7sp"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/commentunlike"
+                    android:id="@+id/likes"
+                    android:elevation="25sp"
+                    android:visibility="visible"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/likeimg"
+                    android:id="@+id/unlikes"
+                    android:elevation="25sp"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/liketxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="25sp"
+                    android:fontFamily="@font/rubik_bold"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="7sp"
+                android:visibility="visible"
+                >
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/gifticon"
+                    android:elevation="25sp"
+                    android:id="@+id/giftimg"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_rectangle"
+                    android:elevation="25sp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="7sp"
+
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/shareicon"
+                    android:elevation="25sp"
+                    android:id="@+id/shareimg"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/rubik_bold"
+                    android:id="@+id/share"
+                    android:textSize="10dp"
+                    android:elevation="25sp"
+
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="7sp"
+
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/commenticon"
+                    android:id="@+id/commenticon"
+                    android:elevation="25sp"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/rubik_bold"
+                    android:id="@+id/comment"
+                    android:textSize="10dp"
+                    android:elevation="25sp"
+                    />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_rectangle"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.25"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/leftlay"
+        android:orientation="vertical"
+        android:background="@drawable/homecontentback"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:layout_gravity="top"
+                android:gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/uploadpictureold"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="top"
+                    android:foregroundGravity="top"
+                    android:id="@+id/otherprofile"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My most lovable place in this world My most lovable place in this world"
+                    android:textColor="@color/white"
+                    android:id="@+id/homecontent"
+                    android:fontFamily="@font/rubik_medium"
+                    android:textSize="14dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="# tags"
+                    android:textColor="@color/white"
+                    android:id="@+id/hometags"
+                    android:layout_marginTop="5dp"
+                    android:textSize="14dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/rubik"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prasanna"
+                    android:textColor="@color/username"
+                    android:id="@+id/homename"
+                    android:textSize="14dp"
+                    android:visibility="gone"
+                    android:paddingTop="3dp"
+                    android:fontFamily="@font/rubik_medium"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/soundlay"
+                    android:visibility="invisible">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_music_icon"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Original Sound - Ski_ssj"
+                        android:textColor="@color/white"
+                        android:id="@+id/song"
+                        android:textSize="14dp"
+                        android:ellipsize="marquee"
+                        android:fadingEdge="horizontal"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        android:fontFamily="@font/rubik_medium"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <!--
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            >
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+
+                                >
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+
+                                    >
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="20dp"
+                                        android:background="@drawable/homeback"
+                                        android:layout_centerInParent="true"
+                                        android:paddingLeft="10dp"
+                                        android:paddingRight="10dp"
+                                        />
+
+                                <com.shawnlin.numberpicker.NumberPicker
+                                    android:id="@+id/number_picker"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="90dp"
+                                    android:orientation="vertical"                        android:layout_centerInParent="true"
+                                    app:np_dividerColor="@color/colorPrimary"
+                                    app:np_formatter="number_picker_formatter"
+                                    app:np_max="59"
+                                    app:np_min="0"
+                                    app:np_selectedTextColor="@color/colorPrimary"
+                                    app:np_selectedTextSize="20dp"
+                                    app:np_textColor="@color/colorPrimary"
+                                    app:np_textSize="20dp"
+                                    app:np_value="5"
+                                    />
+                                </RelativeLayout>
+
+                                &lt;!&ndash;
+                                                <androidx.recyclerview.widget.RecyclerView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:id="@+id/categorylst"/>
+                                &ndash;&gt;
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.3"
+                                android:layout_gravity="center"
+                                android:gravity="center">
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_category_icon"/>
+                            </LinearLayout>
+                        </LinearLayout>
+            -->
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        android:weightSum="1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            >
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:onClick="finishActivity"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/language"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                android:id="@+id/pop_title"
+                android:fontFamily="@font/rubik_medium"
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.05"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chooselaung"
+                android:textColor="@color/hintcolor"
+                android:fontFamily="@font/rubik"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.65"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/border"
+            >
+
+            <ListView
+                android:id="@+id/lang_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#333842"
+                android:dividerHeight="4px"
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <Button
+                android:id="@+id/pop_lang_btn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/Save"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/btn_bg_selector"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rubik_medium"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+
+   <!-- <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/d_bottom_gray_line">
+
+        <ImageButton
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitStart"
+            android:id="@+id/Goback"
+            android:tint="@color/black"
+            android:src="@drawable/ic_back"
+            android:layout_centerVertical="true"
+            android:onClick="finishActivity"/>
+
+        <TextView
+            android:id="@+id/pop_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="select "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:padding="10sp"/>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4.5"
+        >
+
+    <ListView
+        android:id="@+id/lang_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_gravity="center"
+        >
+    <Button
+        android:id="@+id/pop_lang_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/loginbtnback"
+        android:textColor="@color/white"
+        />
+    </LinearLayout>
+
+
+</LinearLayout>-->

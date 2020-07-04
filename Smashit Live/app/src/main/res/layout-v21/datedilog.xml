@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#2D333F"
+        android:weightSum="1"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="15dp"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Country Code"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/rubik"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/country_pop_title"
+                    android:textSize="18dp"/>
+                <Button
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/close"
+                    android:id="@+id/close"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#2D333F"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            >
+
+                        <NumberPicker
+                            android:id="@+id/numberPicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:theme="@style/AppTheme.Picker"
+                            android:divider="@color/white"
+
+
+                            />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

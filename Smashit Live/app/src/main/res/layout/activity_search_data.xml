@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchClass.SearchData"
+    android:orientation="vertical"
+    android:background="@drawable/launchingback"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_gravity="center"
+                android:gravity="left"
+                >
+
+                <!--
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_back"
+                                android:layout_centerVertical="true"
+                                android:onClick="finishActivity"
+                                android:layout_gravity="center"
+                                android:visibility="visible"
+                                android:id="@+id/backsearch"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+
+                                />
+                -->
+                <Button
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/backbtn"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="finishActivity"
+                    android:visibility="visible"
+                    android:id="@+id/backsearch"
+
+                    />
+
+                <Button
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/backbtn"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="finishActivity"
+                    android:visibility="gone"
+                    android:id="@+id/searchdataback"
+
+                    />
+
+                <!--
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_back"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="center"
+                                    android:visibility="gone"
+                                    android:id="@+id/searchdataback"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+
+                                    />
+                -->
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.75"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/searchback"
+                >
+                <!--
+                                <SearchView
+                                    android:id="@+id/search"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:queryHint="search"
+                                    android:background="@drawable/searchback"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentTop="true"
+                                    app:theme="@style/AppSearchView"
+                                    android:textColorHint="@android:color/white"
+                                    >
+
+                                    &lt;!&ndash;
+                                                    <requestFocus />
+                                    &ndash;&gt;
+                                </SearchView>
+                -->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/searchedit"
+                    android:drawableLeft="@drawable/ic_sreach_icon"
+                    android:hint="@string/search"
+                    android:textColorHint="@color/hintcolor"
+                    android:padding="10dp"
+                    android:drawablePadding="10dp"
+                    android:background="#2D333F"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+
+                    >
+                    <!--<requestFocus />-->
+                </EditText>
+
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/searchclose"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/serchclose"
+                    />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/searchtxtlay">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    android:textColor="#C93227"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:fontFamily="@font/rubik"
+                    android:id="@+id/searchtxt"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/searchdatalay"
+            android:visibility="visible">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayouttrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:tabTextColor="@color/hintcolor"
+                app:tabSelectedTextColor="@color/white"
+                app:tabGravity="fill"
+                app:tabMode="scrollable"
+                app:tabTextAppearance="@style/CustomTextAppearanceTab"
+                android:layout_marginBottom="10dp">
+            </com.google.android.material.tabs.TabLayout>
+
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagertrade"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayouttrade"
+                tools:layout_editor_absoluteX="8dp"
+                android:layout_gravity="center"
+                android:background="#F6F5F5">
+            </androidx.viewpager.widget.ViewPager>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/searchlistlay"
+            android:visibility="gone"
+            android:layout_margin="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/searchlist"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/searchindividuallay"
+            android:visibility="gone"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            >
+
+            <!--
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="search name"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_mar
+                            ginLeft="10dp"
+                            android:id="@+id/searchnametxt"
+                            android:textSize="14dp"
+                            />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:src="@drawable/continubuttom"
+                            android:layout_marginLeft="10dp"
+
+                            />
+                        </LinearLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/list"/>
+            -->
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutmarket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:tabTextColor="@color/hintcolor"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextAppearance="@style/CustomTextAppearanceTab"
+                android:layout_marginBottom="10dp">
+            </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagermarket"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayoutmarket"
+                tools:layout_editor_absoluteX="8dp">
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</LinearLayout>

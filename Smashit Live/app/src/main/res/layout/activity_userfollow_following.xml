@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileScreen.Userfollow_following"
+    android:background="@drawable/launchingback"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:background="@drawable/backbtn"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:onClick="finishActivity"
+
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/searchback"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchedit"
+                android:drawableLeft="@drawable/ic_sreach_icon"
+                android:hint="Search"
+                android:textColorHint="#576176"
+                android:padding="10dp"
+                android:drawablePadding="10dp"
+                android:background="#2D333F"
+                android:textColor="@color/white"
+                android:textSize="12.5dp"
+
+
+                >
+                <!--<requestFocus />-->
+            </EditText>
+
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/searchclose"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="15dp"
+                android:id="@+id/serchclose"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rubik_medium"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/username"
+            />
+        <View
+            android:layout_width="30dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/followersbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Followers"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:fontFamily="@font/rubik"
+            android:background="@drawable/homeback"
+            />
+        <Button
+            android:id="@+id/followingbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Following"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/rubik"
+            android:background="@color/transparent"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/border"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/followlist"
+            android:overScrollMode="ifContentScrolls"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/followinglist"
+            android:visibility="gone"
+            android:overScrollMode="ifContentScrolls"
+
+            />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="data.json"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
+        <ProgressBar
+            android:id="@+id/p_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:padding="10dp"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
+

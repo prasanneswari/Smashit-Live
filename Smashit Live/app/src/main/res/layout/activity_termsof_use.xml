@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingClass.TermsofUse">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            >
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:onClick="finishActivity"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terms of Use"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                android:id="@+id/login_tittle"
+                android:fontFamily="@font/rubik_medium"
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/border">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollview">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="1. TERMS OF USE "
+                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="By downloading, browsing, accessing or using this mobile application (“Mobile Application”), you agree
+to be bound by these Terms and Conditions of Use. We reserve the right to amend these terms and
+conditions at any time. If you disagree with any of these Terms and Conditions of Use, you must
+immediately discontinue your access to the Mobile Application and your use of the services offered on
+the Mobile Application. Continued use of the Mobile Application will constitute acceptance of these
+Terms and Conditions of Use, as may be amended from time to time."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik_medium"
+                            android:layout_marginTop="10dp"
+                            android:text="2. USE OF THE SERVICE AND THE MOBILE APPLICATION "
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.1 We will use reasonable endeavors to correct any errors or omissions as soon as practicable
+after being notified of them. However, we do not guarantee that the Services or the Mobile
+Application will be free of faults, and we do not accept liability for any such faults, errors or
+omissions. In the event of any such error, fault or omission, you should report it by contacting
+us at support@vasmash.com."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.2 We do not warrant that your use of the Services or the Mobile Application will be
+uninterrupted, and we do not warrant that any information (or messages) transmitted via the
+Services or the Mobile Application will be transmitted accurately, reliably, in a timely manner
+or at all. Notwithstanding that we will try to allow uninterrupted access to the Services and the
+Mobile Application, access to the Services and the Mobile Application may be suspended,
+restricted or terminated at any time."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.3 We do not give any warranty that the Services and the Mobile Application are free from viruses
+or anything else which may have a harmful effect on any technology."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.4 We reserve the right to change, modify, substitute, suspend or remove without notice any
+information or Services on the Mobile Application from time to time. Your access to the Mobile
+Application and/or the Services may also be occasionally restricted to allow for repairs,
+maintenance or the introduction of new facilities or services. We will attempt to restore such
+access as soon as we reasonably can. For the avoidance of doubt, we reserve the right to
+withdraw any information or Services from the Mobile Application at any time."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.5 We reserve the right to block access to and/or to edit or remove any material which in our
+reasonable opinion may give rise to a breach of these Terms and Conditions of Use."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.6 Any content which is against national interest, abusive will be removed without informing the
+user if found by the Company. "
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.7 If user reports about abusive content posted by any other user, the Company will review the
+content and will remove if found abusive. "
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="1.8 Company make take appropriate legal actions if required on any user who has violated the
+terms of use or this section."
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik_medium"
+                            android:layout_marginTop="10dp"
+                            android:text="3. Prohibitions in relation to usage of Services, Mobile Application:
+"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.1 Furnish false data including false names, addresses and contact details and fraudulently
+use credit/debit card numbers;"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.2 attempt to circumvent our security or network including to access data not intended for
+you, log into a server or account you are not expressly authorized to access, or probe the
+security of other networks (such as running a port scan);"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.3 execute any form of network monitoring which will intercept data not intended for you;"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.4 enter into fraudulent interactions or transactions with us or a Merchant (including
+interacting or transacting purportedly on behalf of a third party where you have no
+authority to bind that third party or you are pretending to be a third party);"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.5 extract data from or hack into the Mobile Application;"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.6 use the Services or Mobile Application in breach of these Terms and Conditions of Use;
+"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.7 engage in any unlawful activity in connection with the use of the Mobile Application or
+the Services; or
+"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="3.8 engage in any conduct which, in our exclusive reasonable opinion, restricts or inhibits any
+other User from properly using or enjoying the Mobile Application or Services."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik_medium"
+                            android:layout_marginTop="10dp"
+                            android:text="4. INTELLECTUAL PROPERTY RIGHTS "
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="All editorial content, information, photographs, illustrations, artwork and other graphic materials, and
+names, logos and trade marks on the Mobile Application are protected by copyright laws and/or other
+laws and/or international treaties, and belong to us and/or our suppliers, as the case may be. These
+works, logos, graphics, sounds or images may not be copied, reproduced, retransmitted, distributed,
+disseminated, sold, published, broadcasted or circulated whether in whole or in part, unless expressly
+permitted by us and/or our suppliers, as the case may be."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="Nothing contained on the Mobile Application should be construed as granting by implication, estoppel,
+or otherwise, any license or right to use any trademark displayed on the Mobile Application without
+our written permission. Misuse of any trademarks or any other content displayed on the Mobile
+Application is prohibited."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="We will not hesitate to take legal action against any unauthorized usage of our trade marks, name or
+symbols to preserve and protect its rights in the matter. All rights not expressly granted herein are
+reserved. Other product and company names mentioned herein may also be the trademarks of their
+respective owners."
+                            />
+                    </LinearLayout>
+                </ScrollView>
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollbtn"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/uptermsbtn"
+                    android:visibility="visible"
+                    />
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollup"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"
+                    android:background="@drawable/uptermsbtn"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </LinearLayout>

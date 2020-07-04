@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+<!--
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view_1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="data.json"
+        app:lottie_loop="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:id="@+id/refreshlay"
+        android:visibility="gone"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Couldn't load.Tap to try again."
+        android:textColor="@color/white"
+       />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/refresh"
+        android:src="@drawable/ic_refresh_icon"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:layout_marginLeft="20dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:id="@+id/numberpickerly"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:background="@drawable/ic_green_bg"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/fadecolor"
+                        android:visibility="gone"
+                        />
+
+                    <com.shawnlin.numberpicker.NumberPicker
+                        android:id="@+id/number_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        app:np_dividerColor="@color/colorPrimary"
+                        app:np_formatter="number_picker_formatter"
+                        app:np_max="59"
+                        app:np_min="0"
+                        app:np_selectedTextColor="@color/colorPrimary"
+                        app:np_selectedTextSize="23dp"
+                        app:np_textColor="@color/colorPrimary"
+                        app:np_textSize="23dp"
+                        app:np_value="5"
+                        />
+                </RelativeLayout>
+
+                <!--
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/categorylst"/>
+                -->
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:id="@+id/catswitchlay"
+                android:visibility="gone"
+                >
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/caticon"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

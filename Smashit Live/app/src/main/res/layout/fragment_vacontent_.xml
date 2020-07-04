@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VaContentScreen.VAContent_Fragment"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            >
+
+<!--
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Uplaod Image"
+                android:id="@+id/uploadimg"
+                android:background="@color/redcolor"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                />
+-->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Add Data"
+                android:id="@+id/adddata"
+                android:background="@color/redcolor"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+
+                android:layout_marginLeft="10dp"
+                />
+
+
+        </LinearLayout>
+<!--
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Featured Topics"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15sp"
+                android:padding="15sp"
+                android:id="@+id/topicslst">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="#F6F5F5"
+            >
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeToRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="15sp"
+                    android:padding="15sp"
+                    android:id="@+id/contentlst">
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+
+
+        <!--
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingTop="5sp"
+                        android:paddingBottom="5sp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="15sp"
+                            android:padding="15sp"
+                            android:id="@+id/contentlst">
+                        </androidx.recyclerview.widget.RecyclerView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+        -->
+
+    </LinearLayout>
+
+</LinearLayout>

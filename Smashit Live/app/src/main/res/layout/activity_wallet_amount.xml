@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WalletScreen.WalletAmount"
+    android:background="@drawable/launchingback">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                >
+
+<!--
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_back"
+                    android:layout_centerVertical="true"
+                    android:onClick="finishActivity"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    />
+-->
+
+                <Button
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/backbtn"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:onClick="finishActivity"
+                    />
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                >
+
+<!--
+                android:background="@drawable/ic_rectanglewallet"
+-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="vertical"
+                    >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="@string/wallet"
+                        android:textColor="@color/white"
+                        android:fontFamily="@string/font_family"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/walletcolor"
+                        android:textSize="30dp"
+                        android:fontFamily="@font/rubik"
+                        android:id="@+id/walletbal"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VA"
+                        android:textColor="@color/white"
+                        android:layout_margin="10dp"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/rubik"
+                        android:textStyle="bold"
+                        android:id="@+id/coinname"
+                        />
+                </LinearLayout>
+
+<!--
+                    <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="#576176"
+                        android:layout_margin="5dp"
+                    />
+-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="10dp"
+                        android:paddingBottom="10dp"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7"
+                            android:text="GA Wallet"
+                            android:textColor="@color/white"
+                            android:fontFamily="@string/font_family"
+                            android:textSize="25dp"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="#27AAE1"
+                            android:textSize="35dp"
+                            android:fontFamily="@font/rubik"
+                            android:id="@+id/gawalletamount"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="GA"
+                            android:textColor="@color/white"
+                            android:layout_margin="10dp"
+                            android:textSize="16dp"
+                            android:fontFamily="@font/rubik"
+                            />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ADD BALANCE"
+                        android:textColor="#57617696"
+                        android:fontFamily="@font/rubik_medium"
+                        android:id="@+id/addbalance"
+                        android:clickable="true"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transfer"
+                        android:id="@+id/transfer"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/rubik_medium"
+                        android:layout_gravity="center"
+                        />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/continubuttom"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#2D333F"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_margin="5dp"
+
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/username_text_input_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel"
+                        android:layout_marginTop="10dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="Enter Amount"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:id="@+id/enteramount"
+                            android:fontFamily="@font/rubik"
+                            app:backgroundTint="#576176"
+                            android:inputType="number"
+
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VA"
+                        android:textColor="@color/white"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="10dp"
+                        android:fontFamily="@string/font_family"
+                        android:textStyle="bold"
+                        android:id="@+id/editcoinname"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:id="@+id/transferlayopen">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.9"
+                        android:theme="@style/TextLabel"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:ems="10"
+                            android:hint="Email / Phone number"
+                            android:visibility="visible"
+                            android:textColor="@color/white"
+                            android:id="@+id/transferph"
+                            android:fontFamily="@font/rubik"
+                            app:backgroundTint="#576176"
+
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/loginbutton"
+                        android:text="TRANSFER"
+                        android:textColor="@color/white"
+                        android:id="@+id/transferbtn"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/rubik_medium"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:id="@+id/transferlay">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        >
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="0.5"
+                            android:text="CREDIT CARD"
+                            android:background="@drawable/creaditback"
+                            android:textColor="@color/white"
+                            android:fontFamily="@string/font_family"
+                            android:id="@+id/credit"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="0.5"
+                            android:text="GA WALLET"
+                            android:background="@drawable/curve_shape_left"
+                            android:textColor="#57617696"
+                            android:id="@+id/gawallet"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/creditbalencelay"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/chardback"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/chardimg"
+                                    />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Card No"
+                                    android:textColor="#576176"
+                                    android:fontFamily="@string/font_family"
+                                    android:layout_marginTop="10dp"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_weight="0.8"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.2"
+                                        android:text="● ● ● ●"
+                                        android:textColor="@color/white"
+                                        />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.2"
+                                        android:text="● ● ● ●"
+                                        android:textColor="@color/white"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"/>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.2"
+                                        android:text="● ● ● ●"
+                                        android:textColor="@color/white"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"/>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.2"
+                                        android:text="6 6 5 8"
+                                        android:textColor="@color/white"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:id="@+id/lastdigits"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:text="Date"
+                                        android:textColor="#576176"
+                                        android:fontFamily="@string/font_family"/>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:text="CVV"
+                                        android:textColor="#576176"
+                                        android:fontFamily="@string/font_family"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:text="02/20"
+                                        android:textColor="@color/white"
+                                        android:fontFamily="@string/font_family"
+                                        android:id="@+id/date"/>
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:text="298"
+                                        android:textColor="@color/white"
+                                        android:id="@+id/cvv"
+                                        android:fontFamily="@string/font_family"/>
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/backicon"
+                                    android:layout_gravity="right"
+                                    />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:src="@drawable/ic_credit_card"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.8"
+                                android:text="Use Another Credit Account"
+                                android:textColor="#576176"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"/>
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.1"
+                                android:src="@drawable/ic_ellipse"
+                                android:layout_gravity="center"
+                                android:id="@+id/anotherbtn"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/chardback"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            android:id="@+id/anothercreditlay">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/chardimg"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_weight="0.8"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    >
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:theme="@style/TextLabel"
+                                        >
+
+                                        <EditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:ems="10"
+                                            android:hint="Enter Card number"
+                                            android:visibility="visible"
+                                            android:textColor="@color/white"
+                                            android:id="@+id/creditcardnum"
+                                            android:fontFamily="@string/font_family"
+                                            />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="10dp">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:theme="@style/TextLabel"
+                                        >
+
+                                        <EditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:ems="10"
+                                            android:hint="Date"
+                                            android:visibility="visible"
+                                            android:textColor="@color/white"
+                                            android:id="@+id/creditdate"
+                                            android:fontFamily="@string/font_family"
+                                            />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:theme="@style/TextLabel"
+                                        >
+
+                                        <EditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:ems="10"
+                                            android:hint="CVV"
+                                            android:visibility="visible"
+                                            android:textColor="@color/white"
+                                            android:id="@+id/creditcvv"
+                                            android:fontFamily="@string/font_family"
+                                            />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/backicon"
+                                    android:layout_gravity="right"
+                                    />
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/loginbutton"
+                            android:layout_marginTop="10dp"
+                            android:text="Add Balance"
+                            android:textColor="@color/white"
+                            android:id="@+id/creaditbalbtn"
+                            android:layout_marginBottom="20dp"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/gawalletlay"
+                        android:visibility="gone"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/chardback"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="20dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/chardimg"
+                                    />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_weight="0.8"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    >
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:theme="@style/TextLabel"
+                                        >
+
+                                        <EditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:ems="10"
+                                            android:hint="Email / Phone number"
+                                            android:visibility="visible"
+                                            android:textColor="@color/white"
+                                            android:id="@+id/enterphonenum"
+                                            android:fontFamily="@string/font_family"
+                                            />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_weight="0.8"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    >
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:theme="@style/TextLabel"
+                                        >
+
+                                        <EditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:ems="10"
+                                            android:hint="Password"
+                                            android:visibility="visible"
+                                            android:textColor="@color/white"
+                                            android:id="@+id/enterpwd"
+                                            android:inputType="textPassword"
+                                            android:fontFamily="@string/font_family"
+                                            />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/backicon"
+                                    android:layout_gravity="right"
+                                    />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/loginbutton"
+                            android:layout_marginTop="30dp"
+                            android:text="ADD BALANCE"
+                            android:textColor="@color/white"
+                            android:id="@+id/gawalletbal"
+                            android:layout_marginBottom="20dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="visible"
+           >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/viewtransaction"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/white"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_transfer"
+                android:layout_alignParentRight="true"
+                android:id="@+id/transferdata"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

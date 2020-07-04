@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingClass.PrivacyPolicy">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            >
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:onClick="finishActivity"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy Policy"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                android:id="@+id/login_tittle"
+                android:fontFamily="@font/rubik_medium"
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/border">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollview">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:text="Access to the Mobile Application and use of the Services offered on the Mobile Application by Company
+is subject to this Privacy Policy. By accessing the Mobile Application and by continuing to use the
+Services offered, you are deemed to have accepted this Privacy Policy, and, you are deemed to have
+consented to our use and disclosure of your personal information in the manner prescribed in this
+Privacy Policy. We reserve the right to amend this Privacy Policy from time to time. If you disagree with
+any part of this Privacy Policy, you must immediately discontinue your access to the Mobile Application
+and your use of the Services."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="20dp"
+                            android:text="As part of the normal operation of our Services, we collect, use and, in some cases, disclose
+information about you to third parties. Accordingly, we have developed this Privacy Policy in order for
+you to understand how we collect, use, communicate and disclose and make use of your personal
+information when you use the Services on the Mobile Application:"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:text="(a) Before or at the time of collecting personal information, we will identify the purposes for
+which information is being collected."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:text="(b) We will collect and use of personal information solely with the objective of fulfilling those
+purposes specified by us and for other compatible purposes, unless we obtain the consent of
+the individual concerned or as required by law."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:text="(c) We will only retain personal information as long as necessary for the fulfillment of those
+purposes."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:text="(d) We will collect personal information by lawful and fair means and, where appropriate, with
+the knowledge or consent of the individual concerned."
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:text="(e) Personal information should be relevant to the purposes for which it is to be used, and, to
+the extent necessary for those purposes, should be accurate, complete, and up-to-date."
+                            />
+
+                    </LinearLayout>
+                </ScrollView>
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollbtn"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/uptermsbtn"
+                    android:visibility="visible"
+                    />
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollup"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"
+                    android:background="@drawable/uptermsbtn"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

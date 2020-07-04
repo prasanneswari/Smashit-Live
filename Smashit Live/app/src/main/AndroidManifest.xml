@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.vasmash.va_smash">
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <!--
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    -->
+    <uses-permission android:name="android.permission.REQUEST_PACKAGE_INSTALLS" />
+    <!--
+    <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- <uses-feature -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:testOnly="false"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning,HardcodedDebugMode">
+
+        <activity android:name=".ProfileScreen.Otherprofile_follow_following"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SearchClass.Adapters.Adapter_usersearch"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SearchClass.Adapters.Adapter_SoundFragment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SearchClass.Adapters.Adapter_hashtagsearch"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileScreen.Adapter.Adapter_following"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileScreen.Userfollow_following"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".createcontent.Sounds.PostSoundActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".createcontent.Sounds.CreatesoundsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".createcontent.PreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".VaContentScreen.KycActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoadingClass.Refreshload"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeScreen.homefragment.OriginalSoundDisplay"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BottmNavigation.TopNavigationview"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeScreen.homefragment.HashTagsDisplay"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileScreen.ImagePickerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.EndUserSeetings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WalletScreen.AllTransactionsTab"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.PrivacyPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.TermsofUse"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.NotificationSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.ContentPreference"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.AccountSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.fragments.RegisterFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.Gaweblogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchClass.SearchVerticalData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchClass.Adapters.Adapter_Searchlistdata"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".createcontent.PostcontentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".createcontent.CameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileScreen.OtherprofileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.fragments.ForgetFragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileScreen.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VaContentScreen.VAStoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchClass.Adapters.Adapter_TradingTabs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchClass.SearchData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WalletScreen.Adapter.Adapter_AllTransactions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WalletScreen.AllTransactions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WalletScreen.WalletAmount"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeScreen.CommentScreen.CommentAdapters.Adapter_CommentImg"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeScreen.CommentScreen.CommentAdapters.Adapter_commentlist"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingClass.Settings_Fragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.SetNewPassword"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.OTPVerification"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.Categorylist"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.Languagelist"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeScreen.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.RequestOTP"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VaContentScreen.AddContent"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".VaContentScreen.Adapter.Adapter_Content"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WalletScreen.Adapter.Adapter_Walletbal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileScreen.Profile_Fragment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.RegisterformActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".createcontent.videoeffects.VideoEffectsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".createcontent.filters.FilterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.fragments.LoginFragment"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".LaunchingScreen.Launching"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sh.vasmash.com"
+                    android:scheme="http" />
+                <data
+                    android:host="sh.vasmash.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <!--
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+        -->
+        <service
+            android:name=".FirebaseClass.MyFirebase_Messaging_Service"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- cache directory file provider paths -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+    </application>
+
+</manifest>

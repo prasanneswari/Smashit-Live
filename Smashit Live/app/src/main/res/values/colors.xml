@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#26282F</color>
+    <color name="colorPrimaryDark">#26282F</color>
+    <color name="colorAccent">#D81B60</color> <!--#D81B60-->
+
+
+    <color name="itemicon">#ffffff</color>
+    <color name="iconchange">#D52D2E</color>
+    <color name="bottombg">#2C2C2D</color>
+    <color name="togglebg">#fff</color>
+    <color name="toolback">#2C2C2D</color>
+
+    <color name="white">#fff</color>
+    <color name="graycolor">#D3D3D3</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="black">#2F2F2F</color>
+    <color name="gainsboro">#DCDCDC</color>
+    <color name="lightgraycolor">#f2f2f2</color>
+    <color name="darkgray">#93959A</color>
+    <color name="dimgray">#696969</color>
+    <color name="lightblack">#5d5d5d</color>
+    <color name="redcolor">#ff0008</color>
+    <color name="app_color">#c52127</color>
+    <color name="hintcolor">#576176</color>
+    <color name="resendotp">#0742DD</color>
+    <color name="fulblack">#000000</color>
+    <color name="seekbar_color">#3be3e3</color>
+    <color name="line_color">#FF15FF00</color>
+    <color name="shadow_color">#00000000</color>
+    <color name="loadback">#80000000</color>
+
+    //login code
+    <color name="ourred">#990E0E</color>
+    <color name="gray">#fff</color>
+
+    //numerpicker
+    <color name="dark_grey">#fff</color>
+
+    <color name="divider">@color/transparent</color>
+    <color name="selectedtext">#fff</color>#576176
+
+    <color name="search">#576176</color>
+
+
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#8DC63F</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+
+    <color name="light_gray">#5761768C</color>
+
+    <color name="fifty_transparent_black">#862F2F2F</color>
+
+    <color name="redtab">#FFE42528</color>
+    <color name="bluetab">#FF2AA9E0</color>
+
+    <color name="signup">#27AAE1</color>
+    <color name="lightwhite">#ccc</color>
+    <color name="username">#68FFE1</color>
+    <color name="walletcolor">#DDC02C</color>
+    <color name="listdivider">#333842</color>
+
+
+
+    <color name="waveform_selected">#33b5e5</color>
+    <color name="waveform_unselected">#195a72</color>
+    <color name="waveform_unselected_bkgnd_overlay">#0a242d</color>
+    <color name="selection_border">#ffffff</color>
+    <color name="playback_indicator">#ffff66</color>
+    <color name="grid_line">#66ffffff</color>
+    <color name="timecode">#ddffffdd</color>
+    <color name="timecode_shadow">#aa000000</color>
+
+    <color name="type_bkgnd_alarm">#88880000</color>
+    <color name="type_bkgnd_ringtone">#88008888</color>
+    <color name="type_bkgnd_notification">#88666600</color>
+    <color name="type_bkgnd_music">#88000000</color>
+    <color name="type_bkgnd_unsupported">#88cccccc</color>
+
+    <color name="tool_bg">#151414</color>
+    <color name="black_trasp">#99000000</color>
+
+</resources>

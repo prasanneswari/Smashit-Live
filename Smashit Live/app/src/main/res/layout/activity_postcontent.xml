@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".createcontent.PostcontentActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/displayoutput"
+        android:background="@drawable/border"
+        android:paddingLeft="10sp"
+        android:paddingTop="10sp"
+        >
+
+        <ImageView
+            android:id="@+id/content_back"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_margin="5sp"
+            android:padding="5sp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_contentbk" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="40dp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                />
+            <View
+                android:layout_width="30sp"
+                android:layout_height="3sp"
+                android:background="@color/white"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20sp">
+                <RelativeLayout
+                    android:layout_width="100sp"
+                    android:layout_height="150sp">
+                    <ImageView
+                        android:id="@+id/post_img"
+                        android:layout_width="100sp"
+                        android:layout_height="150sp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/image1"/>
+                    <VideoView
+                        android:layout_width="100sp"
+                        android:layout_height="150sp"
+                        android:id="@+id/post_video"
+                        android:visibility="gone" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10sp"
+                    android:weightSum="4">
+                    <EditText
+                        android:id="@+id/post_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/desofvideo"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/light_gray"
+                        android:gravity="top"
+                        android:backgroundTint="@color/transparent"
+                        android:layout_weight="0.5"
+                        android:maxLength="80"
+                        android:layout_marginBottom="15sp"/>
+                    <TextView
+                        android:id="@+id/post_hashtag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/hashtags"
+                        android:textColor="@color/white"
+                        android:background="@drawable/hastg"
+                        android:layout_weight="3.5"
+                        android:paddingLeft="20sp"
+                        android:paddingRight="20sp"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                android:layout_marginTop="20sp"
+                android:background="@drawable/hasttag_boder"
+                android:padding="10sp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/whocanview"
+                    android:textColor="@color/white"
+                    android:layout_weight="1.5"
+                    />
+                <TextView
+                    android:id="@+id/follow_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Public"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/green_color_picker"
+                    android:layout_weight="2.5"
+                    android:drawableRight="@drawable/ic_content_back"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/post_languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Laguages"
+                android:textColor="@color/white"
+                android:layout_weight="3"
+                android:drawableRight="@drawable/ic_content_back"
+                android:layout_margin="10sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/post_catagories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categories"
+                android:textColor="@color/white"
+                android:layout_weight="3"
+                android:drawableRight="@drawable/ic_content_back"
+                android:layout_margin="10sp"
+                android:visibility="gone"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10sp">
+                <TextView
+                    android:id="@+id/post_lang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language"
+                    android:textColor="@color/white"
+                    android:padding="10sp"
+                    android:background="@drawable/homeback"
+                    />
+                <TextView
+                    android:id="@+id/post_cate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    android:textColor="@color/white"
+                    android:padding="10sp"
+
+
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/post_listview_langes"
+                    android:paddingLeft="10sp">
+
+                </ListView>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/post_listview_cate"
+                    android:paddingLeft="10sp"
+                    android:visibility="gone">
+
+
+                </ListView>
+<!--                <ProgressBar-->
+<!--                    style="?android:attr/progressBarStyleLarge"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:id="@+id/progressBar2"-->
+<!--                    android:progressDrawable="@drawable/circular_progress_bar"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:visibility="gone"-->
+<!--                    />-->
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:background="@drawable/border"
+            >
+            <Button
+                android:id="@+id/sendpost"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:text="Post"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="10sp"
+                android:layout_weight="2"
+                android:background="@drawable/btn_bg_selector"
+                />
+            <Button
+                android:id="@+id/draftpost"
+                android:layout_width="match_parent"
+                android:layout_height="45sp"
+                android:text="Draft"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="10sp"
+                android:layout_weight="2"
+                android:background="@drawable/hasttag_boder"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/public_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border"
+        android:paddingLeft="10sp"
+        android:paddingTop="10sp"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/public_back"
+                android:layout_width="wrap_content"
+                android:layout_height="35sp"
+                android:layout_margin="5sp"
+                android:padding="5sp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_contentbk" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:layout_marginTop="70sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Who can view this content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    />
+                <View
+                    android:layout_width="50sp"
+                    android:layout_height="4sp"
+                    android:background="@color/white"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25sp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:padding="20sp"
+                    android:background="@drawable/hastg">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Follower"
+                            android:textColor="@color/white"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="visible to only followers"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:layout_weight="3"
+                        android:id="@+id/checkBox0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layoutDirection="rtl"
+                        android:padding="10sp"
+                        android:layout_margin="5sp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:button="@drawable/checkbox_selecter"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:padding="20sp"
+                    android:background="@drawable/hastg">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Public"
+                            android:textColor="@color/white"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="visible to all"
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:layout_weight="3"
+                        android:id="@+id/checkBox1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layoutDirection="rtl"
+                        android:padding="10sp"
+                        android:layout_margin="5sp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:button="@drawable/checkbox_selecter"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:padding="20sp"
+                    android:background="@drawable/hastg">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Private"
+                            android:textColor="@color/white"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="visible only to me "
+                            android:textColor="@color/white"/>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:layout_weight="3"
+                        android:id="@+id/checkBox2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layoutDirection="rtl"
+                        android:padding="10sp"
+                        android:layout_margin="5sp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:button="@drawable/checkbox_selecter"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+<!--    <ProgressBar-->
+<!--        style="?android:attr/progressBarStyleLarge"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/progressBar"-->
+<!--        android:progressDrawable="@drawable/circular_progress_bar"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:visibility="gone"/>-->
+
+
+</RelativeLayout>

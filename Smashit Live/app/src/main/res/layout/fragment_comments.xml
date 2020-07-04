@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    tools:context=".HomeScreen.CommentScreen.CommentsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="606 Comments"
+                android:textColor="#26282F"
+                android:fontFamily="@font/rubik"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:id="@+id/countcomments"
+                android:textSize="13dp"/>
+            <Button
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/close"
+                android:id="@+id/close"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view_1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="data.json"
+                app:lottie_loop="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/commentlst"
+                android:layout_marginBottom="40dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                >
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/ic_rectangle"
+                    android:layout_marginTop="5dp"
+                    />-->
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_toStartOf="@+id/bottomlay"
+                    android:id="@+id/commentatlist"
+                    android:visibility="gone"
+                    android:background="#EBEBEB"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:id="@+id/bottomlay"
+                    >
+                    <!--
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.15"
+                                        android:layout_gravity="center"
+                                        android:gravity="center">
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:src="@drawable/profilecircle"
+                                        android:id="@+id/commentprofile"/>
+                                    </LinearLayout>
+                    -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter comment"
+                            android:textColorHint="#E4E4E4"
+                            android:background="@color/white"
+                            android:id="@+id/commenttxt"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
+                            android:padding="10dp"
+                            android:textSize="14dp"
+                            android:fontFamily="@font/rubik"
+                            android:focusable="true"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center"
+                            android:keyboardNavigationCluster="false">
+                            <requestFocus/>
+
+                        </EditText>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_at"
+                            android:id="@+id/commentat"/>
+
+                    </LinearLayout>
+                    <!--
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        >
+                                        <ImageView
+                                            android:layout_width="20dp"
+                                            android:layout_height="20dp"
+                                            android:src="@drawable/ic_wink"
+                                            android:id="@+id/commentwink"/>
+
+                                    </LinearLayout>
+                    -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/commentsend"
+                            android:id="@+id/commentsend"/>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_send_icon"
+                            android:id="@+id/oftersend"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/ic_rectangle"
+
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/commentimg"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone"
+
+                    />
+
+            </LinearLayout>
+
+            <!--
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="vertical"
+                            >
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@drawable/ic_rectangle"
+                                />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+            -->
+        </RelativeLayout>
+
+        <!--  <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="0.7">
+
+              <androidx.recyclerview.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/commentlst"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="0dp"
+              android:layout_weight="0.15">
+
+          </LinearLayout>
+          <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight="0.15">
+
+              <androidx.recyclerview.widget.RecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/commentimg"/>
+      </LinearLayout>
+  -->
+    </LinearLayout>
+
+</LinearLayout>

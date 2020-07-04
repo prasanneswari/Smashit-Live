@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WalletScreen.Wallet_Fragment"
+    android:clickable="true"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/d_bottom_gray_line"
+            android:paddingBottom="10dp"
+
+            >
+
+<!--
+            <ImageButton
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitStart"
+                android:id="@+id/Goback"
+                android:tint="@color/black"
+                android:src="@drawable/ic_back"
+                android:layout_centerVertical="true"
+                android:onClick="finishActivity"/>
+-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+
+
+<!--
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#C1C1C4"
+        android:layout_marginTop="10dp"
+        >
+    </View>
+-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coins Balance"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/walletlst"
+                android:layout_alignParentLeft="true"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.RequestOTP"
+
+   >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        android:weightSum="1"
+        >
+
+<!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_back"
+                android:layout_centerVertical="true"
+                android:onClick="finishActivity"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/resendback"
+                />
+
+        </LinearLayout>
+-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.07"
+            android:layout_gravity="center"
+            >
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:onClick="finishActivity"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/OTP"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                android:id="@+id/login_tittle"
+                android:fontFamily="@font/rubik_medium"
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.05"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/otpsent"
+                android:textColor="@color/hintcolor"
+                android:fontFamily="@font/rubik"
+                android:id="@+id/otptxt"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <com.poovam.pinedittextfield.LinePinField
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:highlightType="allFields"
+                app:noOfFields="6"
+                app:lineThickness="1dp"
+                app:isCursorEnabled="true"
+                android:id="@+id/enterotp"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rubik"
+                app:highlightColor="@color/hintcolor"
+                android:focusable="true"
+                android:inputType="number"
+                app:highlightEnabled="true"
+                app:highlightSingleFieldMode="true"
+
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <Button
+                android:id="@+id/sendotpbtn"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/continuebtn"
+                android:padding="5sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:visibility="visible"
+                android:fontFamily="@font/rubik_medium"
+                android:background="@drawable/btn_bg_selector"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.58"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/resendotp"
+                android:textColor="@color/signup"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:fontFamily="@font/rubik"
+                android:id="@+id/resendotp"
+                android:layout_marginRight="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/resendotp"
+                android:textColor="@color/lightwhite"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:fontFamily="@font/rubik"
+                android:id="@+id/resnedstop"
+                android:visibility="gone"
+                android:layout_marginRight="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.30"
+                android:textColor="@color/white"
+                android:layout_gravity="top"
+                android:id="@+id/regtime"
+                android:fontFamily="@font/rubik"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                >
+                <EditText
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Enter OTP"
+                    android:textColorHint="@color/hintcolor"
+                    android:textColor="@color/black"
+                    android:padding="10dp"
+                    android:id="@+id/enterotp"
+                    android:background="@drawable/loginback"
+                    android:visibility="visible"
+                    />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                >
+                <Button
+                    android:id="@+id/sendotpbtn"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Submit"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:visibility="visible"
+                    android:background="@drawable/registerbtnback"/>
+
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend OTP"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/redcolor"
+                android:id="@+id/resendotp"/>
+
+
+        </LinearLayout>
+    -->
+
+</LinearLayout>

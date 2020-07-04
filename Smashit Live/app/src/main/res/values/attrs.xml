@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="min" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progress" format="integer" />
+        <attr name="progressbarColor" format="color" />
+        <attr name="progressBarThickness" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="StickerView">
+        <attr name="showIcons" format="boolean" />
+        <attr name="showBorder" format="boolean" />
+        <attr name="bringToFrontCurrentSticker" format="boolean" />
+        <attr name="borderColor" format="color"/>
+        <attr name="borderAlpha" format="integer"/>
+    </declare-styleable>
+
+
+
+    <integer-array name="photo_editor_frames1">
+        <item>@drawable/frame1</item>
+        <item>@drawable/frame3</item>
+        <item>@drawable/frame1</item>
+        <item>@drawable/frame3</item>
+
+    </integer-array>
+    <integer-array name="photo_editor_frames2">
+        <item>@drawable/youmurderebb_reg</item>
+        <item>@drawable/depressionist_revisited</item>
+        <item>@drawable/cheri</item>
+        <item>@drawable/beyondwonderland</item>
+        <item>@drawable/arialbd</item>
+
+    </integer-array>
+
+
+    <declare-styleable name="PhotoEditorView">
+        <attr name="photo_src" format="integer" />
+    </declare-styleable>
+
+
+
+
+    <!-- Defines the custom XML attributes supported for a HorizontalListView -->
+    <declare-styleable name="HorizontalListView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
+
+
+</resources>

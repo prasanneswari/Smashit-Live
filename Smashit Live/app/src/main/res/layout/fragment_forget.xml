@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".login.fragments.ForgetFragment"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/rootlay">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        android:weightSum="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="bottom"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forgotpwd"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:id="@+id/login_tittle"
+                android:fontFamily="@font/rubik_medium"
+
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/username_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel"
+                >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:visibility="visible"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:id="@+id/requestotp"
+                    android:fontFamily="@font/rubik"
+                    app:backgroundTint="@color/hintcolor"
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            >
+            <Button
+                android:id="@+id/regst_btn_otp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="@string/getstarted"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:padding="5sp"
+                android:textColor="@color/white"
+                android:visibility="visible"
+                android:background="@drawable/btn_bg_selector"
+                android:fontFamily="@font/rubik_medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

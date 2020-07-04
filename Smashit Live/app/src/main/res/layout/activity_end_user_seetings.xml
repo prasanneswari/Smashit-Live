@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingClass.EndUserSeetings">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/launchingback"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            >
+            <Button
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/backbtn"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:onClick="finishActivity"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="End User License Agreement"
+                android:textSize="25dp"
+                android:textColor="@color/white"
+                android:id="@+id/login_tittle"
+                android:fontFamily="@font/rubik_medium"
+                />
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:background="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/border">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollview">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/rubik"
+                            android:text="This Mobile Application (VA Smash) End user License Agreement is entered into between “you” and
+“your” (the entity that has entered into this agreement) and Chakravuyha Software Technologies
+(“Company” or “we”). This agreement consists of the below terms and conditions and the Online Services
+Use Rights. This agreement is effective on the date you accept it or upon your first use of the Mobile
+Application.
+By using the Services, you agree to be bound by these Terms. If you are using the Services on behalf of an
+organization, you are agreeing to these Terms for that organization and promising that you have the
+authority to bind that organization to these terms. In that case, “you” and “your” will refer to that
+organization"
+                            />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:text="1. DEFINITIONS "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="“Company” means Chakravuyha Software Technologies located at 319, Manjeera Commercial, JNTURoad, Kukatpally, Hyderabad
+“License” means the rights to copy, install, use, access, display, run and/or otherwise interact with an “Online Service”, as applicable, and as may be further described in the Online Services Use Rights. “Online Service” means any service that may include Software and/or any subscription as available.
+“Register” means to create an Account on the Mobile Application and Registration means the act of creating such an Account.
+“Services” means all the services provided via the Mobile Application to Users, and Service means an one of them, “Subscription” means the part of the Order identifying the specific Online Service being ordered and include other information. “User” means the person registering and installing the VA Smash application.
+“User” Data” means all data, including all text, sound, or image files that you provide, or are provided on your behalf, to us through your use of the Online Services “VA Smash” means the mobile application available is VA Store and the product Virtual Arena."
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="2. ORGANIZATION SIGN UP OBLIGATIONS "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="You need to sign up for an account by providing all required information in order to access or use the
+Services. If you represent an organization and wish to use the Services for corporate internal use, we
+recommend that you sign up the other user accounts by providing their corporate contact information. In
+particular, we recommend that you use your email address. You agree to: a) provide true, accurate,
+current and complete information about yourself as prompted by the sign up process; and b) maintain and promptly update the information provided during sign up to keep it true, accurate, current, and
+complete. If you provide any information that is untrue, inaccurate, outdated, or incomplete, or if We
+have reasonable grounds to suspect that such information is untrue, inaccurate, outdated, or incomplete,
+We may terminate your account and refuse current or future use of any or all of the Services. Please read
+Annexure A for “User Registration Process” attached to this document."
+                                />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="3. LICENSE "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="COMPANY grants You a revocable, non-exclusive, non-transferable, limited license to download, install,
+and use the Mobile App for Your personal and internal business purposes strictly in accordance with this
+EULA and the Subscription Agreement."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="4. DATA OWNERSHIP "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="In order to operate and provide the Subscription Service and the Mobile App, COMPANY may collect
+certain information about You, including technical and telemetry data related to your use of the Mobile
+App. We use third party service providers to help us collect and analyze this data, including Google
+Analytics. COMPANY uses and protects that information in accordance with the COMPANY Privacy Notice "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="5. ACCEPTABLE USE "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="You agree that You will not use or encourage others to use the Mobile App or the Subscription Service as
+accessed through the Mobile App in a way that could harm or impair others’ use of the Mobile App or the
+Subscription Service. Your use of the Subscription Service and the Mobile App is governed by general
+Acceptable Use Policy. You also agree not to violate the usage limits or controls set forth by: (a) the App
+Store Terms of Service, for iOS users accessing the Mobile App on an Apple product, or (b) Google Play
+Terms of Service for Android users accessing the Mobile App on an Android product."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="15dp"
+                                android:text="TERM, SUSPENSION,CANCELLATION, AND TERMINATION "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="20dp"
+                                android:text="5.1 The Mobile App is only available for supported devices and might not work on every device.
+Determining whether Your device is a supported or compatible device for use of the Mobile App is solely
+Your responsibility, and downloading the Mobile App is done at Your own risk. COMPANY does not
+represent or warrant that the Mobile App and Your device are compatible or that the Mobile App will
+work on Your device."
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="20dp"
+                                android:text="5.1.1 iOS Application. In the event of VA Smash’s failure to conform to any applicable warranty,
+you may notify Apple, and Apple will refund the purchase price for the Mobile App. TO
+THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, APPLE WILL HAVE NO OTHER
+WARRANTY OBLIGATION WHATSOEVER WITH RESPECT TO (A) THE MOBILE APP, AND (B)
+ANY OTHER CLAIMS, LOSSES, LIABILITIES, DAMAGES, COSTS, OR EXPENSES ATTRIBUTABLE
+TO ANY FAILURE TO CONFORM TO ANY WARRANTY. "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="20dp"
+                                android:text="5.1.2 Android Application. GOOGLE EXPRESSLY DISCLAIMS ALL WARRANTIES AND CONDITIONS
+OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, AND NON-INFRINGEMENT"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="6. SOFWARE UPDATE and MAINTENANCE SUPPORT"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="COMPANY may deploy changes, updates, or enhancements to the Mobile App at any time. COMPANY
+may provide maintenance and support for the Mobile App but has no obligation whatsoever to furnish
+such services to You and may terminate such services at any time without notice. You acknowledge that
+neither Apple (for iOS Mobile App) nor Google (for Android Mobile App) has an obligation to furnish any
+maintenance or support services in connection with the Mobile App."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="7. CONSENT TO ELECTRONIC COMMUNICATIONS AND SOLICITATION. "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="By downloading the Mobile App, you authorize COMPANY to send You (including via email and push
+notifications) information regarding the Subscription Service and the Mobile App, such as: (a) notices
+about Your use of the Subscription Service and the Mobile App, including notices of violations of use; (b)
+updates to the Subscription Service and Mobile App and new features or products; and (c) promotional
+information and materials regarding COMPANY’S products and services. You can review Your account
+notification settings and adjust Your messaging preferences, including opting-in to additional messages or
+unsubscribing to certain messaging through the “Push Notifications” section of the Mobile App settings.
+"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="8. NO WARRANTY. "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="YOUR USE OF THE MOBILE APP IS AT YOUR SOLE RISK. THE MOBILE APP IS PROVIDED ON AN “AS IS” AND
+“AS AVAILABLE” BASIS. COMPANY EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER
+EXPRESS OR IMPLIED, INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NON-INFRINGEMENT."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="9. Termination of the Mobile App."
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="COMPANY reserves the right to suspend or terminate Your access to the Mobile App at any time based on
+the status of Your account under the Subscription Agreement. You understand that if Your account is
+suspended or terminated, You may no longer have access to the content that is stored within the
+Subscription Service."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="10. CONFIDENTIALITY "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="We and you shall treat the design and performance of the Online Services that are accessible to you only
+via password protected access and any documentation or materials we make available to you under this
+agreement as confidential and shall not disclose them to any third party except in the furtherance of the
+parties' business relationship with each other. If you are a government customer, this Section is subject to
+the requirements of applicable trade secret, public records, or similar laws. "
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="11. LIMITATION OF LIABILITY "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="YOU AGREE THAT COMPANY SHALL, IN NO EVENT, BE LIABLE FOR ANY CONSEQUENTIAL, INCIDENTAL,
+INDIRECT, SPECIAL, PUNITIVE, OR OTHER LOSS OR DAMAGE WHATSOEVER TO USE THE SERVICE, EVEN IF
+COMPANY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. YOUR SOLE AND EXCLUSIVE
+REMEDY FOR ANY DISPUTE WITH COMPANY RELATED TO ANY OF THE SERVICES SHALL BE TERMINATION
+OF SUCH SERVICE. "
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="12. INTELLECTUAL PROPERTY RIGHTS"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="In the event of a third-party claim that the Mobile App, or Your possession and use of the Mobile App,
+infringes third party’s intellectual property rights, COMPANY will be solely responsible for the
+investigation, defense, settlement and discharge of any such intellectual property infringement claim."
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="13. TRADE PROHIBITIONS "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="You represent and warrant that: (a) You are not located in a country that is subject to a United States
+Government embargo, or that is on Title 15, Part 740 Supplement 1 Country Group E of the United States
+Code of Federal Regulations; (b) You are not located in a country that has been designated by the United
+States Government as a “terrorist supporting” country; and (c) You are not listed on any U.S. Government
+list of prohibited or restricted parties. You further agree not to transport the Mobile App to or use the
+Mobile App in any such country."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="14. INDEMNIFICATION "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="You agree to indemnify and hold harmless Chakravuyha Software, its officers, directors, employees,
+suppliers, and affiliates, from and against any losses, damages, fines and expenses (including attorney's
+fees and costs) arising out of or relating to any claims that you have used the Services in violation of
+another party's rights, in violation of any law, in violations of any provisions of the Terms, or any other
+claim related to your use of the Services, except where such use is authorized by Chakravuyha Software."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="15. GOVERNING LAW"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="This EULA shall be governed by and construed in accordance with the laws of state of Telangana."
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="16. MODIFICATIONS "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="We may revise these Terms from time to time and the most current version will always be posted on our
+website. If a revision, in our sole discretion, is material we will notify you (for example via email to the
+email address associated with your account). Other changes may be posted to our blog or terms page, so
+please check those pages regularly. By continuing to access or use the Services after revisions become effective, you agree to be bound by the revised Terms. If you do not agree to the new terms, please stop
+using the Services ."
+                                />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="17. THIRD PARTY BENEFICIARIES "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="This EULA is executed between You and COMPANY and not between you and any other party, including
+Apple for iOS users and Google for Android users. You agree that any claims brought by You arising out of
+this EULA or Your use of the Mobile App will not be made against Apple or Google, as applicable.
+Notwithstanding the foregoing, upon Your acceptance of this EULA, allows Apple or Google, as applicable,
+to enforce this EULA against You as a third-party beneficiary thereof. COMPANY is not responsible for any
+applicable third-party agreement between You and Your any third-party, including your wireless provider."
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik_medium"
+                                android:layout_marginTop="10dp"
+                                android:text="18. CONTACT INFORMATION "
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/rubik"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:text="If You have any questions regarding this EULA, please contact COMPANY by email at support@vasmash.com."
+                                />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollbtn"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/uptermsbtn"
+                    android:visibility="visible"
+                    />
+                <Button
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/scrollup"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"
+                    android:background="@drawable/uptermsbtn"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

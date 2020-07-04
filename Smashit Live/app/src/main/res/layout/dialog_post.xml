@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center">
+    <ImageView
+        android:id="@+id/lastpopup_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_lastpopup"
+        android:layout_margin="30sp"
+        android:padding="20sp"/>
+    <TextView
+        android:id="@+id/lastpopup_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sucessfully posted"
+        android:textColor="@color/seekbar_color"
+        android:textSize="28sp"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lastpopup_img"
+        />
+
+    <View
+        android:id="@+id/lastpopup_view"
+        android:layout_width="250sp"
+        android:layout_height="3sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lastpopup_txt"
+        android:background="@drawable/continubuttom"
+        android:layout_marginTop="10sp"/>
+
+    <TextView
+        android:id="@+id/lastpopup_earntxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your earn points "
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:layout_below="@+id/lastpopup_view"
+        android:layout_marginTop="10sp"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/lastpopup_earnpoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="200 vs"
+        android:gravity="center"
+        android:textSize="40sp"
+        android:textColor="#FF9800"
+        android:textStyle="bold"
+        android:layout_below="@+id/lastpopup_earntxt"
+        android:layout_marginTop="10sp"
+        android:visibility="gone"
+        />
+
+
+
+
+
+
+</RelativeLayout>
