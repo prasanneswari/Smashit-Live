@@ -109,7 +109,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
 
         usernamesearchclick=mainmodels.get(position).getUsername();
         Log.d("username",":::"+usernamesearchclick);
-        holder.sharetxt.setText(mainmodels.get(position).getSharecount());
+       // holder.sharetxt.setText(mainmodels.get(position).getSharecount());
         holder.homecontent.setText(mainmodels.get(position).getDescription());
 
 
@@ -129,6 +129,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
 */
 
 
+/*
         holder.shareimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +155,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
 
             }
         });
+*/
 
 
         if (mainmodels.get(position).getProfilepic() != null){
@@ -219,7 +221,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
         public CustomViewHolder(View rootView) {
             super(rootView);
 
-            shareimg = (ImageView) rootView.findViewById(R.id.shareimg);
+            //shareimg = (ImageView) rootView.findViewById(R.id.shareimg);
 
             homename = rootView.findViewById(R.id.homename);
             hometags = rootView.findViewById(R.id.hometags);

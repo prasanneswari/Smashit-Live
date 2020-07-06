@@ -182,6 +182,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(), CameraActivity.class);
+                intent.putExtra("soundurl","");
                 startActivity(intent);
             }
         });
@@ -520,36 +521,6 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
             }
         });
 
-    }
-
-    public void popup() {
-
-        android.app.AlertDialog.Builder builder;
-        final Context mContext = TopNavigationview.this;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.guestpopup, null);
-
-        Button okbtn = (Button) layout.findViewById(R.id.okbtn);
-        Button regbtn = (Button) layout.findViewById(R.id.register);
-        regbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                killerplyer();
-                Intent intent = new Intent(TopNavigationview.this, LoginFragment.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-        okbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        builder = new android.app.AlertDialog.Builder(mContext);
-        builder.setView(layout);
-        dialog = builder.create();
-        dialog.show();
     }
 
     int doubleBackToExitPressed = 1;

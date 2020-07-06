@@ -3,11 +3,18 @@ package com.vasmash.va_smash.LaunchingScreen;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.LauncherActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -26,6 +33,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.vasmash.va_smash.BottmNavigation.TopNavigationview;
 import com.vasmash.va_smash.HomeScreen.homefragment.HashTagsDisplay;
 import com.vasmash.va_smash.HomeScreen.homefragment.OriginalSoundDisplay;
@@ -48,6 +60,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.vasmash.va_smash.VASmashAPIS.APIs.dynamiclink_url;
@@ -75,6 +88,7 @@ public class Launching extends AppCompatActivity {
     public static ArrayList<String> userlikesL;
     public static ArrayList<String> sharecountL;
     public static ArrayList<String> fileL;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
 
     public void onAttachedToWindow() {
@@ -82,22 +96,59 @@ public class Launching extends AppCompatActivity {
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               splashMethod();
+            } else    {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.RECORD_AUDIO}, REQUEST_ID_MULTIPLE_PERMISSIONS);
+                }else{
+                    splashMethod();
+                }
+            }
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launching);
 
+        if (Build.VERSION.SDK_INT >= 23) {
+                            requestPermissions(new String[]{
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.RECORD_AUDIO}, REQUEST_ID_MULTIPLE_PERMISSIONS);
+
+
+        }else{
+            splashMethod();
+        }
+    }
+
+    private void splashMethod(){
         viewDialog = new ViewDialog(Launching.this);
 
-        mQueue = Volley.newRequestQueue(this);
 
-        SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(this);
+        mQueue = Volley.newRequestQueue(Launching.this);
+
+        SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(Launching.this);
         token = phoneauthshard.getString("token", "null");
 
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                .addOnSuccessListener(Launching.this, new OnSuccessListener<PendingDynamicLinkData>() {
                     @Override
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                         // Get deep link from result (may be null if no link is found)
@@ -157,13 +208,14 @@ public class Launching extends AppCompatActivity {
                         }
                     }
                 })
-                .addOnFailureListener(this, new OnFailureListener() {
+                .addOnFailureListener(Launching.this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("", "getDynamicLink:onFailure", e);
                     }
                 });
     }
+
     private void StartAnimations() {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();

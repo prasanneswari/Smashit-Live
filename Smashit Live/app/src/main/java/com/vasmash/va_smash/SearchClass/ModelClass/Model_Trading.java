@@ -19,6 +19,7 @@ public class Model_Trading {
     private String soundpostid;
     private String sounduserid;
     private String soundid;
+    private String visibility;
 
 
     public Model_Trading() {
@@ -38,8 +39,8 @@ public class Model_Trading {
         this.soundurl=soundurl;
         this.soundpostid=soundpostid;
         this.sounduserid=sounduserid;
-
         this.soundid=soundid;
+        this.visibility=visibility;
     }
 
 
@@ -178,5 +179,14 @@ public class Model_Trading {
     public void setSoundid(String soundid) {
         this.soundid = soundid;
     }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
 
 }

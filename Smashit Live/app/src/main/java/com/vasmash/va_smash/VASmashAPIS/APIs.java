@@ -84,7 +84,7 @@ public class APIs {
     public static final String vastore_userdata = ""+url+"://"+domain_name+":"+port+"/api/v2/storePosters/userPosters";
 
 
-    public static final String homeapi_url = "" + url + "://" + domain_name + ":" + port + "/api/home";
+    public static final String homeapi_url = "" + url + "://" + domain_name + ":" + port + "/api/v2/home";
     public static String homepagination_url = ""+url+"://"+domain_name+":"+port+"/api/v2/home/posts?limit=10&skip=";
     public static final String earningpoints_url = "" + url + "://" + domain_name + ":" + port + "/api/wallets/walletBalance";
     public static final String earningpost_url = "" + url + "://" + domain_name + ":" + port + "/api/wallets/updateSmashBalance";

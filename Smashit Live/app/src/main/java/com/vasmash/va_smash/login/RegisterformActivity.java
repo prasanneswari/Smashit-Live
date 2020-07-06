@@ -85,7 +85,7 @@ public class RegisterformActivity extends AppCompatActivity {
     Dialog dialog;
     private RequestQueue mQueue;
     TextView gendername, contry;
-    EditText name, pass, repass, date1;
+    EditText name, pass, repass, date1,lastname;
     Button reg_sub;
     ImageView maleline,femaleline,otherline;
     ImageView imagelay;
@@ -123,6 +123,7 @@ public class RegisterformActivity extends AppCompatActivity {
 
 
         name = (EditText) findViewById(R.id.regst_name);
+        lastname = (EditText) findViewById(R.id.lastname);
         pass = (EditText) findViewById(R.id.regst_pass);
         repass = (EditText) findViewById(R.id.regst_repass);
         date1 = (EditText) findViewById(R.id.date);
@@ -227,29 +228,33 @@ public class RegisterformActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nameS=name.getText().toString().trim();
+                String lastnameS=lastname.getText().toString().trim();
                 String passS=pass.getText().toString().trim();
                 String countryS=contry.getText().toString().trim();
                 String idS=pref.getString("id", null);
                 String cpassS=repass.getText().toString().trim();
 
                 String repassS=date1.getText().toString();
-                int yearclck = Integer.parseInt(repassS.substring(0,4));
+                //int yearclck = Integer.parseInt(repassS.substring(0,4));
                 Log.d("jsnresponse..ccpS..", "---" + code + " ::");
                 //here passowrd and cofirm pwd is matched we will entring
                 if(passS.equals(cpassS)) {
-                    if (nameS.isEmpty() || passS.isEmpty() || repassS.isEmpty() || radiovalue.isEmpty() ) {
+                    if (nameS.isEmpty() || lastnameS.isEmpty() || passS.isEmpty() || repassS.isEmpty() || radiovalue.isEmpty() ) {
                         // Toast.makeText(RegisterformActivity.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
                         popupresponse("Please enter the All Fields");
                     }
+/*
                     //here only allow above 13 years age
                     else if (yearclck>2007){
                         popupresponse("Sorry, looks like you're not eligible for VASmash...But thanks for checking us out!");
                     }
+*/
                     //here all data intent to launge class
                     else {
                         Intent intent = new Intent(RegisterformActivity.this, Languagelist.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("nameS", nameS);
+                        intent.putExtra("lastname", lastnameS);
                         intent.putExtra("passS", passS);
                         intent.putExtra("repassS", repassS);
                         intent.putExtra("countryS", valueid);
@@ -379,11 +384,13 @@ public class RegisterformActivity extends AppCompatActivity {
         editsearch.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                countryAdapter.getFilter().filter(s.toString());
-                // Log.d("NEW TAGS", "*** Search value changed: " + countryAdapter.getCount());
-                cntry.invalidate();
-                countryAdapter.notifyDataSetChanged();
-                cntry.setAdapter(countryAdapter);
+                if(countryAdapter!=null) {
+                    countryAdapter.getFilter().filter(s.toString());
+                    // Log.d("NEW TAGS", "*** Search value changed: " + countryAdapter.getCount());
+                    cntry.invalidate();
+                    countryAdapter.notifyDataSetChanged();
+                    cntry.setAdapter(countryAdapter);
+                }
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

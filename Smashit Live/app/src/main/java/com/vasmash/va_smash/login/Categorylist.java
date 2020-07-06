@@ -1,6 +1,7 @@
 package com.vasmash.va_smash.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -29,6 +30,7 @@ import com.vasmash.va_smash.LoadingClass.ViewDialog;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.login.Adapters.Category_popup_adapter;
 import com.vasmash.va_smash.login.ModelClass.Languages;
+import com.vasmash.va_smash.login.fragments.ForgetFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,6 +84,7 @@ public class Categorylist extends AppCompatActivity {
 
                 Intent getintent = getIntent();
                 String nameS = getintent.getStringExtra("nameS");
+                String lastnameS = getintent.getStringExtra("lastname");
                 String passS = getintent.getStringExtra("passS");
                 String dateS = getintent.getStringExtra("date");
                 String countryS = getintent.getStringExtra("countryS");
@@ -92,7 +95,7 @@ public class Categorylist extends AppCompatActivity {
                 Log.d("langarray laung","::"+langcodeL);
                 Log.d("catageriarray laung","::"+catcodeL);
 
-                String AddS = "{\"id\":\"" + idS + "\",\"name\":\"" + nameS + "\",\"password\":\"" + passS + "\",\"dob\":\"" + dateS + "\",\"gender\":\"" + genderS + "\",\"country\":\"" + countryS + "\",\"languages\":" + langcodeL + ",\"categories\":" + catcodeL + "}";
+                String AddS = "{\"id\":\"" + idS + "\",\"firstName\":\"" + nameS + "\",\"lastName\":\"" + lastnameS + "\",\"password\":\"" + passS + "\",\"dob\":\"" + dateS + "\",\"gender\":\"" + genderS + "\",\"country\":\"" + countryS + "\",\"languages\":" + langcodeL + ",\"categories\":" + catcodeL + "}";
                 Log.d("jsnresponse pernonal", "---" + AddS);
                 JSONObject update;
                 try {
@@ -352,6 +355,7 @@ public class Categorylist extends AppCompatActivity {
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(Categorylist.this, R.drawable.d_round_white_background));
         dialog.show();
 
     }

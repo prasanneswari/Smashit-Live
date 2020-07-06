@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.NetworkResponse;
@@ -139,7 +140,6 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         }
 
         holder.homename.setText(username);
-        holder.sharetxt.setText(sharecount);
         holder.description.setText(mainmodels.get(position).getDescription());
         if (des.get(position).getName()!=null) {
             holder.description.setVisibility(View.VISIBLE);
@@ -147,6 +147,7 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         }else {
             holder.description.setVisibility(View.GONE);
         }
+/*
         holder.shareimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +164,7 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
 
             }
         });
+*/
 
         holder.vastore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -314,6 +316,7 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.d_round_white_background));
         dialog.show();
 
     }
@@ -329,10 +332,10 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         public CustomViewHolder(View rootView) {
             super(rootView);
 
-            shareimg =(ImageView) rootView.findViewById(R.id.shareimg);
+            //shareimg =(ImageView) rootView.findViewById(R.id.shareimg);
             homename=rootView.findViewById(R.id.homename);
             hometags=rootView.findViewById(R.id.hometags);
-            sharetxt=rootView.findViewById(R.id.share);
+           // sharetxt=rootView.findViewById(R.id.share);
             vastore=rootView.findViewById(R.id.vastore);
             otherprofile=rootView.findViewById(R.id.otherprofile);
             description=rootView.findViewById(R.id.homecontent);

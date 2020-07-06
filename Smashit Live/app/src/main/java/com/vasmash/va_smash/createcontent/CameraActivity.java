@@ -58,6 +58,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -161,7 +162,7 @@ public class CameraActivity extends MyCanvas {
     private ImageView flashButton;
     private ImageView uploadButton, next;
     private TextView uploadButtonTxt;
-    private ImageView EditCaptureSwitchBtn;
+    private ImageView EditCaptureSwitchBtn,camera_done;
     private LinearLayout editTextBody;
     private ImageView capturedImage, start_stop, take_picture, take_record;
     private VideoView videoView,captured_video1;
@@ -179,7 +180,7 @@ public class CameraActivity extends MyCanvas {
     List<Filter_model> personUtilsList;
     String filternames_txt = "none";
     TextView filter_done;
-    private int camera_selected = 0;
+    private int camera_selected = 1;
     int sec_passed = 0;
     TextView one, two, three, four, five, camera_sounds;
     ImageView one_view, two_view, three_view, four_view, five_view, uploadfile, correct, worng,createsounds;
@@ -288,6 +289,10 @@ public class CameraActivity extends MyCanvas {
     int preSelectedIndex1 = -1;
     String audio_lang_id="0";
 
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
+    String usefile="null";
+
 //    GPUPlayerView gpuPlayerView;
 //
 //    public static int  select_postion=0;
@@ -304,7 +309,7 @@ public class CameraActivity extends MyCanvas {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GetPermission();
-
+        checkPermissionREAD_EXTERNAL_STORAGE(CameraActivity.this);
 //        select_postion=0;
         captureMedia = (RelativeLayout) findViewById(R.id.camera_view);
         cameraglass = (RelativeLayout) findViewById(R.id.cameraglass);
@@ -325,9 +330,14 @@ public class CameraActivity extends MyCanvas {
         start_stop = (ImageView) findViewById(R.id.start_stop);
         take_picture = (ImageView) findViewById(R.id.take_picture);
         next = (ImageView) findViewById(R.id.add_next);
+        camera_done = (ImageView) findViewById(R.id.camera_done);
         take_record = (ImageView) findViewById(R.id.take_video);
-        take_picture.setImageResource(R.drawable.ic_photo_selected);
-        video_progress.setVisibility(View.INVISIBLE);
+        take_picture.setImageResource(R.drawable.ic_group_camera);
+        take_record.setImageResource(R.drawable.ic_video_selected);
+        camera_selected = 1;
+        video_progress.setVisibility(View.VISIBLE);
+//        take_picture.setImageResource(R.drawable.ic_photo_selected);
+//        video_progress.setVisibility(View.INVISIBLE);
 
 
         flip = (ImageView) findViewById(R.id.camera_flip);
@@ -378,6 +388,7 @@ public class CameraActivity extends MyCanvas {
         captured_video1 = (VideoView) findViewById(R.id.captured_video1);
 
 
+
 //        preview = (SurfaceView) findViewById(R.id.preview);
 //        previewHolder = preview.getHolder();
 //        previewHolder.addCallback(surfaceCallback);
@@ -385,6 +396,12 @@ public class CameraActivity extends MyCanvas {
 
 //        setContentView(container = new FrameLayout(this));
 //        setupCameraPreviewView();
+        if( getIntent().getExtras() != null) {
+        usefile=getIntent().getStringExtra("soundurl");
+        }
+//        Log.e("usefile", usefile);
+
+
 
 
 
@@ -666,7 +683,7 @@ public class CameraActivity extends MyCanvas {
                 camera_listview_lang.setVisibility(View.INVISIBLE);
                 camera_audio.setVisibility( View.VISIBLE);
                 soundlistcate();
-                jsongetsoundtrends();
+                jsongetsoundtrends(audio_lang_id);
             }
         });
 
@@ -867,11 +884,8 @@ public class CameraActivity extends MyCanvas {
                             Sound_modelclass model = soundlist.get(position); //changed it to model because viewers will confused about it
 
                             model.setSelected(true);
-
                             soundlist.set(position, model);
-
                             if (preSelectedIndex > -1) {
-
                                 Sound_modelclass preRecord = soundlist.get(preSelectedIndex);
                                 preRecord.setSelected(false);
 
@@ -880,7 +894,6 @@ public class CameraActivity extends MyCanvas {
                             }
 
                             preSelectedIndex = position;
-
                             //now update adapter so we are going to make a update method in adapter
                             //now declare adapter final to access in inner method
 
@@ -890,12 +903,10 @@ public class CameraActivity extends MyCanvas {
                             dialog.dismiss();
                             if (mediaPlayer.isPlaying()) {
                                 mediaPlayer.stop();
-
                             }
                             camera_sounds.setText("sounds  ");
                             Sound_modelclass model = soundlist.get(position);
                             model.setSelected(false);
-
                             soundlist.set(position, model);
 
                             if (preSelectedIndex > -1) {
@@ -1014,7 +1025,7 @@ public class CameraActivity extends MyCanvas {
         });
 
 
-    //    Upload files
+        //    Upload files
         camera_controls = (FrameLayout) findViewById(R.id.camera_controls);
         camera_timer_control = (FrameLayout) findViewById(R.id.camera_timer_control);
         filter_controls = (FrameLayout) findViewById(R.id.filter_layout);
@@ -1110,10 +1121,17 @@ public class CameraActivity extends MyCanvas {
 
             }
         });
+        camera_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
 
-      // Filter selection
+
+        // Filter selection
 
         recyclerView = (RecyclerView) findViewById(R.id.filters_recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -1501,10 +1519,7 @@ public class CameraActivity extends MyCanvas {
         take_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                take_picture.setImageResource(R.drawable.ic_group_camera);
-                take_record.setImageResource(R.drawable.ic_video_selected);
-                camera_selected = 1;
-                video_progress.setVisibility(View.VISIBLE);
+
 
 
             }
@@ -1550,7 +1565,7 @@ public class CameraActivity extends MyCanvas {
 
                     captureBitmap(bitmap -> {
                         new Handler().post(() -> {
-                           rotatedBitmap=bitmap;
+                            rotatedBitmap=bitmap;
                             if (rotatedBitmap != null) {
                                 setStickerView(0);
                                 capturedImage.setVisibility(View.VISIBLE);
@@ -1581,17 +1596,26 @@ public class CameraActivity extends MyCanvas {
                         Log.e("waslon2", String.valueOf(wasLon));
 //                        try {
 //                            startRecording();
-                            GPUCameraRecorder.start(defaultVideo);
-                            Log.e("pathssssss",defaultVideo);
-                            camera_icon_lay.setVisibility(View.INVISIBLE);
-                            if (camera_sounds.getText().toString().equals("sounds  ")) {
 
-                            } else {
-                                Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                                Log.e("defaultSound", defaultSound);
-                                mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
-                                mediaPlayer.start();
-                            }
+                        if (!usefile.equals("null")){
+                            Down_load_mp3(usefile);
+                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                            Log.e("defaultSound", defaultSound);
+                            mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                            mediaPlayer.start();
+                        }
+
+                        GPUCameraRecorder.start(defaultVideo);
+                        Log.e("pathssssss",defaultVideo);
+                        camera_icon_lay.setVisibility(View.INVISIBLE);
+                        if (camera_sounds.getText().toString().equals("sounds  ")) {
+
+                        } else {
+                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                            Log.e("defaultSound", defaultSound);
+                            mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                            mediaPlayer.start();
+                        }
 //                        } catch (IOException e) {
 //                            String message = e.getMessage();
 //                            Log.i(null, "Problem " + message);
@@ -1888,27 +1912,37 @@ public class CameraActivity extends MyCanvas {
                                 video_progress.resume();
                                 counter = 3;
                                 Log.e("waslon2", String.valueOf(wasLon));
-                                try {
-                                    startRecording();
-                                    if (camera_sounds.getText().toString().equals("sounds  ")) {
-
-                                    } else {
-                                        Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                                        Log.e("defaultSound", defaultSound);
-                                        mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
-                                        mediaPlayer.start();
-                                    }
-                                    counter = 3;
-                                } catch (IOException e) {
-                                    String message = e.getMessage();
-                                    Log.i(null, "Problem " + message);
-                                    mediaRecorder.release();
-                                    e.printStackTrace();
+//                                try {
+//                                    startRecording();
+                                if (!usefile.equals(null)){
+                                    Down_load_mp3(usefile);
+                                    Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                                    Log.e("defaultSound", defaultSound);
+                                    mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                                    mediaPlayer.start();
                                 }
+
+                                GPUCameraRecorder.start(defaultVideo);
+                                if (camera_sounds.getText().toString().equals("sounds  ")) {
+
+                                } else {
+                                    Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                                    Log.e("defaultSound", defaultSound);
+                                    mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                                    mediaPlayer.start();
+                                }
+                                counter = 3;
+//                                } catch (IOException e) {
+//                                    String message = e.getMessage();
+//                                    Log.i(null, "Problem " + message);
+//                                    mediaRecorder.release();
+//                                    e.printStackTrace();
+//                                }
 
                             } else {
                                 wasLon = false;
-                                stopRecording();
+//                                stopRecording();
+                                GPUCameraRecorder.stop();
                                 if (camera_sounds.getText().toString().equals("sounds  ")) {
 
                                 } else {
@@ -1918,7 +1952,12 @@ public class CameraActivity extends MyCanvas {
                                 VideoSeconds = 1;
                                 video_progress.pause();
                                 video_progress.addDivider();
-                                playVideo();
+                                Intent intent = new Intent(CameraActivity.this, PreviewActivity.class);
+                                intent.putExtra("path", defaultVideo);
+                                intent.putExtra("Speed", speed_value);
+
+
+                                startActivity(intent);
 
 
 
@@ -2044,7 +2083,7 @@ public class CameraActivity extends MyCanvas {
 
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {Manifest.permission.CAMERA,
-                Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE};
+                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
         if (!hasPermission(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
             finish();
@@ -2307,7 +2346,7 @@ public class CameraActivity extends MyCanvas {
         }
     }
 
-   // play recorded video
+    // play recorded video
 
     public void playVideo() {
         edit_videolayout.setVisibility(View.VISIBLE);
@@ -2329,7 +2368,7 @@ public class CameraActivity extends MyCanvas {
                 }
             });
             videoView.start();
-           // preview.setVisibility(View.INVISIBLE);
+            // preview.setVisibility(View.INVISIBLE);
             setStickerView(1);
         }
         else{
@@ -2350,7 +2389,7 @@ public class CameraActivity extends MyCanvas {
 
 
 
-   // save the video in draft
+    // save the video in draft
 
 
     public void saveMedia() throws IOException {
@@ -2747,45 +2786,45 @@ public class CameraActivity extends MyCanvas {
 
 
     //sounds api
-    private void jsongetsoundtrends() {
-        Log.d("soundid", "store data" + APIs.Soundapitrends+audio_lang_id+"&skip=10");
+    private void jsongetsoundtrends(String lang_id) {
+        Log.d("soundid", "store data" + APIs.Soundapitrends+lang_id+"&skip=10");
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, APIs.Soundapitrends+audio_lang_id+"&skip=10", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsestoredata0000", response.toString());
+                        Log.d("Responsestoredatatrends", response.toString());
 
                         soundlist = new ArrayList<>();
 
                         if (response.length() != 0) {
                             for (int i = 0; i < response.length(); i++) {
                                 try {
-                                    JSONObject employee = response.getJSONObject(i);
-                                    String iii=employee.getString("contentLangId");
+//                                    JSONObject employee = response.getJSONObject(i);
+//                                    String iii=employee.getString("contentLangId");
+//
+//                                    Log.d("iii", "createddateL:::" + iii);
+//                                    JSONArray js=new JSONArray(iii);
+//
+//                                    for(int z = 0; z < js.length(); z++)
+//                                    {
+                                    JSONObject sund = response.getJSONObject(i);
 
-                                    Log.d("iii", "createddateL:::" + iii);
-                                    JSONArray js=new JSONArray(iii);
+                                    Sound_modelclass sound_modelclass = new Sound_modelclass();
+                                    String _id = sund.getString("url");
+                                    String name = sund.getString("name");
+                                    boolean sel = false;
 
-                                    for(int z = 0; z < js.length(); z++)
-                                    {
-                                        JSONObject sund = js.getJSONObject(z);
-
-                                        Sound_modelclass sound_modelclass = new Sound_modelclass();
-                                        String _id = sund.getString("url");
-                                        String name = sund.getString("name");
-                                        boolean sel = false;
-
-                                        sound_modelclass.setSound_code(_id);
-                                        sound_modelclass.setSound_name(name);
-                                        sound_modelclass.setSelected(sel);
-                                        soundlist.add(sound_modelclass);
+                                    sound_modelclass.setSound_code(_id);
+                                    sound_modelclass.setSound_name(name);
+                                    sound_modelclass.setSelected(sel);
+                                    soundlist.add(sound_modelclass);
 
 
-                                        Log.d("sound1", "createddateL:::" + soundlist);
-                                        Log.d("sound1", "soundlst:::" + _id + name);
-                                    }
+                                    Log.d("sound1", "createddateL:::" + soundlist);
+                                    Log.d("sound1", "soundlst:::" + _id + name);
+//                                    }
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -3988,6 +4027,50 @@ public class CameraActivity extends MyCanvas {
 
 
     }
+    public boolean checkPermissionREAD_EXTERNAL_STORAGE(
+            final Context context) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        (Activity) context,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    showDialog("External storage", context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE);
 
+                } else {
+                    ActivityCompat
+                            .requestPermissions(
+                                    (Activity) context,
+                                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                }
+                return false;
+            } else {
+                return true;
+            }
 
+        } else {
+            return true;
+        }
+    }
+
+    public void showDialog(final String msg, final Context context,
+                           final String permission) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setCancelable(true);
+        alertBuilder.setTitle("Permission necessary");
+        alertBuilder.setMessage(msg + " permission is necessary");
+        alertBuilder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions((Activity) context,
+                                new String[] { permission },
+                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
+    }
 }

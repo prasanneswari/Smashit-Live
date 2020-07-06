@@ -1,6 +1,7 @@
 package com.vasmash.va_smash.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -67,6 +68,7 @@ public class Languagelist extends AppCompatActivity {
                         Intent getintent=getIntent();
                         Intent intent = new Intent(Languagelist.this, Categorylist.class);
                         intent.putExtra("nameS",getintent.getStringExtra("nameS"));
+                        intent.putExtra("lastname",getintent.getStringExtra("lastname"));
                         intent.putExtra("passS",getintent.getStringExtra("passS"));
                         intent.putExtra("date",getintent.getStringExtra("repassS"));
                         intent.putExtra("countryS",getintent.getStringExtra("countryS"));
@@ -203,6 +205,7 @@ public class Languagelist extends AppCompatActivity {
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(Languagelist.this, R.drawable.d_round_white_background));
         dialog.show();
 
     }

@@ -3,6 +3,7 @@ package com.vasmash.va_smash.SearchClass;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,9 +14,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaMetadataRetriever;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -39,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -47,6 +52,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.daasuu.gpuv.composer.GPUMp4Composer;
+import com.daasuu.gpuv.egl.filter.GlWatermarkFilter;
+import com.downloader.Error;
+import com.downloader.OnCancelListener;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnPauseListener;
+import com.downloader.OnProgressListener;
+import com.downloader.OnStartOrResumeListener;
+import com.downloader.PRDownloader;
+import com.downloader.Progress;
+import com.downloader.request.DownloadRequest;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -60,10 +76,13 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.vasmash.va_smash.BottmNavigation.TopNavigationview;
 import com.vasmash.va_smash.HomeScreen.CommentScreen.CommentsFragment;
 import com.vasmash.va_smash.HomeScreen.CommentScreen.Fragment_Data_Send;
+import com.vasmash.va_smash.HomeScreen.ModelClass.Homescreen_model;
+import com.vasmash.va_smash.HomeScreen.homeadapters.Fragment_Callback;
+import com.vasmash.va_smash.HomeScreen.homeadapters.Functions;
+import com.vasmash.va_smash.HomeScreen.homeadapters.VideoAction_F;
 import com.vasmash.va_smash.HomeScreen.homefragment.HashTagsDisplay;
 import com.vasmash.va_smash.HomeScreen.homefragment.HomeFragment;
 import com.vasmash.va_smash.HomeScreen.homefragment.OriginalSoundDisplay;
-import com.vasmash.va_smash.ProfileScreen.ProfileActivity;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.SearchClass.ModelClass.Model_Trading;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -90,6 +109,7 @@ import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -98,6 +118,7 @@ import java.util.Map;
 
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.claimtext;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.clamlay;
+import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.countDownTimer;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.earningpoints;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.earningtxt;
 import static com.vasmash.va_smash.ProfileScreen.ProfileActivity.createvideosclick;
@@ -319,7 +340,10 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         TextView description=layout.findViewById(R.id.homecontent);
         LinearLayout soundlay=layout.findViewById(R.id.soundlay);
         TextView song = layout.findViewById(R.id.song);
+        ImageView shareimg=(ImageView) layout.findViewById(R.id.shareimg);
+        TextView sharetxt=layout.findViewById(R.id.share);
 
+        sharetxt.setText(data_list.get(currentPage).getSharecount());
 
         LoadControl loadControl = new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, 16))
@@ -656,6 +680,33 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         });
 
 
+        shareimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    privious_player.setPlayWhenReady(false);
+                    if (countDownTimer!=null) {
+                        countDownTimer.cancel();
+                    }
+                    final VideoAction_F fragment = new VideoAction_F(searchimage,postid, new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
+                        if(bundle.getString("action").equals("save")){
+                            Save_Video(item);
+                        }
+                    }
+
+                    @Override
+                    public void onDataSent(String sharecount) {
+                        sharetxt.setText(sharecount);
+                        data_list.get(currentPage).setSharecount(sharecount);
+                    }
+                });
+                fragment.show(((AppCompatActivity) SearchVerticalData.this).getSupportFragmentManager(), "");
+                //Save_Video(item);
+            }
+        });
+
+
         playerView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(SearchVerticalData.this, new GestureDetector.SimpleOnGestureListener() {
 
@@ -859,6 +910,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                                 }
                                 else if (message.equals("Post Updated Successfully")){
                                     dialog.dismiss();
+
                                 }
                                 else if (message.equals("Post Deleted successfully")){
                                     fileclickL.remove(currentPage);
@@ -897,7 +949,6 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                                 if (obj.has("id")) {
                                     id = obj.getString("id");
                                 }
-
                                 if (obj.has("errors")) {
                                     JSONObject errors = obj.getJSONObject("errors");
                                     String message = errors.getString("message");
@@ -1026,6 +1077,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(SearchVerticalData.this, R.drawable.d_round_white_background));
         dialog.show();
 
     }
@@ -1103,6 +1155,8 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
 
     public void popupviews() {
 
+        String visibility=data_list.get(currentPage).getVisibility();
+
         android.app.AlertDialog.Builder builder;
         final Context mContext = SearchVerticalData.this;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -1116,6 +1170,27 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         check0.setChecked(true);
         post_visibilty="0";
 */
+             if (visibility.equals("0")){
+                 check0.setChecked(true);
+                 check1.setChecked(false);
+                 check2.setChecked(false);
+                 post_visibilty="0";
+                 status="Followers";
+             }else if (visibility.equals("1")){
+                 check0.setChecked(false);
+                 check1.setChecked(true);
+                 check2.setChecked(false);
+                 post_visibilty="1";
+                 status="Public";
+
+             }else if (visibility.equals("2")){
+                 check1.setChecked(false);
+                 check0.setChecked(false);
+                 check2.setChecked(true);
+                 post_visibilty="2";
+                 status="Private";
+             }
+
 
 
         closebtn.setOnClickListener(new View.OnClickListener() {
@@ -1183,5 +1258,153 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         }
 
     }
+
+
+
+    public void Save_Video(Model_Trading item){
+
+        Functions.Show_determinent_loader(SearchVerticalData.this,false,false);
+        PRDownloader.initialize(SearchVerticalData.this.getApplicationContext());
+        DownloadRequest prDownloader= PRDownloader.download(item.getImage(), Environment.getExternalStorageDirectory() +"/Tittic/", item.getId()/*+"no_watermark"*/+".mp4")
+                .build()
+                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                    @Override
+                    public void onStartOrResume() {
+
+                    }
+                })
+                .setOnPauseListener(new OnPauseListener() {
+                    @Override
+                    public void onPause() {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel() {
+
+                    }
+                })
+                .setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onProgress(Progress progress) {
+
+                        int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
+                        Functions.Show_loading_progress(prog/2);
+
+                    }
+                });
+
+
+        prDownloader.start(new OnDownloadListener() {
+            @Override
+            public void onDownloadComplete() {
+                Functions.cancel_determinent_loader();
+                //Delete_file_no_watermark(item);
+                Scan_file(item);
+
+                // Applywatermark(item);
+            }
+
+            @Override
+            public void onError(Error error) {
+                //  Delete_file_no_watermark(item);
+                Log.d("error","::::"+error);
+                Toast.makeText(SearchVerticalData.this, "Error", Toast.LENGTH_SHORT).show();
+                Functions.cancel_determinent_loader();
+            }
+
+
+        });
+    }
+
+
+    public void Applywatermark(Model_Trading item){
+
+        Bitmap myLogo = ((BitmapDrawable)SearchVerticalData.this.getResources().getDrawable(R.drawable.ic_action_action_search)).getBitmap();
+        Bitmap bitmap_resize=Bitmap.createScaledBitmap(myLogo, 50, 50, false);
+        GlWatermarkFilter filter=new GlWatermarkFilter(bitmap_resize, GlWatermarkFilter.Position.LEFT_TOP);
+        new GPUMp4Composer(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+"no_watermark"+".mp4",
+                Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+".mp4")
+                .filter(filter)
+                .listener(new GPUMp4Composer.Listener() {
+                    @Override
+                    public void onProgress(double progress) {
+                        Log.d("resp",""+(int) (progress*100));
+                        Functions.Show_loading_progress((int)((progress*100)/2)+50);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Functions.cancel_determinent_loader();
+                        //Delete_file_no_watermark(item);
+                        Scan_file(item);
+
+                    }
+
+                    @Override
+                    public void onCanceled() {
+                        Log.d("resp", "onCanceled");
+                    }
+
+                    @Override
+                    public void onFailed(Exception exception) {
+
+                        Log.d("resp",exception.toString());
+
+                        try {
+
+                            Delete_file_no_watermark(item);
+                            Functions.cancel_determinent_loader();
+                            Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_SHORT).show();
+
+                        }catch (Exception e){
+
+                        }
+
+/*
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    Delete_file_no_watermark(item);
+                                    Functions.cancel_determinent_loader();
+                                    Toast.makeText(context, "Try Again", Toast.LENGTH_SHORT).show();
+
+                                }catch (Exception e){
+
+                                }
+                            }
+                        });
+*/
+
+                    }
+                })
+                .start();
+    }
+
+    public void Scan_file(Model_Trading item){
+        MediaScannerConnection.scanFile(SearchVerticalData.this,
+                new String[] { Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+".mp4" },
+                null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+
+                    public void onScanCompleted(String path, Uri uri) {
+
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+    }
+
+    public void Delete_file_no_watermark(Model_Trading item){
+        File file=new File(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+"no_watermark"+".mp4");
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
+
 
 }

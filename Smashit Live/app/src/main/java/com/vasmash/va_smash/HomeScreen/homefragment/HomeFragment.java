@@ -5,9 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -53,8 +57,17 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.danikula.videocache.CacheListener;
-import com.danikula.videocache.HttpProxyCacheServer;
+import com.daasuu.gpuv.composer.GPUMp4Composer;
+import com.daasuu.gpuv.egl.filter.GlWatermarkFilter;
+import com.downloader.Error;
+import com.downloader.OnCancelListener;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnPauseListener;
+import com.downloader.OnProgressListener;
+import com.downloader.OnStartOrResumeListener;
+import com.downloader.PRDownloader;
+import com.downloader.Progress;
+import com.downloader.request.DownloadRequest;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -64,12 +77,13 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.vasmash.va_smash.BottmNavigation.TopNavigationview;
 import com.vasmash.va_smash.HomeScreen.CommentScreen.CommentsFragment;
 import com.vasmash.va_smash.HomeScreen.CommentScreen.Fragment_Data_Send;
 import com.vasmash.va_smash.HomeScreen.ModelClass.Homescreen_model;
 import com.vasmash.va_smash.HomeScreen.homeadapters.FragmentInner;
-import com.vasmash.va_smash.LaunchingScreen.Launching;
+import com.vasmash.va_smash.HomeScreen.homeadapters.Fragment_Callback;
+import com.vasmash.va_smash.HomeScreen.homeadapters.Functions;
+import com.vasmash.va_smash.HomeScreen.homeadapters.VideoAction_F;
 import com.vasmash.va_smash.LoadingClass.ViewDialog;
 import com.vasmash.va_smash.ProfileScreen.ProfileActivity;
 import com.vasmash.va_smash.R;
@@ -104,10 +118,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -157,7 +169,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
     static public FragmentInner homeadapter;
     ArrayList<Homescreen_model> tags;
-    Homescreen_model item;
     int currentPage=-1;
     int page_no;
 
@@ -381,29 +392,12 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-            }
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //here we find the current item number
-                final int scrollOffset = recyclerView.computeVerticalScrollOffset();
-                final int height = recyclerView.getHeight();
-                page_no=scrollOffset / height;
 
-                if(page_no!=currentPage ){
-                    currentPage=page_no;
-                    Release_Privious_Player();
-                    Set_Player(currentPage);
-                    Log.d("currentpagecount","::::"+currentPage);
-                }
-
-                if (dy > 0)
-                {
+                if (newState==1){
                     visibleItemCount11 = layoutManager.getChildCount();
                     totalItemCount11 = layoutManager.getItemCount();
                     pastVisibleItems11 = layoutManager.findFirstVisibleItemPosition();
                     Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
-
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
                         Log.d("checkpage","::"+layoutManager.findLastCompletelyVisibleItemPosition()+":::"+tags.size());
@@ -427,6 +421,52 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         }
                     }
                 }
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //here we find the current item number
+                final int scrollOffset = recyclerView.computeVerticalScrollOffset();
+                final int height = recyclerView.getHeight();
+                page_no=scrollOffset / height;
+
+                if(page_no!=currentPage ){
+                    currentPage=page_no;
+                    Release_Privious_Player();
+                    Set_Player(currentPage);
+                    Log.d("currentpagecount","::::"+currentPage);
+                }
+/*
+                if (dy > 0)
+                {
+                    visibleItemCount11 = layoutManager.getChildCount();
+                    totalItemCount11 = layoutManager.getItemCount();
+                    pastVisibleItems11 = layoutManager.findFirstVisibleItemPosition();
+                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                    if (!loading11) {
+                        // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
+                        Log.d("checkpage","::"+layoutManager.findLastCompletelyVisibleItemPosition()+":::"+tags.size());
+                        if(layoutManager.findLastCompletelyVisibleItemPosition() == tags.size()-1){
+                            loading11 = true;
+                            loading=true;
+                            Log.d("printvall",":::;"+followpagination+"::"+catpagiation);
+                            if (tags.size()!=0) {
+                                if (followpagination == true) {
+                                    homeapi(homeapi_url + "/following?limit=10&skip=" + tags.size());
+                                } else if (followpagination == false && catpagiation == false && allposts == false) {
+                                    homeapi(homepagination_url + tags.size());
+                                }else if (catpagiation == true){
+                                    homeapi(homeapi_url+"/postsByCategory?limit=10&skip="+tags.size()+"&categoryId="+catid);
+                                }else if (allposts==true){
+                                    homeapi(homeapi_url + "/allPosts?limit=10&skip="+tags.size());
+                                }
+                            }else {
+                                Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+*/
             }
         });
         //first we will call this home api we will get the video content data
@@ -551,8 +591,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         }else {
             viewDialog.showDialog();
         }
-
-
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -678,10 +716,10 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                         }
                                     }
                                     if (employee.has("soundId")) {
-                                        JSONArray sounds = employee.getJSONArray("soundId");
-                                        Log.d("soundsss","::::"+sounds);
-                                        for (int k1 = 0; k1 < sounds.length(); k1++) {
-                                            JSONObject soundsobj = sounds.getJSONObject(k1);
+                                        //JSONArray sounds = employee.getJSONArray("soundId");
+                                        //Log.d("soundsss","::::"+sounds);
+                                       // for (int k1 = 0; k1 < sounds.length(); k1++) {
+                                            JSONObject soundsobj = employee.getJSONObject("soundId");
                                             if(soundsobj.has("_id")) {
                                                 String soundid = soundsobj.getString("_id");
                                                 hm.setSoundid(soundid);
@@ -702,7 +740,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                                 String sounduserId = soundsobj.getString("userId");
                                                 hm.setSounduserid(sounduserId);
                                             }
-                                        }
+                                       // }
                                     }else {
                                         hm.setSoundname("");
                                         hm.setSoundurl("");
@@ -1013,7 +1051,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     public void Set_Player(final int currentPage){
         Log.d("current possss",":::::"+tags.size());
         if (tags.size()!=0) {
-            item = tags.get(currentPage);
+            Homescreen_model item = tags.get(currentPage);
             loading11 = false;
             unliketype = item.getLiketype();
             claimtype = item.getClaim();
@@ -1038,6 +1076,10 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             LinearLayout soundlay=layout.findViewById(R.id.soundlay);
             TextView song = layout.findViewById(R.id.song);
             p_bar=layout.findViewById(R.id.p_bar);
+            ImageView shareimg=(ImageView) layout.findViewById(R.id.shareimg);
+            TextView sharetxt=layout.findViewById(R.id.share);
+            sharetxt.setText(item.getShare());
+
 
             LoadControl loadControl = new DefaultLoadControl.Builder()
                     .setAllocator(new DefaultAllocator(true, 16))
@@ -1393,6 +1435,37 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         //  Fragment_Data_Send fragment_data_send= (Fragment_Data_Send) context;
                         OpenComment(item);
 
+                    }
+                }
+            });
+
+            shareimg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (token.equals("null")){
+                        popup();
+                    }else {
+                        privious_player.setPlayWhenReady(false);
+                        if (countDownTimer!=null) {
+                            countDownTimer.cancel();
+                        }
+
+                        final VideoAction_F fragment = new VideoAction_F(item.getFile(), item.getPostid(), new Fragment_Callback() {
+                            @Override
+                            public void Responce(Bundle bundle) {
+                                if (bundle.getString("action").equals("save")) {
+                                    Save_Video(item);
+                                }
+                            }
+
+                            @Override
+                            public void onDataSent(String sharecount) {
+                                sharetxt.setText(sharecount);
+                                tags.get(currentPage).setShare(sharecount);
+                            }
+                        });
+                        fragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "");
+                        //Save_Video(item);
                     }
                 }
             });
@@ -2283,6 +2356,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.d_round_white_background));
         dialog.show();
 
     }
@@ -2322,6 +2396,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.d_round_white_background));
         dialog.show();
 
     }
@@ -2382,6 +2457,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         builder = new android.app.AlertDialog.Builder(mContext);
         builder.setView(layout);
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.d_round_white_background));
         dialog.show();
     }
 
@@ -2393,5 +2469,151 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         anim.setDuration(1000);
         refresh.startAnimation(anim);
     }
+
+
+    public void Save_Video(Homescreen_model item){
+
+        Functions.Show_determinent_loader(getActivity(),false,false);
+        PRDownloader.initialize(getActivity().getApplicationContext());
+        DownloadRequest prDownloader= PRDownloader.download(item.getFile(), Environment.getExternalStorageDirectory() +"/Tittic/", item.getPostid()/*+"no_watermark"*/+".mp4")
+                .build()
+                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                    @Override
+                    public void onStartOrResume() {
+
+                    }
+                })
+                .setOnPauseListener(new OnPauseListener() {
+                    @Override
+                    public void onPause() {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel() {
+
+                    }
+                })
+                .setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onProgress(Progress progress) {
+
+                        int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
+                        Functions.Show_loading_progress(prog/2);
+
+                    }
+                });
+
+
+        prDownloader.start(new OnDownloadListener() {
+            @Override
+            public void onDownloadComplete() {
+                Functions.cancel_determinent_loader();
+                //Delete_file_no_watermark(item);
+                Scan_file(item);
+
+                // Applywatermark(item);
+            }
+
+            @Override
+            public void onError(Error error) {
+                //  Delete_file_no_watermark(item);
+                Log.d("error","::::"+error);
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                Functions.cancel_determinent_loader();
+            }
+
+
+        });
+    }
+
+
+    public void Applywatermark(Homescreen_model item){
+
+        Bitmap myLogo = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.ic_action_action_search)).getBitmap();
+        Bitmap bitmap_resize=Bitmap.createScaledBitmap(myLogo, 50, 50, false);
+        GlWatermarkFilter filter=new GlWatermarkFilter(bitmap_resize, GlWatermarkFilter.Position.LEFT_TOP);
+        new GPUMp4Composer(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+"no_watermark"+".mp4",
+                Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+".mp4")
+                .filter(filter)
+                .listener(new GPUMp4Composer.Listener() {
+                    @Override
+                    public void onProgress(double progress) {
+                        Log.d("resp",""+(int) (progress*100));
+                        Functions.Show_loading_progress((int)((progress*100)/2)+50);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Functions.cancel_determinent_loader();
+                        //Delete_file_no_watermark(item);
+                        Scan_file(item);
+
+                    }
+
+                    @Override
+                    public void onCanceled() {
+                        Log.d("resp", "onCanceled");
+                    }
+
+                    @Override
+                    public void onFailed(Exception exception) {
+
+                        Log.d("resp",exception.toString());
+
+                        try {
+
+                            Delete_file_no_watermark(item);
+                            Functions.cancel_determinent_loader();
+                            Toast.makeText(getActivity(), "Try Again", Toast.LENGTH_SHORT).show();
+
+                        }catch (Exception e){
+
+                        }
+
+/*
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    Delete_file_no_watermark(item);
+                                    Functions.cancel_determinent_loader();
+                                    Toast.makeText(context, "Try Again", Toast.LENGTH_SHORT).show();
+
+                                }catch (Exception e){
+
+                                }
+                            }
+                        });
+*/
+
+                    }
+                })
+                .start();
+    }
+
+    public void Scan_file(Homescreen_model item){
+        MediaScannerConnection.scanFile(getActivity(),
+                new String[] { Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+".mp4" },
+                null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+
+                    public void onScanCompleted(String path, Uri uri) {
+
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+    }
+
+    public void Delete_file_no_watermark(Homescreen_model item){
+        File file=new File(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+"no_watermark"+".mp4");
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
 
 }

@@ -490,7 +490,8 @@
                         android:layout_gravity="center"
                         android:layout_weight="2"
                         android:padding="25sp"
-                        android:src="@drawable/ic_group_camera" />
+                        android:src="@drawable/ic_group_camera"
+                        android:visibility="gone"/>
 
                     <ImageView
                         android:id="@+id/take_video"
@@ -499,7 +500,17 @@
                         android:layout_gravity="center"
                         android:layout_weight="2"
                         android:padding="25sp"
-                        android:src="@drawable/ic_video" />
+                        android:src="@drawable/ic_video"
+                        android:visibility="gone"/>
+
+
+                    <ImageView
+                        android:id="@+id/camera_folder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="12sp"
+                        android:src="@drawable/ic_upload_icon" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -522,12 +533,13 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/camera_folder"
+                            android:id="@+id/camera_done"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:padding="25sp"
-                            android:src="@drawable/ic_files" />
+                            android:padding="12sp"
+                            android:src="@drawable/ic_camaradone"
+                            />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -1052,7 +1064,7 @@
         android:background="@drawable/border"
         android:paddingLeft="10sp"
         android:paddingTop="10sp"
-
+        android:visibility="gone"
 
         >
         <LinearLayout
@@ -1159,7 +1171,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/camera_audio"
                     android:visibility="gone"
-                   >
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1198,24 +1210,24 @@
 
                     </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="75sp"
-                    android:id="@+id/camera_sounds_cate"
-                    android:layout_below="@+id/cam_serch"
-                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="75sp"
+                        android:id="@+id/camera_sounds_cate"
+                        android:layout_below="@+id/cam_serch"
+                        >
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
 
-                <ListView
-                    android:id="@+id/sounds_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/camera_sounds_cate"
-                   >
+                    <ListView
+                        android:id="@+id/sounds_listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/camera_sounds_cate"
+                        >
 
-                </ListView>
+                    </ListView>
                 </RelativeLayout>
 
 
@@ -1227,7 +1239,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/camera_listview_langes"
                     android:paddingLeft="10sp"
-                  >
+                    >
 
                 </ListView>
             </RelativeLayout>
