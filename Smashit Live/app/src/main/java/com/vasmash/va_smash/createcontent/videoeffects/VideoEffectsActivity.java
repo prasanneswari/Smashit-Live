@@ -49,7 +49,9 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.vasmash.va_smash.R;
+import com.vasmash.va_smash.createcontent.CameraActivity;
 import com.vasmash.va_smash.createcontent.PostcontentActivity;
+import com.vasmash.va_smash.createcontent.PreviewActivity;
 import com.vasmash.va_smash.createcontent.videoeffects.videophotoeditor.OnPhotoEditorListener;
 import com.vasmash.va_smash.createcontent.videoeffects.videophotoeditor.PhotoEditor;
 import com.vasmash.va_smash.createcontent.videoeffects.videophotoeditor.SaveSettings;
@@ -95,6 +97,8 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
     private int DRAW_CANVASH = 0;
 
     int cam = 1;
+    Boolean touched=false;
+
     // String path;
 
     private MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
@@ -117,7 +121,7 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
         cam = getIntent().getIntExtra("cam", 1);
         String path=getIntent().getStringExtra("path");
         System.out.println("videoeffectsactivity path  "+path);
-        videoPath = "/data/user/0/com.vasmash.va_smash/files/VA_Smash/Smash.mp4";
+        videoPath = path;
         System.out.println("videoeffectsactivity videoPath  "+videoPath);
         // videoPath = getIntent().getStringExtra("DATA");
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
@@ -139,7 +143,7 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
         binding.ivImage.getLayoutParams().width = newCanvasWidth;
         binding.ivImage.getLayoutParams().height = newCanvasHeight;
 
-        Log.d(">>", "width>> " + newCanvasWidth + "height>> " + newCanvasHeight + " rotation >> " + rotation);
+       // Log.d(">>", "width>> " + newCanvasWidth + "height>> " + newCanvasHeight + " rotation >> " + rotation);
     }
 
     private void initViews() {
@@ -176,7 +180,7 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
                     mediaPlayer = new MediaPlayer();
 //                    mediaPlayer.setDataSource("http://daily3gp.com/vids/747.3gp");
 
-                    Log.d("VideoPath>>", videoPath);
+                   // Log.d("VideoPath>>", videoPath);
                     mediaPlayer.setDataSource(videoPath);
                     mediaPlayer.setSurface(surface);
                     mediaPlayer.prepare();
@@ -229,24 +233,24 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
             fFmpeg.loadBinary(new FFmpegLoadBinaryResponseHandler() {
                 @Override
                 public void onFailure() {
-                    Log.d("binaryLoad", "onFailure");
+                   // Log.d("binaryLoad", "onFailure");
 
                 }
 
                 @Override
                 public void onSuccess() {
-                    Log.d("binaryLoad", "onSuccess");
+                  //  Log.d("binaryLoad", "onSuccess");
                 }
 
                 @Override
                 public void onStart() {
-                    Log.d("binaryLoad", "onStart");
+                  //  Log.d("binaryLoad", "onStart");
 
                 }
 
                 @Override
                 public void onFinish() {
-                    Log.d("binaryLoad", "onFinish");
+                  //  Log.d("binaryLoad", "onFinish");
 
                 }
             });
@@ -262,7 +266,7 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
             fFmpeg.execute(command, new FFmpegExecuteResponseHandler() {
                 @Override
                 public void onSuccess(String s) {
-                    Log.d("CommandExecute", "onSuccess" + "  " + s);
+                   // Log.d("CommandExecute", "onSuccess" + "  " + s);
                     // Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                   /*  Intent i = new Intent(VideoEffectsActivity.this, VideoEffectsActivity.class);
                     i.putExtra("DATA", absolutePath);
@@ -284,13 +288,13 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
                 @Override
                 public void onProgress(String s) {
                     // progressDialog.setMessage(s);
-                    Log.d("CommandExecute", "onProgress" + "  " + s);
+                   // Log.d("CommandExecute", "onProgress" + "  " + s);
 
                 }
 
                 @Override
                 public void onFailure(String s) {
-                    Log.d("CommandExecute", "onFailure" + "  " + s);
+                   // Log.d("CommandExecute", "onFailure" + "  " + s);
                     progressDialog.hide();
 
                 }
@@ -341,12 +345,24 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
                         mediaPlayer.pause();
                     }
                 }
-                saveImage();
+                if (touched==true){
+                    saveImage();
+                }
+                else {
+                    Intent intent = new Intent(VideoEffectsActivity.this, PostcontentActivity.class);
+
+                    intent.putExtra("cam", cam);
+                    intent.putExtra("path", videoPath);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.imgDraw:
                 setDrawingMode();
+                touched=true;
                 break;
             case R.id.imgText:
+                touched=true;
                 TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, 0);
                 textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
 
@@ -361,10 +377,11 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
                 });
                 break;
             case R.id.imgUndo:
-                Log.d("canvas>>", mPhotoEditor.undoCanvas() + "");
+               // Log.d("canvas>>", mPhotoEditor.undoCanvas() + "");
                 mPhotoEditor.clearBrushAllViews();
                 break;
             case R.id.imgSticker:
+                touched=true;
                 mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
                 break;
 
@@ -429,8 +446,10 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
                                         @Override
                                         public void onSuccess(@NonNull String imagePath) {
                                             VideoEffectsActivity.this.imagePath = imagePath;
+/*
                                             Log.d("imagePath>>", imagePath);
                                             Log.d("imagePath2>>", Uri.fromFile(new File(imagePath)).toString());
+*/
                                             binding.ivImage.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
                                             //  Toast.makeText(PreviewVideoActivity.this, "Saved successfully...", Toast.LENGTH_SHORT).show();
                                             applayWaterMark();
@@ -509,7 +528,7 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
 
 
             for (int k = 0; k < newCommand.length; k++) {
-                Log.d("CMD==>>", newCommand[k] + "");
+               // Log.d("CMD==>>", newCommand[k] + "");
             }
 
 //            newCommand = new String[]{"-i", videoPath, "-i", imagePath, "-preset", "ultrafast", "-filter_complex", "[1:v]scale=2*trunc(" + (width / 2) + "):2*trunc(" + (height/ 2) + ") [ovrl], [0:v][ovrl]overlay=0:0" , output.getAbsolutePath()};
@@ -607,22 +626,22 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
 
     @Override
     public void onAddViewListener(ViewType viewType, int numberOfAddedViews) {
-        Log.d(TAG, "onAddViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
+        //Log.d(TAG, "onAddViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
     }
 
     @Override
     public void onRemoveViewListener(ViewType viewType, int numberOfAddedViews) {
-        Log.d(TAG, "onRemoveViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
+       // Log.d(TAG, "onRemoveViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
     }
 
     @Override
     public void onStartViewChangeListener(ViewType viewType) {
-        Log.d(TAG, "onStartViewChangeListener() called with: viewType = [" + viewType + "]");
+       // Log.d(TAG, "onStartViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
     @Override
     public void onStopViewChangeListener(ViewType viewType) {
-        Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
+       // Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
     }
 
     @Override
@@ -640,5 +659,10 @@ public class VideoEffectsActivity extends AppCompatActivity implements OnPhotoEd
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(VideoEffectsActivity.this, CameraActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

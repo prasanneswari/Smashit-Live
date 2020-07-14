@@ -70,6 +70,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.coremedia.iso.boxes.Container;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -82,10 +83,16 @@ import com.downloader.request.DownloadRequest;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
+import com.googlecode.mp4parser.authoring.Movie;
+import com.googlecode.mp4parser.authoring.Track;
+import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
+import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
+import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.VASmashAPIS.APIs;
 import com.vasmash.va_smash.createcontent.Sounds.CreatesoundsActivity;
+import com.vasmash.va_smash.createcontent.Sounds.ImageFilePath;
 import com.vasmash.va_smash.createcontent.Sounds.Merge_Video_Audio;
 import com.vasmash.va_smash.createcontent.Sounds.Sound_catemodel;
 import com.vasmash.va_smash.createcontent.Sounds.Sound_modelclass;
@@ -108,6 +115,7 @@ import com.vasmash.va_smash.createcontent.filters.gpu.camerarecorder.CameraRecor
 import com.vasmash.va_smash.createcontent.filters.gpu.camerarecorder.GPUCameraRecorder;
 import com.vasmash.va_smash.createcontent.filters.gpu.camerarecorder.GPUCameraRecorderBuilder;
 import com.vasmash.va_smash.createcontent.filters.gpu.camerarecorder.LensFacing;
+import com.vasmash.va_smash.createcontent.filters.gpu.player.Filtermodelimg;
 import com.vasmash.va_smash.createcontent.utils.Utility;
 import com.vasmash.va_smash.createcontent.videoeffects.VideoEffectsActivity;
 import com.vasmash.va_smash.login.ModelClass.Languages;
@@ -134,6 +142,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -179,7 +188,7 @@ public class CameraActivity extends MyCanvas {
     SegmentedProgressBar video_progress;
     List<Filter_model> personUtilsList;
     String filternames_txt = "none";
-    TextView filter_done;
+    TextView filter_done,sound_selecttxt;
     private int camera_selected = 1;
     int sec_passed = 0;
     TextView one, two, three, four, five, camera_sounds;
@@ -211,8 +220,6 @@ public class CameraActivity extends MyCanvas {
     ArrayList<Sound_catemodel> soundlist1;
     private List<Sound_catemodel> personUtils11;
     String sound_cate_code="5e8c825d8580495190c20e98";
-
-
 
 
     private RequestQueue mQueue;
@@ -248,6 +255,7 @@ public class CameraActivity extends MyCanvas {
     boolean wasLon = false;
     String landscape="0";
     String defaultVideo1;
+    String Videoplaypause;
     String token;
 
 
@@ -292,6 +300,13 @@ public class CameraActivity extends MyCanvas {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     String usefile="null";
+    ArrayList<String> videopaths=new ArrayList<>();
+    int number=0;
+    String videostarted="0";
+
+    Boolean soundselected=false;
+    String createsoundpath = "null";
+    private List<Filtermodelimg> personUtilssimg;
 
 //    GPUPlayerView gpuPlayerView;
 //
@@ -325,7 +340,7 @@ public class CameraActivity extends MyCanvas {
 
         customButton = (CircleProgressBar) findViewById(R.id.custom_progressBar);
 
-
+        camera_sounds = (TextView) findViewById(R.id.camera_sounds);
         video_progress = (SegmentedProgressBar) findViewById(R.id.video_progress);
         start_stop = (ImageView) findViewById(R.id.start_stop);
         take_picture = (ImageView) findViewById(R.id.take_picture);
@@ -376,7 +391,7 @@ public class CameraActivity extends MyCanvas {
         rlVideoView = (RelativeLayout) findViewById(R.id.llVideoView);
         tileView = (TileView) findViewById(R.id.timeLineView);
         mCustomRangeSeekBarNew = ((CustomRangeSeekBar) findViewById(R.id.timeLineBar));
-        mVideoView = (VideoView) findViewById(R.id.videoView);
+        mVideoView = (VideoView) findViewById(R.id.uploadvideoView);
         imgPlay = (ImageView) findViewById(R.id.imgPlay);
         seekBarVideo = (SeekBar) findViewById(R.id.seekBarVideo);
         txtVideoLength = (TextView) findViewById(R.id.txtVideoLength);
@@ -397,11 +412,19 @@ public class CameraActivity extends MyCanvas {
 //        setContentView(container = new FrameLayout(this));
 //        setupCameraPreviewView();
         if( getIntent().getExtras() != null) {
-        usefile=getIntent().getStringExtra("soundurl");
+            usefile=getIntent().getStringExtra("soundurl");
+           // Log.e("usefile", usefile);
+            Down_load_mp3(usefile);
+            soundselected=true;
+            camera_sounds.setText("usefile");
         }
 //        Log.e("usefile", usefile);
 
-
+        if( getIntent().getExtras() != null) {
+            createsoundpath=getIntent().getStringExtra("createpath");
+            soundselected=true;
+            camera_sounds.setText("sounds  ");
+        }
 
 
 
@@ -449,6 +472,7 @@ public class CameraActivity extends MyCanvas {
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        number=number+1;
         defaultVideo = dir + "/Smash.mp4";
         File createDefault = new File(defaultVideo);
         if (!createDefault.isFile()) {
@@ -461,7 +485,14 @@ public class CameraActivity extends MyCanvas {
             }
         }
 
-        Log.e("Smash111111111111111",defaultVideo);
+      //  Log.e("Smash111111111111111",defaultVideo);
+
+
+
+
+
+
+
         txtVideoCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -570,7 +601,8 @@ public class CameraActivity extends MyCanvas {
 //       sounds applied to app
         camera_sound_screen = (FrameLayout) findViewById(R.id.camera_sounds_screen);
         sound_back = (ImageView) findViewById(R.id.sound_back);
-        camera_sounds = (TextView) findViewById(R.id.camera_sounds);
+
+        sound_selecttxt = (TextView) findViewById(R.id.sound_selecttxt);
         sounds_listview = (ListView) findViewById(R.id.sounds_listview);
 
         camera_listview_lang = (ListView) findViewById(R.id.camera_listview_langes);
@@ -598,25 +630,6 @@ public class CameraActivity extends MyCanvas {
                 startActivity(i);
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         cam_lange.setOnClickListener(new View.OnClickListener() {
@@ -653,7 +666,7 @@ public class CameraActivity extends MyCanvas {
 
 
                 audio_lang_id=value;
-                Log.e("wwwwww",audio_lang_id+" "+valueid);
+               // Log.e("wwwwww",audio_lang_id+" "+valueid);
                 // Toast.makeText(PostcontentActivity.this, lang_id+" "+valueid, Toast.LENGTH_SHORT).show();
                 Languages model = categ.get(position); //changed it to model because viewers will confused about it
 
@@ -684,6 +697,7 @@ public class CameraActivity extends MyCanvas {
                 camera_audio.setVisibility( View.VISIBLE);
                 soundlistcate();
                 jsongetsoundtrends(audio_lang_id);
+                sound_selecttxt.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -782,7 +796,7 @@ public class CameraActivity extends MyCanvas {
                 String value = soundlist.get(position).getSound_name().toString();
                 String valueid = soundlist.get(position).getSound_code().toString();
                 Boolean checkvalue = soundlist.get(position).isSelected();
-                Log.e("checkvalue", String.valueOf(checkvalue));
+              //  Log.e("checkvalue", String.valueOf(checkvalue));
 
                 Down_load_mp3(valueid);
 
@@ -812,9 +826,12 @@ public class CameraActivity extends MyCanvas {
 
                 if (checkvalue == false) {
                     pop_select.setText("Select");
+                    soundselected=true;
 
                 } else {
                     pop_select.setText("Unselect");
+
+                    soundselected=false;
                 }
                 pop_text.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -822,7 +839,7 @@ public class CameraActivity extends MyCanvas {
                         if(pop_text.getText().toString().equals("play")){
                             pop_text.setText("Playing");
                             Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                            Log.e("defaultSound", defaultSound);
+                           // Log.e("defaultSound", defaultSound);
                             mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
                             mediaPlayer.start();
                             pop_pause_btn.setVisibility(View.VISIBLE);
@@ -842,7 +859,7 @@ public class CameraActivity extends MyCanvas {
                     public void onClick(View v) {
                         pop_text.setText("Playing");
                         Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                        Log.e("defaultSound", defaultSound);
+                       // Log.e("defaultSound", defaultSound);
                         mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
                         mediaPlayer.start();
                         pop_pause_btn.setVisibility(View.VISIBLE);
@@ -878,8 +895,11 @@ public class CameraActivity extends MyCanvas {
                                     mediaPlayer.stop();
 
                                 }}
+
+                            camera_sound_screen.setVisibility(View.INVISIBLE);
+
                             dialog.dismiss();
-                            Log.e("wwwwww", value + " " + valueid);
+                          //  Log.e("wwwwww", value + " " + valueid);
 //                            Toast.makeText(CameraActivity.this, value + " " + valueid, Toast.LENGTH_SHORT).show();
                             Sound_modelclass model = soundlist.get(position); //changed it to model because viewers will confused about it
 
@@ -1067,10 +1087,10 @@ public class CameraActivity extends MyCanvas {
             dir.mkdirs();
         }
         defaultVideo1 = dir + "/Smashfinaloutput.mp4";
-        File createDefault1 = new File(defaultVideo);
-        if (!createDefault1.isFile()) {
+        File createplaypause = new File(defaultVideo);
+        if (!createplaypause.isFile()) {
             try {
-                FileWriter writeDefault = new FileWriter(createDefault1);
+                FileWriter writeDefault = new FileWriter(createplaypause);
                 writeDefault.append("yy");
                 writeDefault.close();
                 writeDefault.flush();
@@ -1104,6 +1124,8 @@ public class CameraActivity extends MyCanvas {
                     Intent intent = new Intent(CameraActivity.this, VideoEffectsActivity.class);
                     intent.putExtra("cam", camera_selected);
                     intent.putExtra("path", defaultVideo);
+                   // Log.e("path",defaultVideo);
+
                     startActivity(intent);
                     if (!camera_sounds.getText().toString().equals("sounds  ")){
                         Merge_withAudio();
@@ -1124,6 +1146,16 @@ public class CameraActivity extends MyCanvas {
         camera_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                videostarted="0";
+                soundselected=false;
+                if (GPUCameraRecorder.isStarted()){
+                    GPUCameraRecorder.stop();
+                    append();
+                }
+                else {
+                    append();
+                }
 
             }
         });
@@ -1196,7 +1228,7 @@ public class CameraActivity extends MyCanvas {
         mAdapter.setonFilterClickListener(new Filter_Adapter.OnFilterClickListener() {
             @Override
             public void onFilterClickListener(Filter_model filternames) {
-                Log.e("color ", filternames.getFiltername());
+               // Log.e("color ", filternames.getFiltername());
                 filternames_txt = filternames.getFiltername();
                 if (renderer != null)
                     renderer.setSelectedFilter(Integer.parseInt(filternames_txt));
@@ -1292,11 +1324,102 @@ public class CameraActivity extends MyCanvas {
 
         lv = findViewById(R.id.filter_list);
 
+
+
+
+        personUtilssimg = new ArrayList<>();
+        Filtermodelimg filtermodelimg = new Filtermodelimg( R.drawable.dafault);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.bilateral);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.boxblur);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.brigthness);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.bulge);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.cga_colorspace);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.crosshatch);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.exposure);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.filter_group);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.gamma);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.gaussian);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.gray_scale);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.halftone);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.haze);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.highlight_shadow);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.hue);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.invert);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.look_up_table);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.luminance);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.luminance_thresold);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.mono);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.opacity);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.opacity);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.pixelation);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.posterize);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.rgb);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.saturation);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.sepia);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.sharp);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.solarize);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.sphere);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.swirl);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.tone);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.tone_curve);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.vibranc);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.viginettie);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.watermark);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.weak_pixel);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.tone);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.brigthness);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.zoom);
+        personUtilssimg.add(filtermodelimg);
+        filtermodelimg = new Filtermodelimg( R.drawable.bitmap);
+        personUtilssimg.add(filtermodelimg);
+
+
+
         final List<FilterType> filterTypes = FilterType.createFilterList();
         lv.setHasFixedSize(true);
 
         lv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
-        filtersAdapter = new FiltersAdapter(CameraActivity.this, filterTypes);
+        filtersAdapter = new FiltersAdapter(CameraActivity.this, filterTypes,personUtilssimg );
         lv.setAdapter(filtersAdapter);
 
 
@@ -1558,7 +1681,7 @@ public class CameraActivity extends MyCanvas {
             @Override
             public void onClick(View v) {
 
-                Log.e("start", String.valueOf(camera_selected));
+               // Log.e("start", String.valueOf(camera_selected));
                 if (camera_selected == 0) {
 //                    takePicture();
 
@@ -1583,38 +1706,87 @@ public class CameraActivity extends MyCanvas {
                             }
                         });
                     });
-                    Log.e("start", "picture");
+                   // Log.e("start", "picture");
                 }
                 if (camera_selected == 1) {
-                    Log.e("waslon1", String.valueOf(wasLon));
+                  //  Log.e("waslon1", String.valueOf(wasLon));
                     if (wasLon == false) {
                         wasLon = true;
+
+                        dir = new File(CameraActivity.this.getFilesDir().getAbsolutePath(), "VA_Smash");
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                        number=number+1;
+                        Videoplaypause = dir + "/Smash"+number+".mp4";
+                        File createDefault1 = new File(defaultVideo);
+                        if (!createDefault.isFile()) {
+                            try {
+                                FileWriter writeDefault = new FileWriter(createDefault);
+                                writeDefault.append("yy");
+                                writeDefault.close();
+                                writeDefault.flush();
+                            } catch (Exception ex) {
+                            }
+                        }
+
+                       // Log.e("Smash111111111111111",Videoplaypause);
+
+
+
                         // touch & hold was long
-                        Log.i("Click", "touch & hold was long");
+                       // Log.i("Click", "touch & hold was long");
                         VideoCountDown.start();
                         video_progress.resume();
-                        Log.e("waslon2", String.valueOf(wasLon));
+                       // Log.e("waslon2", String.valueOf(wasLon));
 //                        try {
 //                            startRecording();
 
-                        if (!usefile.equals("null")){
-                            Down_load_mp3(usefile);
-                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                            Log.e("defaultSound", defaultSound);
-                            mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
-                            mediaPlayer.start();
-                        }
+//                        if (!usefile.equals("null")){
+//                            Down_load_mp3(usefile);
+//                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+//                            Log.e("defaultSound", defaultSound);
+//                            mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+//                            mediaPlayer.start();
+//                        }
 
-                        GPUCameraRecorder.start(defaultVideo);
-                        Log.e("pathssssss",defaultVideo);
+
+                        videopaths.add(Videoplaypause);
+                        camera_sounds.setVisibility(View.INVISIBLE);
+                        GPUCameraRecorder.start(Videoplaypause);
+                       // Log.e("pathssssss",Videoplaypause);
+
                         camera_icon_lay.setVisibility(View.INVISIBLE);
-                        if (camera_sounds.getText().toString().equals("sounds  ")) {
+                        if (videostarted.equals("0")) {
 
-                        } else {
-                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                            Log.e("defaultSound", defaultSound);
-                            mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
-                            mediaPlayer.start();
+
+                            if (usefile.equals("null")){
+
+                                if (soundselected==false) {
+
+                                } else {
+                                    Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                                    //Log.e("defaultSound", defaultSound);
+                                    mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                                    mediaPlayer.start();
+                                }
+
+                            }
+                            else {
+
+                                Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                               // Log.e("defaultSound", defaultSound);
+                                mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                                mediaPlayer.start();
+                            }
+
+                        }
+                        else {
+                            if (soundselected==false) {
+
+                            } else {
+                                mediaPlayer.start();
+                            }
                         }
 //                        } catch (IOException e) {
 //                            String message = e.getMessage();
@@ -1626,25 +1798,28 @@ public class CameraActivity extends MyCanvas {
                     } else {
                         wasLon = false;
 //                        stopRecording();
+                        video_progress.pause();
+                        video_progress.addDivider();
                         GPUCameraRecorder.stop();
-                        if (camera_sounds.getText().toString().equals("sounds  ")) {
+                        VideoSeconds=1;
+                        videostarted="1";
+                        if (soundselected==false) {
 
                         } else {
                             mediaPlayer.pause();
                         }
 
                         VideoCountDown.cancel();
-                        VideoSeconds = 1;
-                        video_progress.cancel();
-                        video_progress.reset();
+//                        video_progress.cancel();
+//                        video_progress.reset();
 //                        playVideo();
-                        Intent intent = new Intent(CameraActivity.this, PreviewActivity.class);
-                        intent.putExtra("path", defaultVideo);
-                        intent.putExtra("Speed", speed_value);
-
-
-                        startActivity(intent);
-                        Log.e("waslon3", String.valueOf(wasLon));
+//                        Intent intent = new Intent(CameraActivity.this, PreviewActivity.class);
+//                        intent.putExtra("path", defaultVideo);
+//                        intent.putExtra("Speed", speed_value);
+//
+//
+//                        startActivity(intent);
+//                        Log.e("waslon3", String.valueOf(wasLon));
                     }
                 }
 
@@ -1656,7 +1831,7 @@ public class CameraActivity extends MyCanvas {
             dir.mkdirs();
         }
         String ImageFileoutput = "/Smashimgoutput" + ".jpg"; //".png";
-        Log.d("", "Smashimg " + ImageFileoutput);
+       // Log.d("", "Smashimg " + ImageFileoutput);
         File file = new File(dir, ImageFileoutput);
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -1895,43 +2070,45 @@ public class CameraActivity extends MyCanvas {
                         final long LONG_PRESS_TIMEOUTt = 1;
 
 
-                        Log.e("start", String.valueOf(camera_selected));
+                       // Log.e("start", String.valueOf(camera_selected));
                         if (camera_selected == 0) {
                             takePicture();
                             counter = 3;
-                            Log.e("start", "picture");
+                          //  Log.e("start", "picture");
                         }
                         if (camera_selected == 1) {
-                            Log.e("waslon1", String.valueOf(wasLon));
+                           // Log.e("waslon1", String.valueOf(wasLon));
                             camera_controls.setVisibility(View.VISIBLE);
                             if (wasLon == false) {
                                 wasLon = true;
                                 // touch & hold was long
-                                Log.i("Click", "touch & hold was long");
+                               // Log.i("Click", "touch & hold was long");
                                 VideoCountDown.start();
                                 video_progress.resume();
                                 counter = 3;
-                                Log.e("waslon2", String.valueOf(wasLon));
+                              //  Log.e("waslon2", String.valueOf(wasLon));
 //                                try {
 //                                    startRecording();
-                                if (!usefile.equals(null)){
-                                    Down_load_mp3(usefile);
-                                    Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                                    Log.e("defaultSound", defaultSound);
-                                    mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
-                                    mediaPlayer.start();
-                                }
-
+                                camera_sounds.setVisibility(View.INVISIBLE);
                                 GPUCameraRecorder.start(defaultVideo);
-                                if (camera_sounds.getText().toString().equals("sounds  ")) {
+                                if (usefile.equals("null")){
+                                    if (soundselected==false) {
 
-                                } else {
+                                    } else {
+                                        Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
+                                       // Log.e("defaultSound", defaultSound);
+                                        mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
+                                        mediaPlayer.start();
+                                    }
+                                    counter = 3;
+                                }
+                                else {
+
                                     Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                                    Log.e("defaultSound", defaultSound);
+                                  //  Log.e("defaultSound", defaultSound);
                                     mediaPlayer = MediaPlayer.create(CameraActivity.this, ur);
                                     mediaPlayer.start();
                                 }
-                                counter = 3;
 //                                } catch (IOException e) {
 //                                    String message = e.getMessage();
 //                                    Log.i(null, "Problem " + message);
@@ -1943,7 +2120,7 @@ public class CameraActivity extends MyCanvas {
                                 wasLon = false;
 //                                stopRecording();
                                 GPUCameraRecorder.stop();
-                                if (camera_sounds.getText().toString().equals("sounds  ")) {
+                                if (soundselected==false) {
 
                                 } else {
                                     mediaPlayer.pause();
@@ -1961,7 +2138,7 @@ public class CameraActivity extends MyCanvas {
 
 
 
-                                Log.e("waslon3", String.valueOf(wasLon));
+                               // Log.e("waslon3", String.valueOf(wasLon));
                             }
                         }
                     }
@@ -1986,25 +2163,23 @@ public class CameraActivity extends MyCanvas {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             // Get the Uri of the selected file
-
+            cameraglass.setVisibility(View.GONE);
             if (requestCode == video) {
                 if (upload_video_edit.equals("1")){
                     uri2 = data.getData();
-                    srcFile = getPath(uri2);
-                    File myFile = new File(CameraActivity.this.getFilesDir().getAbsolutePath());
-                    defaultVideo = myFile.getAbsolutePath();
-                    Log.e("ddddddd", defaultVideo);
+                    srcFile = ImageFilePath.getPath(CameraActivity.this,uri2);
                     camera_upload_edit.setVisibility(View.VISIBLE);
 
-
-                    Log.e("ddddddd", srcFile);
+                 //   Log.e("ddddddd", srcFile);
                     tileView.post(new Runnable() {
                         @Override
                         public void run() {
                             setBitmap(Uri.parse(srcFile));
-                            mVideoView.setVideoURI(Uri.parse(srcFile));
+                            Uri vidd= Uri.fromFile(new File(srcFile));
+                            mVideoView.setVideoPath(srcFile);
                         }
                     });
+
 
                 }
                 else {
@@ -2028,7 +2203,7 @@ public class CameraActivity extends MyCanvas {
                         }
                     });
                     captured_video1.start();
-                    preview.setVisibility(View.INVISIBLE);
+                    sampleGLView.setVisibility(View.INVISIBLE);
                     setStickerView(1);
 //            String uriString = uri.toString();
 //            File myFile = new File(uriString);
@@ -2046,7 +2221,7 @@ public class CameraActivity extends MyCanvas {
 
                 File myFile = new File(CameraActivity.this.getFilesDir().getAbsolutePath());
                 defaultVideo = myFile.getAbsolutePath();
-                Log.e("ddddddd", String.valueOf(uri));
+               // Log.e("ddddddd", String.valueOf(uri));
                 try {
                     rotatedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                 } catch (Exception e) {
@@ -2061,7 +2236,7 @@ public class CameraActivity extends MyCanvas {
                 captureMedia.setVisibility(View.GONE);
                 camera_save_control.setVisibility(View.VISIBLE);
                 camera_edit_control.setVisibility(View.INVISIBLE);
-                Log.i("Image bitmap", rotatedBitmap.toString() + "-");
+               // Log.i("Image bitmap", rotatedBitmap.toString() + "-");
 //                } else {
 //                    Toast.makeText(CameraActivity.this, "Failed to Capture the picture. kindly Try Again:",
 //                            Toast.LENGTH_LONG).show();
@@ -2335,14 +2510,14 @@ public class CameraActivity extends MyCanvas {
                 mediaRecorder = null;
                 isRecording = false;
                 playVideo();
-                Log.e("isrecord", String.valueOf(mediaRecorder) + isRecording);
+                //Log.e("isrecord", String.valueOf(mediaRecorder) + isRecording);
             } catch (RuntimeException stopException) {
-                Log.i("Stop Recoding", "Too short video");
+                //Log.i("Stop Recoding", "Too short video");
                 takePicture();
             }
             camera.lock();
         } else {
-            Log.i("Stop Recoding", "isRecording is true");
+           // Log.i("Stop Recoding", "isRecording is true");
         }
     }
 
@@ -2358,7 +2533,7 @@ public class CameraActivity extends MyCanvas {
 
         uri = Uri.parse(defaultVideo);
         if(landscape=="0"){
-            Log.e("11111",landscape);
+            //Log.e("11111",landscape);
             videoView.setVisibility(View.VISIBLE);
             videoView.setVideoURI(uri);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -2372,7 +2547,7 @@ public class CameraActivity extends MyCanvas {
             setStickerView(1);
         }
         else{
-            Log.e("11111",landscape);
+           // Log.e("11111",landscape);
             captured_video1.setVisibility(View.VISIBLE);
             captured_video1.setVideoURI(uri);
             captured_video1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -2404,7 +2579,7 @@ public class CameraActivity extends MyCanvas {
 
             String timeStamp = new SimpleDateFormat("ddMMyyHHmm").format(new Date());
             ImageFile = "/Smashimg" + ".jpg"; //".png";
-            Log.d("", "Smashimg " + ImageFile);
+            //Log.d("", "Smashimg " + ImageFile);
             File file = new File(dir, ImageFile);
 
             try {
@@ -2414,7 +2589,7 @@ public class CameraActivity extends MyCanvas {
                 // Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 // Toast.makeText(this, "Error saving!", Toast.LENGTH_LONG).show();
-                Log.d("", "File not found: " + e.getMessage());
+                //Log.d("", "File not found: " + e.getMessage());
             }
         } else {
             if (defaultVideo != null) {
@@ -2442,7 +2617,7 @@ public class CameraActivity extends MyCanvas {
                     dir.mkdirs();
                 }
                 String ImageFileoutput = "/Smashimgoutput" + ".jpg"; //".png";
-                Log.d("", "Smashimg " + ImageFileoutput);
+               // Log.d("", "Smashimg " + ImageFileoutput);
                 File file = new File(dir, ImageFileoutput);
 
                 String filePath = SiliCompressor.with(CameraActivity.this).compress(ImageFile, new File(ImageFileoutput));
@@ -2462,7 +2637,7 @@ public class CameraActivity extends MyCanvas {
     }
 
     public void FlashControl(View v) {
-        Log.i("Flash", "Flash button clicked!");
+       // Log.i("Flash", "Flash button clicked!");
         boolean hasFlash = getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         if (!hasFlash) {
@@ -2482,12 +2657,12 @@ public class CameraActivity extends MyCanvas {
             if (!isFlashOn) {
                 isFlashOn = true;
                 flashButton.setImageResource(R.drawable.ic_flash_on_shadow);
-                Log.i("Flash", "Flash On");
+                //Log.i("Flash", "Flash On");
 
             } else {
                 isFlashOn = false;
                 flashButton.setImageResource(R.drawable.ic_flash_off_shadow);
-                Log.i("Flash", "Flash Off");
+                //Log.i("Flash", "Flash Off");
             }
         }
     }
@@ -2510,7 +2685,7 @@ public class CameraActivity extends MyCanvas {
                 startPreview();
             }
         } else {
-            Log.i("Switch Camera", "isRecording true");
+            //Log.i("Switch Camera", "isRecording true");
         }
     }
 
@@ -2596,7 +2771,7 @@ public class CameraActivity extends MyCanvas {
             }
         }
         int rePos = position - 1;
-        Log.i("Value", closest + "-" + rePos);
+        //Log.i("Value", closest + "-" + rePos);
         return rePos;
     }
 
@@ -2787,14 +2962,14 @@ public class CameraActivity extends MyCanvas {
 
     //sounds api
     private void jsongetsoundtrends(String lang_id) {
-        Log.d("soundid", "store data" + APIs.Soundapitrends+lang_id+"&skip=10");
+        //Log.d("soundid", "store data" + APIs.Soundapitrends+lang_id+"&skip=10");
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, APIs.Soundapitrends+audio_lang_id+"&skip=10", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsestoredatatrends", response.toString());
+                        //Log.d("Responsestoredatatrends", response.toString());
 
                         soundlist = new ArrayList<>();
 
@@ -2822,8 +2997,10 @@ public class CameraActivity extends MyCanvas {
                                     soundlist.add(sound_modelclass);
 
 
+/*
                                     Log.d("sound1", "createddateL:::" + soundlist);
                                     Log.d("sound1", "soundlst:::" + _id + name);
+*/
 //                                    }
 
                                 } catch (JSONException e) {
@@ -2849,7 +3026,7 @@ public class CameraActivity extends MyCanvas {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
 
@@ -2868,7 +3045,7 @@ public class CameraActivity extends MyCanvas {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                      //  Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
 
@@ -2937,14 +3114,14 @@ public class CameraActivity extends MyCanvas {
 
     }
     private void jsongetsound(String soundid) {
-        Log.d("soundid", "store data" + APIs.Soundapicateid+audio_lang_id+"&categoryId="+soundid+"&skip=10");
+        //Log.d("soundid", "store data" + APIs.Soundapicateid+audio_lang_id+"&categoryId="+soundid+"&skip=10");
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, APIs.Soundapicateid+soundid, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsestoredata0000", response.toString());
+                        //Log.d("Responsestoredata0000", response.toString());
 
                         soundlist = new ArrayList<>();
 
@@ -2954,7 +3131,7 @@ public class CameraActivity extends MyCanvas {
                                     JSONObject employee = response.getJSONObject(i);
                                     String iii=employee.getString("sounds");
 
-                                    Log.d("iii", "createddateL:::" + iii);
+                                    //Log.d("iii", "createddateL:::" + iii);
                                     JSONArray js=new JSONArray(iii);
 
                                     for(int z = 0; z < js.length(); z++)
@@ -2972,8 +3149,10 @@ public class CameraActivity extends MyCanvas {
                                         soundlist.add(sound_modelclass);
 
 
+/*
                                         Log.d("sound1", "createddateL:::" + soundlist);
                                         Log.d("sound1", "soundlst:::" + _id + name);
+*/
                                     }
 
                                 } catch (JSONException e) {
@@ -2999,7 +3178,7 @@ public class CameraActivity extends MyCanvas {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
 
@@ -3018,7 +3197,7 @@ public class CameraActivity extends MyCanvas {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
 
@@ -3099,7 +3278,7 @@ public class CameraActivity extends MyCanvas {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("soundresponse1", response.toString());
+                      //  Log.d("soundresponse1", response.toString());
 
 //                        sounds_listview = (ListView) layout.findViewById(R.id.sounds_listview);
 
@@ -3122,8 +3301,10 @@ public class CameraActivity extends MyCanvas {
                                     personUtils11.add(Sound_catemodel);
 
 
+/*
                                     Log.d("sound", "createddateL1:::" + personUtils11);
                                     Log.d("sound", "soundlst1:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -3137,7 +3318,7 @@ public class CameraActivity extends MyCanvas {
                                 public void onSoundcateClickListener(Sound_catemodel code) {
 
                                     sound_cate_code=code.getSound_code();
-                                    Log.e("sound_cate_code",sound_cate_code);
+                                    //Log.e("sound_cate_code",sound_cate_code);
                                     jsongetsound(sound_cate_code);
                                 }
                             });
@@ -3157,7 +3338,7 @@ public class CameraActivity extends MyCanvas {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -3242,7 +3423,7 @@ public class CameraActivity extends MyCanvas {
             @Override
             public void onDownloadComplete() {
                 progressDialog.dismiss();
-                Log.e("sound", "done");
+               // Log.e("sound", "done");
 //                Intent output = new Intent();
 //                output.putExtra("isSelected","yes");
 //                output.putExtra("sound_name",sound_name);
@@ -3255,7 +3436,7 @@ public class CameraActivity extends MyCanvas {
             @Override
             public void onError(Error error) {
                 progressDialog.dismiss();
-                Log.e("sound", String.valueOf(error));
+               // Log.e("sound", String.valueOf(error));
             }
 
 
@@ -3301,7 +3482,7 @@ public class CameraActivity extends MyCanvas {
 
     private void setBitmap(Uri mVideoUri) {
         tileView.setVideo(mVideoUri);
-        Log.e("mVideoUri", String.valueOf(mVideoUri));
+        //Log.e("mVideoUri", String.valueOf(mVideoUri));
     }
 
     private void onVideoPrepared(@NonNull MediaPlayer mp) {
@@ -3489,15 +3670,16 @@ public class CameraActivity extends MyCanvas {
         if (diff < 3) {
             Toast.makeText(CameraActivity.this, getString(R.string.video_length_validation), Toast.LENGTH_LONG).show();
         } else {
-            MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+            MediaMetadataRetriever
+                    mediaMetadataRetriever = new MediaMetadataRetriever();
             mediaMetadataRetriever.setDataSource(CameraActivity.this, Uri.parse(srcFile));
-            Log.d("Generated file path", "Generated file path " + srcFile+"   "+defaultVideo+"/VA_Smash/Smash.mp4");
+           // Log.d("Generated file path", "Generated file path " + srcFile+"   "+defaultVideo+"/VA_Smash/Smash.mp4");
             final File file = new File(srcFile);
 
             //notify that video trimming started
             if (mOnVideoTrimListener != null)
                 mOnVideoTrimListener.onTrimStarted();
-            Log.d("defaultVideoqqqqqqqq",  defaultVideo+"/VA_Smash/Smash.mp4"+"   "+file);
+           // Log.d("defaultVideoqqqqqqqq",  defaultVideo+"/VA_Smash/Smash.mp4"+"   "+file);
             BackgroundTask.execute(
                     new BackgroundTask.Task("", 0L, "") {
                         @Override
@@ -3505,7 +3687,7 @@ public class CameraActivity extends MyCanvas {
                             try {
 
                                 Utility.startTrim(file, defaultVideo, mStartPosition * 1000, mEndPosition * 1000, mOnVideoTrimListener);
-                                Log.d("defaultVideoqqqqqqqq",  defaultVideo+"   "+file);
+                                //Log.d("defaultVideoqqqqqqqq",  defaultVideo+"   "+file);
 
 
 
@@ -3527,7 +3709,6 @@ public class CameraActivity extends MyCanvas {
 
 
     }
-
 
 
 
@@ -3667,12 +3848,15 @@ public class CameraActivity extends MyCanvas {
         public void getResult(Uri uri) {
             mProgressDialog.dismiss();
 
-            Log.e("getResult", String.valueOf(uri));
+          //  Log.e("getResult", String.valueOf(uri));
 
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
+                    String ppppppth= getPath(uri);
+                   // Log.e("ppppppth",ppppppth);
 
                     edit_videolayout.setVisibility(View.VISIBLE);
                     videoView.setVisibility(View.VISIBLE);
@@ -3680,17 +3864,21 @@ public class CameraActivity extends MyCanvas {
                     captureMedia.setVisibility(View.GONE);
                     camera_save_control.setVisibility(View.VISIBLE);
                     camera_edit_control.setVisibility(View.INVISIBLE);
-                    videoView.setVideoURI(uri);
+//                    videoView.setVideoURI(uri);
                     camera_upload_edit.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(CameraActivity.this, PreviewActivity.class);
+                    intent.putExtra("path", "/data/user/0/com.vasmash.va_smash/files/VA_Smash/Smash.mp4");
+                    intent.putExtra("Speed", speed_value);
 
-                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mp.setLooping(true);
-                        }
-                    });
-                    videoView.start();
-                    preview.setVisibility(View.INVISIBLE);
+                    startActivity(intent);
+//                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                        @Override
+//                        public void onPrepared(MediaPlayer mp) {
+//                            mp.setLooping(true);
+//                        }
+//                    });
+//                    videoView.start();
+//                    sampleGLView.setVisibility(View.INVISIBLE);
                     setStickerView(1);
 
                 }
@@ -3765,6 +3953,7 @@ public class CameraActivity extends MyCanvas {
             ((FrameLayout) findViewById(R.id.wrap_view)).removeView(sampleGLView);
             sampleGLView = null;
         }
+
     }
 
 
@@ -3810,7 +3999,7 @@ public class CameraActivity extends MyCanvas {
 
                     @Override
                     public void onError(Exception exception) {
-                        Log.e("GPUCameraRecorder", exception.toString());
+                        //Log.e("GPUCameraRecorder", exception.toString());
                     }
 
                     @Override
@@ -3879,7 +4068,7 @@ public class CameraActivity extends MyCanvas {
                 }
             }
         } catch (GLException e) {
-            Log.e("CreateBitmap", "createBitmapFromGLSurface: " + e.getMessage(), e);
+            //Log.e("CreateBitmap", "createBitmapFromGLSurface: " + e.getMessage(), e);
             return null;
         }
 
@@ -3949,7 +4138,7 @@ public class CameraActivity extends MyCanvas {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                        //Log.d("Response", response.toString());
 
 //                        viewDialog.hideDialog();
 
@@ -3974,8 +4163,10 @@ public class CameraActivity extends MyCanvas {
 
 
 
+/*
                                     Log.d("Response", "createddateL:::" + categ);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -3999,7 +4190,7 @@ public class CameraActivity extends MyCanvas {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -4073,4 +4264,118 @@ public class CameraActivity extends MyCanvas {
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
+
+
+
+    private boolean append() {
+        final ProgressDialog progressDialog=new ProgressDialog(CameraActivity.this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+
+                        progressDialog.setMessage("Please wait..");
+                        progressDialog.show();
+                    }
+                });
+
+                ArrayList<String> video_list=new ArrayList<>();
+                for (int i=0;i<videopaths.size();i++){
+
+                    File file=new File(videopaths.get(i));
+                    if(file.exists()) {
+
+                        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                        retriever.setDataSource(CameraActivity.this, Uri.fromFile(file));
+                        String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+                        boolean isVideo = "yes".equals(hasVideo);
+
+                        if (isVideo && file.length() > 3000) {
+                            //Log.d("resp", videopaths.get(i));
+                            video_list.add(videopaths.get(i));
+                        }
+                    }
+                }
+
+
+
+                try {
+
+                    Movie[] inMovies = new Movie[video_list.size()];
+
+                    for (int i=0;i<video_list.size();i++){
+
+                        inMovies[i]= MovieCreator.build(video_list.get(i));
+                    }
+
+
+                    List<Track> videoTracks = new LinkedList<Track>();
+                    List<Track> audioTracks = new LinkedList<Track>();
+                    for (Movie m : inMovies) {
+                        for (Track t : m.getTracks()) {
+                            if (t.getHandler().equals("soun")) {
+                                audioTracks.add(t);
+                            }
+                            if (t.getHandler().equals("vide")) {
+                                videoTracks.add(t);
+                            }
+                        }
+                    }
+                    Movie result = new Movie();
+                    if (audioTracks.size() > 0) {
+                        result.addTrack(new AppendTrack(audioTracks.toArray(new Track[audioTracks.size()])));
+                    }
+                    if (videoTracks.size() > 0) {
+                        result.addTrack(new AppendTrack(videoTracks.toArray(new Track[videoTracks.size()])));
+                    }
+
+                    Container out = new DefaultMp4Builder().build(result);
+
+
+
+                    String outputFilePath=defaultVideo;
+
+
+                    FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
+                    out.writeContainer(fos.getChannel());
+                    fos.close();
+
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            progressDialog.dismiss();
+
+//                            if(camera_sounds.getText().toString().equals("sounds  "))
+//                                Merge_withAudio();
+//                            else {
+
+                            Intent intent = new Intent(CameraActivity.this, PreviewActivity.class);
+                            intent.putExtra("path", defaultVideo);
+                            intent.putExtra("Speed", speed_value);
+                            startActivity(intent);
+                            finish();
+
+//                            }
+
+                        }
+                    });
+
+
+
+                } catch (Exception e) {
+
+                }
+            }
+        }).start();
+
+
+
+        return true;
+    }
+
+
+
+
 }

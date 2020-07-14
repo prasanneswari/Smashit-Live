@@ -82,13 +82,13 @@ public class AllTransactions extends Fragment {
 
 
         int tabname = getArguments().getInt("tabcount");
-        Log.d("tabnameee",":::::"+both.get(tabname));
+       // Log.d("tabnameee",":::::"+both.get(tabname));
 
         String values=both.get(tabname);
 
         for (int i = 0; i< both.size(); i++){
             if (values.equals(both.get(i))){
-                Log.d("catnameL.get(i)",":::"+both.get(i));
+                //Log.d("catnameL.get(i)",":::"+both.get(i));
                 if (both.get(i).equals("All")){
                     jsonalltransactions(getalltransactions_url);
                 }else if (both.get(i).equals("Paid")){
@@ -108,13 +108,13 @@ public class AllTransactions extends Fragment {
     private void jsonalltransactions(String getalltransactions_url) {
         loader();
 
-        Log.d("jsonParseuser", "all transactions " + getalltransactions_url);
+       // Log.d("jsonParseuser", "all transactions " + getalltransactions_url);
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, getalltransactions_url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("JSONSendtransa", "---" + response);
+                        //Log.d("JSONSendtransa", "---" + response);
                         animationView.cancelAnimation();
                         animationView.setVisibility(View.GONE);
 
@@ -124,7 +124,7 @@ public class AllTransactions extends Fragment {
 
 
                             for (int j = 0; j < response.length() ; j++ ) {
-                                Log.d("lengtharayyy", ":::" + j);
+                                //Log.d("lengtharayyy", ":::" + j);
 
                                 ModelTransaction transaction=new ModelTransaction();
                                 JSONObject jItem = null;
@@ -140,15 +140,15 @@ public class AllTransactions extends Fragment {
                                     Date localdate = dateFormat.parse(createdDate);
                                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
                                     String dateStr = formatter.format(localdate);
-                                    Log.d("amountr@@@@", amount);
+                                   // Log.d("amountr@@@@", amount);
                                     String datesplitdep = dateStr.substring(0,10);
-                                    Log.d("transaction", "date" + datesplitdep);
+                                   // Log.d("transaction", "date" + datesplitdep);
 
 
                                     if (jItem.has("userId")) {
                                         JSONArray userId = jItem.getJSONArray("userId");
                                         for (int k = 0; k < userId.length(); k++) {
-                                            Log.d("lengtharakkk", ":::" + k);
+                                           // Log.d("lengtharakkk", ":::" + k);
 
                                             JSONObject useritems = null;
                                             try {
@@ -184,7 +184,7 @@ public class AllTransactions extends Fragment {
                                     if (jItem.has("toId")) {
                                         JSONArray userId = jItem.getJSONArray("toId");
                                         for (int k = 0; k < userId.length(); k++) {
-                                            Log.d("lengtharakkk", ":::" + k);
+                                           // Log.d("lengtharakkk", ":::" + k);
 
                                             JSONObject useritems = null;
                                             try {
@@ -260,7 +260,7 @@ public class AllTransactions extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                      //  Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();

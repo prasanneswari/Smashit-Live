@@ -44,7 +44,7 @@ public class Sounds_Cate_Adapter extends RecyclerView.Adapter<Sounds_Cate_Adapte
         holder.itemView.setTag(personUtils11.get(position));
 
         Sound_catemodel pu = personUtils11.get(position);
-        Log.e("filter",pu.getSound_cate()+" "+pu.getSound_code()+" "+pu.isSelected());
+        //Log.e("filter",pu.getSound_cate()+" "+pu.getSound_code()+" "+pu.isSelected());
         holder.catename.setText(pu.getSound_cate());
 
 
@@ -63,7 +63,7 @@ public class Sounds_Cate_Adapter extends RecyclerView.Adapter<Sounds_Cate_Adapte
                 Sound_catemodel model = personUtils11.get(position);
                 code =pu.getSound_code();
 
-                Log.e("filter",code);
+               // Log.e("filter",code);
 
                 personUtils11.get(position).setSelected(true);
 

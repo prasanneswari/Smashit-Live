@@ -38,11 +38,11 @@ public class AllTransactionsTab extends AppCompatActivity {
         addtrndins.add("Receive");
         both = new ArrayList(addtrndins);
        // both.addAll(catnameL);
-        Log.d("both111",":::"+both);
+       // Log.d("both111",":::"+both);
 
 
         for (int k = 0; k < both.size(); k++) {
-            Log.d("lengthhh",":::"+both.size());
+           // Log.d("lengthhh",":::"+both.size());
             tabLayout.addTab(tabLayout.newTab().setText(both.get(k)));
         }
 

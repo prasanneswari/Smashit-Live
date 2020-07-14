@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -52,6 +53,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -179,9 +182,23 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                         if (mStickerListener != null) {
 
                         }
-                        mStickerListener.onStickerClick(
-                                BitmapFactory.decodeFile(sticker_model.getStickerurl()));
-                        dismiss();
+                        try {
+                            //URL url = new URL(stickerurl.get(getAdapterPosition()).getStickerurl());
+                            BitmapDrawable drawable = (BitmapDrawable) imgSticker.getDrawable();
+                            Bitmap bitmap = drawable.getBitmap();
+                            if(bitmap!=null){
+                               // Log.e("imgSticker", String.valueOf(bitmap));
+                                //  Bitmap bitmapimg= BitmapFactory.decodeFile(.getPath());
+                                mStickerListener.onStickerClick(bitmap);
+                                dismiss();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+
                     }
                 });
             }
@@ -216,7 +233,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("soundresponse1", response.toString());
+                       // Log.d("soundresponse1", response.toString());
 
 //                        sounds_listview = (ListView) layout.findViewById(R.id.sounds_listview);
 
@@ -238,8 +255,10 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                     Sound_catemodel.setSelected(sel);
                                     personUtils12.add(Sound_catemodel);
 
+/*
                                     Log.d("sticker", "createddateL1:::" + personUtils12);
                                     Log.d("sticker", "sticker:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -252,7 +271,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                 @Override
                                 public void onStickercateClickListener(Sound_catemodel code) {
                                     String sticker_cate_code=code.getSound_code();
-                                    Log.e("sticker_cate_codevideo",sticker_cate_code);
+                                   // Log.e("sticker_cate_codevideo",sticker_cate_code);
                                     product(sticker_cate_code);
                                 }
                             });
@@ -282,7 +301,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                      //  Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -313,7 +332,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
 
     public void stickerlist(String stickerid) {
 //        spinner2.setVisibility(View.VISIBLE);
-        Log.d("stickerParseuser1", "store data1" + APIs.Stickerslist+stickerid);
+      //  Log.d("stickerParseuser1", "store data1" + APIs.Stickerslist+stickerid);
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         // prepare the Request
@@ -322,7 +341,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("stickerresponse", response.toString());
+                       // Log.d("stickerresponse", response.toString());
 
 //                        sounds_listview = (ListView) layout.findViewById(R.id.sounds_listview)
                         stickerurl = new ArrayList<>();
@@ -337,7 +356,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                     JSONObject employee = response.getJSONObject(i);
                                     String iii=employee.getString("stickers");
 
-                                    Log.d("iii", "createddateL:::" + iii);
+                                   // Log.d("iii", "createddateL:::" + iii);
                                     JSONArray js=new JSONArray(iii);
 
                                     for(int z = 0; z < js.length(); z++)
@@ -355,8 +374,10 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                         stickerurl.add(sticker_model);
 
 
+/*
                                         Log.d("sticker2", "createddateL:::" + stickerurl);
                                         Log.d("sticker2", "soundlst:::" + _id + name);
+*/
                                     }
 
                                 } catch (JSONException e) {
@@ -385,7 +406,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -420,7 +441,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
 //        viewDialog.showDialog();
 
 
-        Log.d("jsonParseuser", "store data" + vastore_userdata);
+       // Log.d("jsonParseuserstickers", "stickers" + vastore_userdata);
 
 
         // prepare the Request
@@ -432,7 +453,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("message", String.valueOf(response));
+                       // Log.e("message", String.valueOf(response));
                         try {
 
 
@@ -457,8 +478,10 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                         Sound_catemodel.setSelected(sel);
                                         personUtils12.add(Sound_catemodel);
 
+/*
                                         Log.d("sticker", "createddateL1:::" + personUtils12);
                                         Log.d("sticker", "sticker:::" + _id + name);
+*/
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -471,7 +494,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                     @Override
                                     public void onStickercateClickListener(Sound_catemodel code) {
                                         String sticker_cate_code=code.getSound_code();
-                                        Log.e("sticker_cate_codevideo",sticker_cate_code);
+                                       // Log.e("sticker_cate_codevideo",sticker_cate_code);
                                         product(sticker_cate_code);
                                     }
                                 });
@@ -537,7 +560,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
 //        viewDialog.showDialog();
 
 
-        Log.d("stickers", "stickers" + APIs.Stickerslist);
+       // Log.d("stickers", "stickers" + APIs.Stickerslist);
 
         // prepare the Request
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -548,7 +571,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("message", String.valueOf(response));
+                       // Log.e("message", String.valueOf(response));
                         try {
 
 
@@ -559,7 +582,7 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                             if (jsonArray.length() != 0) {
                                 stickerurl = new ArrayList<>();
                                 for (int j = 0; j < jsonArray.length() ; j++ ) {
-                                    Log.d("lengtharayyy", ":::" + j);
+                                   // Log.d("lengtharayyy", ":::" + j);
 
                                     JSONObject stik = jsonArray.getJSONObject(j);
                                     JSONArray jsonArraystickers = stik.getJSONArray("stickers");
@@ -578,8 +601,10 @@ public class StickerBSFragment extends BottomSheetDialogFragment {
                                         stickerurl.add(sticker_model);
 
 
+/*
                                         Log.d("sticker2", "createddateL:::" + stickerurl);
                                         Log.d("sticker2", "soundlst:::" + _id + name);
+*/
 
                                     }
                                     StickerAdapter stickerAdapter = new StickerAdapter(getActivity(), stickerurl);

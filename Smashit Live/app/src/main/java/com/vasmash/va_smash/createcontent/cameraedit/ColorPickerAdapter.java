@@ -45,7 +45,7 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         buildColorPickerView(holder.colorPickerView, colorPickerColors.get(position));
-        Log.e("color", String.valueOf(colorPickerColors.get(position)));
+        //Log.e("color", String.valueOf(colorPickerColors.get(position)));
     }
 
     @Override

@@ -176,7 +176,7 @@ public class PelopleFragment extends Fragment {
 
     public void searchapi(String homeapi_url){
 
-        Log.d("search api::::", homeapi_url);
+        //Log.d("search api::::", homeapi_url);
         model = new ArrayList<>();
         searchindividualmodel = new ArrayList<>();
         userfollowingL = new ArrayList<>();
@@ -195,7 +195,7 @@ public class PelopleFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Response searchall", response.toString());
+                      //  Log.d("Response searchall", response.toString());
 
                         if (response.length() != 0) {
                             try {
@@ -263,12 +263,12 @@ public class PelopleFragment extends Fragment {
 
                                  if (employee.has("userId")) {
                                      JSONObject nameobj = employee.getJSONObject("userId");
-                                     Log.d("nameobj", "::::" + nameobj);
+                                    // Log.d("nameobj", "::::" + nameobj);
                                      String username = nameobj.getString("name");
                                      String homeprofilePic = nameobj.getString("profilePic");
                                      String userid = nameobj.getString("_id");
 
-                                     Log.d("userid11111", "::::" + userid);
+                                     //Log.d("userid11111", "::::" + userid);
                                      searchhm.setUsername(username);
                                      searchhm.setProfilepic(homeprofilePic);
                                      searchhm.setUserid(userid);
@@ -282,7 +282,7 @@ public class PelopleFragment extends Fragment {
 
                                         if (employee.has("soundId")) {
                                             JSONArray sounds = employee.getJSONArray("soundId");
-                                            Log.d("soundsss","::::"+sounds);
+                                           // Log.d("soundsss","::::"+sounds);
                                             for (int k1 = 0; k1 < sounds.length(); k1++) {
                                                 JSONObject soundsobj = sounds.getJSONObject(k1);
                                                 if(soundsobj.has("_id")) {
@@ -337,10 +337,18 @@ public class PelopleFragment extends Fragment {
 
                                             Model_userfollow_unfollow userfollow_unfollow = new Model_userfollow_unfollow();
 
-                                            userfollow_unfollow.setUserpic(usersdata.getString("profilePic"));
-                                            userfollow_unfollow.setName(usersdata.getString("name"));
-                                            userfollow_unfollow.setUsersearchid(usersdata.getString("_id"));
-                                            userfollow_unfollow.setFollowinguser(usersdata.getString("isFollowing"));
+                                            if (usersdata.has("profilePic")) {
+                                                userfollow_unfollow.setUserpic(usersdata.getString("profilePic"));
+                                            }
+                                            if (usersdata.has("name")) {
+                                                userfollow_unfollow.setName(usersdata.getString("name"));
+                                            }
+                                            if (usersdata.has("_id")) {
+                                                userfollow_unfollow.setUsersearchid(usersdata.getString("_id"));
+                                            }
+                                            if (usersdata.has("isFollowing")) {
+                                                userfollow_unfollow.setFollowinguser(usersdata.getString("isFollowing"));
+                                            }
 
                                             userfollowingL.add(userfollow_unfollow);
                                         }
@@ -368,13 +376,20 @@ public class PelopleFragment extends Fragment {
                                             if (sounddata.has("name")) {
                                                 songdata.setSongusername(sounddata.getString("name"));
                                             }
-                                            songdata.setSongurl(sounddata.getString("url"));
-                                            songdata.setSongid(sounddata.getString("_id"));
+                                            if (sounddata.has("url")) {
+                                                songdata.setSongurl(sounddata.getString("url"));
+                                            }
+                                            if (sounddata.has("_id")) {
+                                                songdata.setSongid(sounddata.getString("_id"));
+                                            }
+                                            if (sounddata.has("posts")) {
+                                                songdata.setSongviews(sounddata.getString("posts"));
+                                            }
                                             boolean sel = false;
                                             songdata.setSelected(sel);
-                                            songdata.setSongduration("0.43");
-                                            songdata.setSongviews("10");
-
+                                            if (sounddata.has("duration")) {
+                                                songdata.setSongduration(sounddata.getString("duration"));
+                                            }
                                             if (sounddata.has("userId")) {
                                                 JSONObject songobj = sounddata.getJSONObject("userId");
                                                 songdata.setSongusername(songobj.getString("name"));
@@ -400,8 +415,12 @@ public class PelopleFragment extends Fragment {
                                         for (int i = 0; i < hashtagsobj.length(); i++) {
                                             JSONObject hashtagdata = hashtagsobj.getJSONObject(i);
                                             Model_Searchlatest userhashags = new Model_Searchlatest();
-                                            userhashags.setHashtagsname(hashtagdata.getString("name"));
-                                            userhashags.setHashtagsviews("10");
+                                            if (hashtagdata.has("name")) {
+                                                userhashags.setHashtagsname(hashtagdata.getString("name"));
+                                            }
+                                            if (hashtagdata.has("count")) {
+                                                userhashags.setHashtagsviews(hashtagdata.getString("count"));
+                                            }
                                             userhashtagL.add(userhashags);
                                         }
                                         LinearLayoutManager layoutfollow = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -436,7 +455,7 @@ public class PelopleFragment extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                     //   Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

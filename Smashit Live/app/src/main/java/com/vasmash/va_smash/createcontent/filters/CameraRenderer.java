@@ -59,9 +59,7 @@ import javax.microedition.khronos.egl.EGLSurface;
 
 
 
-/**
- * @author nekocode (nekocode.cn@gmail.com)
- */
+
 public class CameraRenderer implements Runnable, TextureView.SurfaceTextureListener {
     private static final String TAG = "CameraRenderer";
     private static final int EGL_OPENGL_ES2_BIT = 4;
@@ -258,7 +256,7 @@ public class CameraRenderer implements Runnable, TextureView.SurfaceTextureListe
         if (eglSurface == null || eglSurface == EGL10.EGL_NO_SURFACE) {
             int error = egl10.eglGetError();
             if (error == EGL10.EGL_BAD_NATIVE_WINDOW) {
-                Log.e(TAG, "eglCreateWindowSurface returned EGL10.EGL_BAD_NATIVE_WINDOW");
+               // Log.e(TAG, "eglCreateWindowSurface returned EGL10.EGL_BAD_NATIVE_WINDOW");
                 return;
             }
             throw new RuntimeException("eglCreateWindowSurface failed " +

@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.vasmash.va_smash.LoadingClass.ViewDialog;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.SearchClass.Adapters.Adapter_TradingTabs;
 import com.vasmash.va_smash.SearchClass.ModelClass.Model_Trading;
@@ -69,21 +70,21 @@ public class ProfileActivity extends AppCompatActivity {
     public static ArrayList<String> fileL;
 
     private RecyclerView recyclerView,likedlist;
-    private Adapter_TradingTabs mAdapter,createdadapter;
+    public static Adapter_TradingTabs mAdapterlikes,createdadapter;
     ImageView profile_image,displayimg;
     TextView followingclick,followersclick,coinname,likes_count,craeatedcount,profile_username,following_count,follower_count,profilewallet,created,liked;
     String token,backprofile="null";
-    LinearLayout walletbtn,profilelay,displayimglay;
+    LinearLayout walletbtn,profilelay;
     private Toolbar toolbar;
     View crateimg,likedimg;
 
     private RequestQueue mQueue;
 
-    String countryCode,username="null",userimg="null",mobile,email,contryid,walletamount,contryname,city,dateofbirth,usercreated,totalLikes;
+    String countryCode,username="null",firstName="null",lastName="null",userimg="null",mobile,email,contryid,walletamount,contryname,city,dateofbirth,usercreated,totalLikes;
     int gender;
     //this is the loader animationview.
-    // ViewDialog viewDialog;
-    LottieAnimationView animationView;
+     ViewDialog viewDialog;
+    //LottieAnimationView animationView;
 
     String likeusername="null",likeprofilePic="null",likeuserid="null",follower,follewing;
     static public String createvideosclick="null";
@@ -94,12 +95,10 @@ public class ProfileActivity extends AppCompatActivity {
     int page_no;
     private boolean loading;
     ProgressBar p_bar;
-    boolean displayclick=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         profile_image=(ImageView)findViewById(R.id.profile_image);
         likes_count=(TextView) findViewById(R.id.likes_count);
         craeatedcount=findViewById(R.id.cratedcount);
@@ -117,11 +116,10 @@ public class ProfileActivity extends AppCompatActivity {
         followersclick=findViewById(R.id.followersclick);
         followingclick=findViewById(R.id.followingclick);
         profilelay=findViewById(R.id.profilelay);
-        displayimglay=findViewById(R.id.displayimglay);
         displayimg=findViewById(R.id.displayimg);
 
-        //viewDialog = new ViewDialog(ProfileActivity.this);
-        animationView = findViewById(R.id.animation_view_1);
+        viewDialog = new ViewDialog(ProfileActivity.this);
+        //animationView = findViewById(R.id.animation_view_1);
         p_bar=findViewById(R.id.p_bar);
 
         setSupportActionBar(toolbar);
@@ -129,10 +127,8 @@ public class ProfileActivity extends AppCompatActivity {
         try
         {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         }
         catch (NullPointerException e){}
-
 
         mQueue = Volley.newRequestQueue(this);
         SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(this);
@@ -219,20 +215,25 @@ public class ProfileActivity extends AppCompatActivity {
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayclick=true;
-                profilelay.setVisibility(View.GONE);
-                displayimglay.setVisibility(View.VISIBLE);
-                if (!backprofile.equals("null")) {
-                    Picasso.with(ProfileActivity.this).load(backprofile).placeholder(R.drawable.uploadpictureold).into(displayimg);
-                    Log.d("strdit", ":::" + backprofile);
-                }else {
-                    Log.d("elsepic", ":::" + backprofile);
-                    Picasso.with(ProfileActivity.this).load(userimg).placeholder(R.drawable.uploadpictureold).into(displayimg);
-                }
+                Intent intent = new Intent(ProfileActivity.this, Profile_Fragment.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("username",username);
+                intent.putExtra("firstName",firstName);
+                intent.putExtra("lastName",lastName);
+                intent.putExtra("userimg",userimg);
+                intent.putExtra("mobile",mobile);
+                intent.putExtra("countryCode",countryCode);
+                intent.putExtra("email",email);
+                intent.putExtra("gender",gender);
+                intent.putExtra("contryid",contryid);
+                intent.putExtra("dob",dateofbirth);
+                intent.putExtra("contryname",contryname);
+                intent.putExtra("city",city);
+                //startActivity(intent);
+                startActivityForResult(intent, 1);
 
             }
         });
-
     }
     public void createdpagination(){
         searchindividualmodel = new ArrayList<>();
@@ -273,21 +274,21 @@ public class ProfileActivity extends AppCompatActivity {
                     visibleItemCount11 = gridLayoutManager.getChildCount();
                     totalItemCount11 = gridLayoutManager.getItemCount();
                     pastVisibleItems11 = gridLayoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                   // Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
 
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
+                        //Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
                         if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == searchindividualmodel.size()-1){
                             loading11 = true;
                             loading=true;
-                            jsongetvastore(usercreated_url+"?limit=10&skip="+searchindividualmodel.size());
+                            jsongetvastore(usercreated_url+"?skip="+searchindividualmodel.size());
                         }
                     }
                 }
             }
         });
-        jsongetvastore(usercreated_url+"?limit=10&skip=0");
+        jsongetvastore(usercreated_url+"?skip=0");
     }
 
     public void likedrecyclar(){
@@ -303,8 +304,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         // likedlist.setLayoutManager(new GridLayoutManager(ProfileActivity.this, 3));
 
-        mAdapter = new Adapter_TradingTabs(ProfileActivity.this, searchindividualmodel,fileL);
-        likedlist.setAdapter(mAdapter);
+        mAdapterlikes = new Adapter_TradingTabs(ProfileActivity.this, searchindividualmodel,fileL);
+        likedlist.setAdapter(mAdapterlikes);
         loading11 = false;
         loading=false;
 
@@ -330,22 +331,22 @@ public class ProfileActivity extends AppCompatActivity {
                     visibleItemCount11 = gridLayoutManager.getChildCount();
                     totalItemCount11 = gridLayoutManager.getItemCount();
                     pastVisibleItems11 = gridLayoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                   // Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
 
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
+                       // Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
                         if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == searchindividualmodel.size()-1){
                             loading11 = true;
                             loading=true;
-                            jsonliked(usersliked_url+"?limit=10&skip="+searchindividualmodel.size());
+                            jsonliked(usersliked_url+"?skip="+searchindividualmodel.size());
 
                         }
                     }
                 }
             }
         });
-        jsonliked(usersliked_url+"?limit=10&skip=0");
+        jsonliked(usersliked_url+"?skip=0");
 
     }
 
@@ -354,22 +355,27 @@ public class ProfileActivity extends AppCompatActivity {
         if (loading){
             p_bar.setVisibility(View.VISIBLE);
         }else {
-            loader();
+            //loader();
+            viewDialog.showDialog();
         }
 
-        Log.d("jsonParseuser", "profile data" + usercreated_url);
+        //Log.d("jsonParseuser", "profile data" + usercreated_url);
         // prepare the Request
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, usercreated_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responsestoredata0000", response.toString());
+                        //Log.d("Responsestoredata0000", response.toString());
                         if (loading){
                             p_bar.setVisibility(View.GONE);
                         }else {
+/*
                             animationView.cancelAnimation();
                             animationView.setVisibility(View.GONE);
+*/
+                            viewDialog.hideDialog();
+
                         }
 
                         if (response.length() != 0) {
@@ -380,7 +386,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     JSONArray object = response.getJSONArray("userCreatedPostsList");
                                     if (object.length() != 0){
                                         for (int j = 0; j < object.length(); j++) {
-                                            Log.d("lengtharayyy", ":::" + j);
+                                           // Log.d("lengtharayyy", ":::" + j);
                                             JSONObject lkks = null;
                                             createvideosclick = "true";
                                             lkks = object.getJSONObject(j);
@@ -391,6 +397,12 @@ public class ProfileActivity extends AppCompatActivity {
                                             } else {
                                                 searchhm.setId("");
                                             }
+                                            if (lkks.has("visibility")) {
+                                                searchhm.setVisibility(lkks.getString("visibility"));
+                                            } else {
+                                                searchhm.setVisibility("");
+                                            }
+
                                             if (lkks.has("file")) {
                                                 searchhm.setImage(lkks.getString("file"));
                                                 fileL.add(lkks.getString("file"));
@@ -432,7 +444,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             if (lkks.has("description")) {
                                                 String description = lkks.getString("description");
                                                 searchhm.setDescription(description);
-                                                Log.d("descriptionnnprofii", ":::" + description);
+                                               // Log.d("descriptionnnprofii", ":::" + description);
                                             } else {
                                                 searchhm.setDescription("");
                                             }
@@ -452,7 +464,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             }
                                             if (lkks.has("soundId")) {
                                                 JSONArray sounds = lkks.getJSONArray("soundId");
-                                                Log.d("soundsss","::::"+sounds);
+                                               // Log.d("soundsss","::::"+sounds);
                                                 for (int k1 = 0; k1 < sounds.length(); k1++) {
                                                     JSONObject soundsobj = sounds.getJSONObject(k1);
                                                     if(soundsobj.has("_id")) {
@@ -513,14 +525,18 @@ public class ProfileActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
                                                 p_bar.setVisibility(View.GONE);
                                             }else {
+/*
                                                 animationView.cancelAnimation();
                                                 animationView.setVisibility(View.GONE);
+*/
+                                                viewDialog.hideDialog();
+
                                             }
 
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -538,14 +554,18 @@ public class ProfileActivity extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             if (loading){
                                                 p_bar.setVisibility(View.GONE);
                                             }else {
+/*
                                                 animationView.cancelAnimation();
                                                 animationView.setVisibility(View.GONE);
+*/
+                                                viewDialog.hideDialog();
+
                                             }
 
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -611,8 +631,11 @@ public class ProfileActivity extends AppCompatActivity {
                 if (loading){
                     p_bar.setVisibility(View.GONE);
                 }else {
+/*
                     animationView.cancelAnimation();
                     animationView.setVisibility(View.GONE);
+*/
+                    viewDialog.hideDialog();
                 }
 
             }
@@ -620,11 +643,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void jsonliked(String profiledetails_url) {
-        Log.d("jsonParseuser", "profile data" + profiledetails_url);
+       // Log.d("jsonParseuser", "profile data" + profiledetails_url);
         if (loading){
             p_bar.setVisibility(View.VISIBLE);
         }else {
-            loader();
+            viewDialog.showDialog();
+
+            // loader();
         }
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, profiledetails_url, null,
@@ -632,16 +657,18 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responliked0000", response.toString());
+                       // Log.d("Responliked0000", response.toString());
                         if (loading){
                             p_bar.setVisibility(View.GONE);
                         }else {
+                            viewDialog.hideDialog();
+/*
                             animationView.cancelAnimation();
                             animationView.setVisibility(View.GONE);
+*/
                         }
 
                         createvideosclick="false";
-
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
                             for (int j = 0; j < response.length() ; j++ ) {
@@ -710,7 +737,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             if (likeobj.has("thumb")) {
                                                 searchhm.setGifimg(likeobj.getString("thumb"));
-                                                Log.d("thumbs",":::"+likeobj.getString("thumb"));
+                                               // Log.d("thumbs",":::"+likeobj.getString("thumb"));
                                             } else {
                                                 searchhm.setGifimg(" ");
                                             }
@@ -723,7 +750,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             if (likeobj.has("soundId")) {
                                                 JSONArray sounds = likeobj.getJSONArray("soundId");
-                                                Log.d("soundsss","::::"+sounds);
+                                                //Log.d("soundsss","::::"+sounds);
                                                 for (int k1 = 0; k1 < sounds.length(); k1++) {
                                                     JSONObject soundsobj = sounds.getJSONObject(k1);
                                                     if(soundsobj.has("_id")) {
@@ -759,7 +786,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             searchindividualmodel.add(searchhm);
                                         }
-                                        mAdapter.notifyDataSetChanged();
+                                        mAdapterlikes.notifyDataSetChanged();
                                         loading11 = false;
 
                                     }
@@ -787,14 +814,17 @@ public class ProfileActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
                                                 p_bar.setVisibility(View.GONE);
                                             }else {
+                                                viewDialog.hideDialog();
+/*
                                                 animationView.cancelAnimation();
                                                 animationView.setVisibility(View.GONE);
+*/
                                             }
 
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -812,14 +842,17 @@ public class ProfileActivity extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             if (loading){
                                                 p_bar.setVisibility(View.GONE);
                                             }else {
+                                                viewDialog.hideDialog();
+/*
                                                 animationView.cancelAnimation();
                                                 animationView.setVisibility(View.GONE);
+*/
                                             }
 
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -884,8 +917,11 @@ public class ProfileActivity extends AppCompatActivity {
                 if (loading){
                     p_bar.setVisibility(View.GONE);
                 }else {
+                    viewDialog.hideDialog();
+/*
                     animationView.cancelAnimation();
                     animationView.setVisibility(View.GONE);
+*/
                 }
             }
         });
@@ -914,6 +950,8 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProfileActivity.this, Profile_Fragment.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("username",username);
+                intent.putExtra("firstName",firstName);
+                intent.putExtra("lastName",lastName);
                 intent.putExtra("userimg",userimg);
                 intent.putExtra("mobile",mobile);
                 intent.putExtra("countryCode",countryCode);
@@ -949,22 +987,21 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("profilfinish", ":::" +resultCode);
+        //Log.d("profilfinish", ":::" +resultCode);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                Log.d("s1111", ":::" + backprofile);
+                //Log.d("s1111", ":::" + backprofile);
                 backprofile = data.getStringExtra("editTextValue");
                 if (!backprofile.equals("null")) {
-                    Picasso.with(ProfileActivity.this).load(backprofile).placeholder(R.drawable.uploadpictureold).into(profile_image);
-                    Log.d("strdit", ":::" + backprofile);
+                    Picasso.with(ProfileActivity.this).load(backprofile).placeholder(R.drawable.uploadpiclight).into(profile_image);
+                    //Log.d("strdit", ":::" + backprofile);
                 }else {
-                    Log.d("elsepic", ":::" + backprofile);
-                    Picasso.with(ProfileActivity.this).load(userimg).placeholder(R.drawable.uploadpictureold).into(profile_image);
+                    //Log.d("elsepic", ":::" + backprofile);
+                    Picasso.with(ProfileActivity.this).load(userimg).placeholder(R.drawable.uploadpiclight).into(profile_image);
                 }
             }
         }
     }
-
     public void finishActivity(View v){
         if (countDownTimer != null) {
             countDownTimer.start();
@@ -986,19 +1023,13 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
-        if (displayclick==true){
-            displayimglay.setVisibility(View.GONE);
-            profilelay.setVisibility(View.VISIBLE);
-            displayclick=false;
-        }else {
             finish();
-        }
         return;
     }
 
 
     private void jsonParsegawallet() {
-        Log.d("jsonParseuser", "getprofile_url " + getprofile_url);
+        //Log.d("jsonParseuser", "getprofile_url " + getprofile_url);
         //  viewDialog.showDialog();
 
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, getprofile_url, null,
@@ -1007,7 +1038,7 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         //  viewDialog.hideDialog();
 
-                        Log.d("JSONgabal", "---" + response);
+                        //Log.d("JSONgabal", "---" + response);
 
                         if (response.length()!=0) {
                             try {
@@ -1022,15 +1053,21 @@ public class ProfileActivity extends AppCompatActivity {
                                     coinname.setText(symbol);
                                     profilewallet.setText(amount);
 */
-
                                     JSONObject ids = jItem.getJSONObject("_id");
                                     //String userid = ids.getString("userId");
                                     if (ids.has("username")) {
                                         username = ids.getString("username");
                                     }
+                                    if (ids.has("firstName")) {
+                                        firstName = ids.getString("firstName");
+                                    }
+                                    if (ids.has("lastName")) {
+                                        lastName = ids.getString("lastName");
+                                    }
+
                                     if (ids.has("profilePic")) {
                                         userimg = ids.getString("profilePic");
-                                        Picasso.with(ProfileActivity.this).load(userimg).placeholder(R.drawable.uploadpictureold).into(profile_image);
+                                        Picasso.with(ProfileActivity.this).load(userimg).placeholder(R.drawable.uploadpiclight).into(profile_image);
                                     }
                                     follower = ids.getString("followers");
                                     follewing = ids.getString("followings");
@@ -1050,7 +1087,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     }
                                     if (ids.has("gender")) {
                                         gender = ids.getInt("gender");
-                                        Log.d("gender111",":::"+gender);
+                                       // Log.d("gender111",":::"+gender);
                                     }
                                     if (ids.has("city")) {
                                         city = ids.getString("city");
@@ -1084,7 +1121,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         JSONObject contry = ids.getJSONObject("countryId");
                                         contryid = contry.getString("_id");
                                         contryname = contry.getString("name");
-                                        Log.e("contryname111", contryname);
+                                       // Log.e("contryname111", contryname);
                                     }
 
                                     if (ids.has("walletId")) {
@@ -1122,7 +1159,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -1199,6 +1236,7 @@ public class ProfileActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+/*
     public void loader(){
         //lotte loader
         animationView.setAnimation("data.json");
@@ -1206,5 +1244,6 @@ public class ProfileActivity extends AppCompatActivity {
         animationView.playAnimation();
         animationView.setVisibility(View.VISIBLE);
     }
+*/
 
 }

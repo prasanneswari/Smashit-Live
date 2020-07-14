@@ -8,10 +8,8 @@ import android.media.MediaMuxer;
 import android.util.Log;
 import android.util.Size;
 
-import com.daasuu.gpuv.composer.FillMode;
-import com.daasuu.gpuv.composer.FillModeCustomItem;
-import com.daasuu.gpuv.composer.Rotation;
-import com.daasuu.gpuv.egl.filter.GlFilter;
+
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.filter.GlFilter;
 
 import java.io.FileDescriptor;
 import java.io.IOException;

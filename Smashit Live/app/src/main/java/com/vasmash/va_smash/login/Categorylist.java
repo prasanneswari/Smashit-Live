@@ -92,15 +92,15 @@ public class Categorylist extends AppCompatActivity {
                 //String laungS=getintent.getStringExtra("laungarray");
                 String idS = getintent.getStringExtra("id");
 
-                Log.d("langarray laung","::"+langcodeL);
-                Log.d("catageriarray laung","::"+catcodeL);
+              //  Log.d("langarray laung","::"+langcodeL);
+              //  Log.d("catageriarray laung","::"+catcodeL);
 
                 String AddS = "{\"id\":\"" + idS + "\",\"firstName\":\"" + nameS + "\",\"lastName\":\"" + lastnameS + "\",\"password\":\"" + passS + "\",\"dob\":\"" + dateS + "\",\"gender\":\"" + genderS + "\",\"country\":\"" + countryS + "\",\"languages\":" + langcodeL + ",\"categories\":" + catcodeL + "}";
-                Log.d("jsnresponse pernonal", "---" + AddS);
+               // Log.d("jsnresponse pernonal", "---" + AddS);
                 JSONObject update;
                 try {
                     update = new JSONObject(AddS);
-                    Log.d("register", "---" + AddS);
+                   // Log.d("register", "---" + AddS);
                     viewDialog.showDialog();
                     updateregst(update);
                 } catch (JSONException ignored) {
@@ -118,7 +118,7 @@ public class Categorylist extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
                         viewDialog.hideDialog();
                         modelArrayList = new ArrayList<>();
 
@@ -136,8 +136,10 @@ public class Categorylist extends AppCompatActivity {
                                     modelArrayList.add(langu);
 
 
+/*
                                     Log.d("Response", "createddateL:::" + modelArrayList);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -163,7 +165,7 @@ public class Categorylist extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             viewDialog.hideDialog();
@@ -213,7 +215,7 @@ public class Categorylist extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                       // Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
                         try {
 
@@ -252,7 +254,7 @@ public class Categorylist extends AppCompatActivity {
                         case 400:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj1 = new JSONObject(body);
                                 if (obj1.has("errors")) {
                                     viewDialog.hideDialog();
@@ -275,7 +277,7 @@ public class Categorylist extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                              //  Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();

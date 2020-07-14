@@ -78,7 +78,7 @@ public class Wallet_Fragment extends Fragment {
     }
 
     private void jsonParsewallet() {
-        Log.d("jsonParseuser", "wallet " + wallet_url);
+       // Log.d("jsonParseuser", "wallet " + wallet_url);
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, wallet_url, null,
                 new Response.Listener<JSONArray>() {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class RequestOTP extends AppCompatActivity {
     long seconds;
     //this is the loader animationview
     ViewDialog viewDialog;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,24 +71,19 @@ public class RequestOTP extends AppCompatActivity {
         resendstop=findViewById(R.id.resnedstop);
         sch_RequestQueue = Volley.newRequestQueue(getApplicationContext());
         viewDialog = new ViewDialog(this);
+        pref = getApplicationContext().getSharedPreferences("loginid", 0);
 
 
         counter1 = new MyCount (3600000,1000);
         counter1.start();
 
-        Intent intent=getIntent();
-        clickid=intent.getStringExtra("id");
-        number=intent.getStringExtra("number");
+        if( getIntent().getExtras() != null) {
+            Intent intent = getIntent();
+            clickid = intent.getStringExtra("id");
+            number = intent.getStringExtra("number");
 
-        otptxt.setText("OTP sent to" + " " + number + " " + " Please check and enter");
-
-/*
-        if (number.length() < 9 || number.length() > 13){
-            otptxt.setText("OTP sent to" + " " + number + " " + " check your Phone");
-        }else {
-            otptxt.setText("OTP sent to" + " " + number + " " + " check your email");
+            otptxt.setText("OTP sent to" + " " + number + " " + " Please check and enter");
         }
-*/
         //this is the enter otp pin
         enterotp.setOnTextCompleteListener(new PinField.OnTextCompleteListener() {
             @Override
@@ -109,13 +106,13 @@ public class RequestOTP extends AppCompatActivity {
                 } else {
 
                     String loginS = "{\"id\":\"" + clickid + "\",\"otp\":\"" + otpenterd + "\"}";
-                    Log.d("jsnresponse loginotp", "---" + loginS);
+                  //  Log.d("jsnresponse loginotp", "---" + loginS);
                     String url=forgetotp_url;
                     JSONObject lstrmdt;
 
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                       // Log.d("jsnresponse....", "---" + loginS);
                         viewDialog.showDialog();
                         JSONSenderVolleylogin(lstrmdt, url);
 
@@ -136,13 +133,13 @@ public class RequestOTP extends AppCompatActivity {
 
 
                 String loginS = "{\"username\":\"" + number + "\"}";
-                Log.d("jsnresponse loginotp", "---" + loginS);
+               // Log.d("jsnresponse loginotp", "---" + loginS);
                 String url=resendotp_url;
                 JSONObject lstrmdt;
 
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     viewDialog.showDialog();
                     JSONSenderVolleylogin(lstrmdt, url);
 
@@ -154,29 +151,38 @@ public class RequestOTP extends AppCompatActivity {
     }
 
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url) {
-        Log.d("555555", "login" + url);
+       // Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                        //Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             if (response.has("message")){
                                 String id = response.getString("id");
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("id", id);
+                                editor.apply();
+
                                 String message=response.getString("message");
                                 // Toast.makeText(RequestOTP.this, message, Toast.LENGTH_SHORT).show();
-                                if (message.equals("Login OTP sent")){
-                                   // dialogbox(message);
-                                    popup(message);
+                                if (response.has("status")) {
+                                    String status = response.getString("status");
+                                    if (status.equals("1")) {
+                                        Intent i = new Intent(RequestOTP.this, SetNewPassword.class);
+                                        i.putExtra("otp", otpenterd);
+                                        i.putExtra("id", clickid);
+                                        startActivity(i);
+                                    } else if (status.equals("3")) {
+                                        Intent i = new Intent(RequestOTP.this, RegisterformActivity.class);
+                                        startActivity(i);
+                                        finish();
+                                    }
                                 }else {
-                                    Intent i = new Intent(RequestOTP.this, SetNewPassword.class);
-                                    i.putExtra("otp", otpenterd);
-                                    i.putExtra("id", clickid);
-                                    startActivity(i);
+                                    popup(message);
                                 }
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -196,7 +202,7 @@ public class RequestOTP extends AppCompatActivity {
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
 
                                 if (obj.has("errors")) {

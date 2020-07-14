@@ -14,8 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1">
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -134,7 +132,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:ems="10"
-                    android:hint="First Name"
+                    android:hint="@string/firstname"
                     android:visibility="visible"
                     android:textColor="@color/white"
                     android:singleLine="true"
@@ -151,14 +149,13 @@
                     android:layout_weight="0.5"
                     android:theme="@style/TextLabel"
                     >
-
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:ems="10"
-                        android:hint="Last Name"
+                        android:hint="@string/lastname"
                         android:visibility="visible"
                         android:textColor="@color/white"
                         android:singleLine="true"
@@ -184,7 +181,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
+                    android:layout_weight="0.4"
                     android:orientation="horizontal"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
@@ -202,7 +199,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.65"
+                    android:layout_weight="0.6"
                     android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -235,7 +232,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
+                    android:layout_weight="0.4"
                     android:orientation="vertical"
                    >
 
@@ -270,7 +267,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.65"
+                    android:layout_weight="0.6"
                     android:orientation="vertical">
                   <!--  <TextView
                         android:layout_width="wrap_content"
@@ -287,36 +284,52 @@
                         android:layout_gravity="left"
                         android:gravity="center"
                         >
-                        <ImageView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/femaleicon"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/malelight"
                             android:id="@+id/maleimg"
                             android:onClick="onRadioButtonClicked"
                             android:layout_gravity="center"
-
-
                             />
-                        <ImageView
+                        </LinearLayout>
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/maleicon"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/femalelight"
                             android:id="@+id/femaleimg"
                             android:onClick="onRadioButtonClicked"
-
                             />
-                        <ImageView
+                        </LinearLayout>
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:src="@drawable/transgendericon"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/otherlight"
                             android:id="@+id/otherimg"
                             android:onClick="onRadioButtonClicked"
-
                             />
-
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -369,9 +382,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TextLabel"
-
                 >
-
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -386,7 +397,6 @@
                     android:focusable="false"
                     android:fontFamily="@font/rubik"
                     app:backgroundTint="@color/hintcolor"
-
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

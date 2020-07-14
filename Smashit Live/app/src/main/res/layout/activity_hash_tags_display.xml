@@ -138,6 +138,15 @@
             android:id="@+id/hashtagslist">
         </androidx.recyclerview.widget.RecyclerView>
 
+            <ProgressBar
+                android:id="@+id/p_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:padding="10dp"
+                />
+
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"

@@ -56,7 +56,12 @@ public class Settings_Fragment extends AppCompatActivity {
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+               // signOut();
+                killerplyer();
+                Intent intent = new Intent(Settings_Fragment.this, TopNavigationview.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
     }

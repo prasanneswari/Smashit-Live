@@ -76,7 +76,7 @@ public class VideosFragment extends Fragment {
 
 
     public VideosFragment(String searchadaptertext, String searchtext) {
-        Log.d("searchtext",":::"+searchadaptertext);
+       // Log.d("searchtext",":::"+searchadaptertext);
         this.searchadaptertext=searchadaptertext;
         this.searchtext=searchtext;
     }
@@ -107,7 +107,7 @@ public class VideosFragment extends Fragment {
 
 
     private void searchapi(String homeapi_url){
-        Log.d("search api::::", homeapi_url);
+       // Log.d("search api::::", homeapi_url);
         model = new ArrayList<>();
         searchindividualmodel = new ArrayList<>();
         fileL=new ArrayList<>();
@@ -122,7 +122,7 @@ public class VideosFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response search", response.toString());
+                       // Log.d("Response search", response.toString());
                         createvideosclick="false";
 
                         if (response.length() != 0) {
@@ -189,12 +189,12 @@ public class VideosFragment extends Fragment {
 
                                         if (employee.has("userId")) {
                                             JSONObject nameobj=employee.getJSONObject("userId");
-                                            Log.d("nameobj","::::"+nameobj);
+                                           // Log.d("nameobj","::::"+nameobj);
                                             String username = nameobj.getString("name");
                                             String homeprofilePic = nameobj.getString("profilePic");
                                             String userid = nameobj.getString("_id");
 
-                                            Log.d("userid11111","::::"+userid);
+                                           // Log.d("userid11111","::::"+userid);
                                             searchhm.setUsername(username);
                                             searchhm.setProfilepic(homeprofilePic);
                                             searchhm.setUserid(userid);
@@ -207,7 +207,7 @@ public class VideosFragment extends Fragment {
                                         }
                                         if (employee.has("soundId")) {
                                             JSONArray sounds = employee.getJSONArray("soundId");
-                                            Log.d("soundsss","::::"+sounds);
+                                          //  Log.d("soundsss","::::"+sounds);
                                             for (int k1 = 0; k1 < sounds.length(); k1++) {
                                                 JSONObject soundsobj = sounds.getJSONObject(k1);
                                                 if(soundsobj.has("_id")) {
@@ -238,7 +238,7 @@ public class VideosFragment extends Fragment {
                                             searchhm.setSounduserid("");
                                         }
                                         searchindividualmodel.add(searchhm);
-                                        Log.d("enteringggg","::::"+searchindividualmodel);
+                                       // Log.d("enteringggg","::::"+searchindividualmodel);
 
                                     }
 
@@ -274,7 +274,7 @@ public class VideosFragment extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

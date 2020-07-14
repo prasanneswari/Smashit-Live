@@ -44,7 +44,7 @@ public class CountryCodeAdapter extends ArrayAdapter<Languages> {
         }
         countryName = (TextView) convertView.findViewById(R.id.country);
         code = convertView.findViewById(R.id.code);
-        Log.d("code", "::::" + customers.get(position).getLang_name());
+        //Log.d("code", "::::" + customers.get(position).getLang_name());
 
         countryName.setText(customer.getLang_code());
         code.setText(customer.getCallingcode());

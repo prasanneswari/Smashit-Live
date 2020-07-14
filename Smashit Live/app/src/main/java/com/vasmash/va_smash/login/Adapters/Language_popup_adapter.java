@@ -84,7 +84,7 @@ public class Language_popup_adapter extends BaseAdapter {
 
 
 
-        Log.e("adr",modelArrayList.get(position).getLang_name()+"  "+modelArrayList.get(position).getLang_code());
+        //Log.e("adr",modelArrayList.get(position).getLang_name()+"  "+modelArrayList.get(position).getLang_code());
 
         holder.checkBox.setTag(R.integer.btnplusview, convertView);
         holder.checkBox.setTag( position);
@@ -96,7 +96,7 @@ public class Language_popup_adapter extends BaseAdapter {
                 TextView name = (TextView) tempview.findViewById(R.id.lang_mod);
                 TextView ic = (TextView) tempview.findViewById(R.id.lang_mod);
                 Integer pos = (Integer)  holder.checkBox.getTag();
-                Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
 
                 if(modelArrayList.get(pos).getSelected()){
                     modelArrayList.get(pos).setSelected(false);

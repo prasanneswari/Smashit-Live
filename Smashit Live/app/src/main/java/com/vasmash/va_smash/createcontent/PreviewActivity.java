@@ -35,6 +35,7 @@ public class PreviewActivity extends AppCompatActivity {
     String defaultVideoout;
     ImageView preview_worng,preview_correct,preview_reverse;
     private ProgressDialog progressDialog;
+    String ffmpegapply="0";
     String reverse="0";
 
     @Override
@@ -46,6 +47,7 @@ public class PreviewActivity extends AppCompatActivity {
         preview_worng=findViewById(R.id.preview_worng);
         preview_reverse=findViewById(R.id.preview_reverse);
         progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
         loadFFMpegBinary();
 
         dir = new File(PreviewActivity.this.getFilesDir().getAbsolutePath(), "VA_Smash");
@@ -66,26 +68,28 @@ public class PreviewActivity extends AppCompatActivity {
 
         paths=getIntent().getStringExtra("path");
         speed= getIntent().getIntExtra("Speed",0);
-        Log.e("preview" , paths+" "+speed );
+        //Log.e("preview" , paths+" "+speed );
 
         if (speed == 1)
         {
-            String[] complexCommand = { "-y", "-i", paths, "-filter_complex", "[0:v]setpts=2.0*PTS[v];[0:a]atempo=0.5[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4", defaultVideoout};
+            String[] complexCommand = { "-y", "-i", paths, "-filter_complex", "[0:v]setpts=2.0*PTS[v];[0:a]atempo=0.5[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4","-preset", "ultrafast", defaultVideoout};
             execFFmpegBinary(complexCommand);
             progressDialog.show();
-            Log.e("preview" , "1"+" "+defaultVideoout);
+            //Log.e("preview" , "1"+" "+defaultVideoout);
+            ffmpegapply="1";
         }
         else if (speed == 2)
         {
             progressDialog.show();
-            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=4.0*PTS[v];[0:a]atempo=0.7[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4", defaultVideoout};
+            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=4.0*PTS[v];[0:a]atempo=0.7[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4","-preset", "ultrafast", defaultVideoout};
             execFFmpegBinary(complexCommand);
-            Log.e("preview" , "2"+" "+defaultVideoout);
+            //Log.e("preview" , "2"+" "+defaultVideoout);
+            ffmpegapply="1";
 
         }
         else if (speed == 3)
         {
-            Log.e("preview" , "3"+" "+defaultVideoout);
+           // Log.e("preview" , "3"+" "+paths);
             uri = Uri.parse(paths);
             previewvideo.setVisibility(View.VISIBLE);
             previewvideo.setVideoURI(uri);
@@ -100,17 +104,19 @@ public class PreviewActivity extends AppCompatActivity {
         }
         else if (speed == 4)
         {
-            Log.e("preview" , "4"+" "+defaultVideoout);
+           // Log.e("preview" , "4"+" "+defaultVideoout);
             progressDialog.show();
-            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4", defaultVideoout};
+            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4","-preset", "ultrafast", defaultVideoout};
             execFFmpegBinary(complexCommand);
+            ffmpegapply="1";
         }
         else if (speed == 5)
         {
-            Log.e("preview" , "5"+" "+defaultVideoout);
+           // Log.e("preview" , "5"+" "+defaultVideoout);
             progressDialog.show();
-            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=0.3*PTS[v];[0:a]atempo=2.0[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4", defaultVideoout};
+            String[] complexCommand = {"-y", "-i", paths, "-filter_complex", "[0:v]setpts=0.3*PTS[v];[0:a]atempo=2.0[a]", "-map", "[v]", "-map", "[a]", "-b:v", "2097k", "-r", "60", "-vcodec", "mpeg4","-preset", "ultrafast", defaultVideoout};
             execFFmpegBinary(complexCommand);
+            ffmpegapply="1";
         }
 
 
@@ -122,12 +128,12 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
                 progressDialog.show();
-                String command[] = { "-y", "-i", paths, "-vf", "reverse", "-af", "areverse", defaultVideoout};
+                String command[] = { "-y", "-i", paths, "-vf", "reverse", "-af", "areverse","-preset", "ultrafast", defaultVideoout};
                 execFFmpegBinary(command);
                 reverse="1";
+                ffmpegapply="1";
+                previewvideo.stopPlayback();
 
 
 
@@ -138,17 +144,28 @@ public class PreviewActivity extends AppCompatActivity {
         preview_correct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PreviewActivity.this, VideoEffectsActivity.class);
-                intent.putExtra("cam", "1");
-                intent.putExtra("path", defaultVideoout);
-                startActivity(intent);
+                if (ffmpegapply.equals("1")){
+                    Intent intent = new Intent(PreviewActivity.this, VideoEffectsActivity.class);
+                    intent.putExtra("cam", "1");
+                    intent.putExtra("path", defaultVideoout);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(PreviewActivity.this, VideoEffectsActivity.class);
+                    intent.putExtra("cam", "1");
+                    intent.putExtra("path", paths);
+                    startActivity(intent);
+                }
+
             }
         });
 
         preview_worng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(PreviewActivity.this, CameraActivity.class);
+
+                startActivity(intent);
             }
         });
 
@@ -156,10 +173,9 @@ public class PreviewActivity extends AppCompatActivity {
 
 
 
-
     private void execFFmpegBinary(final String[] command) {
 
-        Log.e("preview" , String.valueOf(command));
+       // Log.e("preview" , String.valueOf(command));
 
 
 
@@ -168,15 +184,15 @@ public class PreviewActivity extends AppCompatActivity {
             ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
                 @Override
                 public void onFailure(String s) {
-                    Log.d(TAG, "FAILED with output : " + s);
+                    //Log.d(TAG, "FAILED with output : " + s);
                 }
 
                 @Override
                 public void onSuccess(String s) {
 
                     progressDialog.hide();
-                    Log.d(TAG, "SUCCESS with output : " + s);
-                    if (reverse.equals("0")){
+                   // Log.d(TAG, "SUCCESS with output : " + s);
+                    if (ffmpegapply.equals("0")){
                         uri = Uri.parse(defaultVideoout);
                         previewvideo.setVisibility(View.VISIBLE);
                         previewvideo.setVideoURI(uri);
@@ -200,7 +216,10 @@ public class PreviewActivity extends AppCompatActivity {
                             }
                         });
                         previewvideo.start();
-                        preview_reverse.setImageDrawable(getResources().getDrawable(R.drawable.reverse_white));
+                        if (reverse.equals("1")){
+                            preview_reverse.setImageDrawable(getResources().getDrawable(R.drawable.reverse_white));
+
+                        }
 
                     }
 
@@ -209,27 +228,27 @@ public class PreviewActivity extends AppCompatActivity {
 
                 @Override
                 public void onProgress(String s) {
-                    Log.d(TAG, "Started command onProgress: ffmpeg " + command);
+                   // Log.d(TAG, "Started command onProgress: ffmpeg " + command);
 
                 }
 
                 @Override
                 public void onStart() {
-                    Log.d(TAG, "Started command onStart: ffmpeg " + command);
+                    //Log.d(TAG, "Started command onStart: ffmpeg " + command);
 
 
                 }
 
                 @Override
                 public void onFinish() {
-                    Log.d(TAG, "Finished command onFinish : ffmpeg " + command);
+                   // Log.d(TAG, "Finished command onFinish : ffmpeg " + command);
                     progressDialog.hide();
 
 
                 }
             });
         } catch (FFmpegCommandAlreadyRunningException e) {
-            Log.d(TAG, "Finished command : ffmpeg " + command);
+           // Log.d(TAG, "Finished command : ffmpeg " + command);
             progressDialog.hide();
         }
     }
@@ -237,7 +256,7 @@ public class PreviewActivity extends AppCompatActivity {
     private void loadFFMpegBinary() {
         try {
             if (ffmpeg == null) {
-                Log.d(TAG, "ffmpeg : era nulo");
+                //Log.d(TAG, "ffmpeg : era nulo");
                 ffmpeg = FFmpeg.getInstance(this);
             }
             ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
@@ -248,14 +267,19 @@ public class PreviewActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess() {
-                    Log.d(TAG, "ffmpeg : correct Loaded");
+                    //Log.d(TAG, "ffmpeg : correct Loaded");
                 }
             });
         } catch (FFmpegNotSupportedException e) {
 
         } catch (Exception e) {
-            Log.d(TAG, "EXception no controlada : " + e);
+            //Log.d(TAG, "EXception no controlada : " + e);
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PreviewActivity.this, CameraActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -120,14 +120,14 @@ public class AdapterlaungContent extends BaseAdapter {
             public void onClick(View v) {
 
                 if (selecedlaungname.contains(modelArrayList.get(position).getLang_code())) {
-                    Log.d("enter iff", ":::");
+                   // Log.d("enter iff", ":::");
                     int index = selecedlaungname.indexOf(modelArrayList.get(position).getLang_code());
                     int codeindex = selecedlaungcode.indexOf(modelArrayList.get(position).getLang_name());
                     selecedlaungname.remove(index);
                     selecedlaungcode.remove(codeindex);
                     holder.checkBox.setVisibility(View.GONE);
                 } else {
-                    Log.d("elseee", ":::");
+                   // Log.d("elseee", ":::");
                     selecedlaungname.add(modelArrayList.get(position).getLang_code());
                     selecedlaungcode.add(modelArrayList.get(position).getLang_name());
                     holder.checkBox.setVisibility(View.VISIBLE);

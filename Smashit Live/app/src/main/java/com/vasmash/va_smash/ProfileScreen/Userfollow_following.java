@@ -34,6 +34,7 @@ import com.vasmash.va_smash.ProfileScreen.Adapter.Adapter_following;
 import com.vasmash.va_smash.ProfileScreen.Model_Class.Model_userfollow_unfollow;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.SearchClass.Adapters.Adapter_TradingTabs;
+import com.vasmash.va_smash.SearchClass.SearchVerticalData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,8 +99,8 @@ public class Userfollow_following extends AppCompatActivity {
             followcount = intent.getStringExtra("followcount");
             follow_following_key = intent.getStringExtra("key");
             usernameintent.setText(username);
-            followingbtn.setText("Following"+" "+followingcount);
-            followersbtn.setText("Followers"+" "+followcount);
+            followingbtn.setText("Following");
+            followersbtn.setText("Followers");
         }
         if (follow_following_key.equals("following")) {
             followingbtn.setBackgroundResource(R.drawable.homeback);
@@ -164,7 +165,7 @@ public class Userfollow_following extends AppCompatActivity {
 
     public void followingpagination(){
         userfollowingL = new ArrayList<>();
-        Log.d("enterinfolloww",":::"+userfollowingL);
+       // Log.d("enterinfolloww",":::"+userfollowingL);
 
         LinearLayoutManager layoutfollow = new LinearLayoutManager(Userfollow_following.this, LinearLayoutManager.VERTICAL, false);
         followinglist.setLayoutManager(layoutfollow);
@@ -176,7 +177,7 @@ public class Userfollow_following extends AppCompatActivity {
         editsearch.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                Log.d("edittext","::::"+adapterfollowing.getFilter());
+               // Log.d("edittext","::::"+adapterfollowing.getFilter());
                 adapterfollowing.getFilter().filter(s.toString());
                 adapterfollowing.notifyDataSetChanged();
                 followinglist.setAdapter(adapterfollowing);
@@ -302,17 +303,15 @@ public class Userfollow_following extends AppCompatActivity {
 
 
     private void jsonfollow_following(String url) {
-        Log.d("jsonParseuser", "user_follow_folloewing" + url);
+        //Log.d("jsonParseuser", "user_follow_folloewing" + url);
         loader();
-
-
         // prepare the Request
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responsefollow", response.toString());
+                        //Log.d("Responsefollow", response.toString());
                         animationView.cancelAnimation();
                         animationView.setVisibility(View.GONE);
 
@@ -327,16 +326,32 @@ public class Userfollow_following extends AppCompatActivity {
                                         Model_userfollow_unfollow userfollow_unfollow = new Model_userfollow_unfollow();
 
                                         JSONObject followobj = following.getJSONObject(k);
-                                        userfollow_unfollow.setPostid(followobj.getString("_id"));
-                                        userfollow_unfollow.setFollowinguser(followobj.getString("isFollowing"));
+                                        if (followobj.has("_id")) {
+                                            userfollow_unfollow.setPostid(followobj.getString("_id"));
+                                        }
+                                        if (followobj.has("isFollowing")) {
+                                            userfollow_unfollow.setFollowinguser(followobj.getString("isFollowing"));
+                                        }
                                         userfollow_unfollow.setProfiletype("userprofile");
                                         userfollow_unfollow.setUserprofilefollow("following");
 
                                         if (followobj.has("followingId")) {
                                             JSONObject followingId = followobj.getJSONObject("followingId");
-                                            userfollow_unfollow.setUserpic(followingId.getString("profilePic"));
-                                            userfollow_unfollow.setName(followingId.getString("name"));
-                                            userfollow_unfollow.setUserid(followingId.getString("_id"));
+                                            if (followingId.has("profilePic")) {
+                                                userfollow_unfollow.setUserpic(followingId.getString("profilePic"));
+                                            }else {
+                                                userfollow_unfollow.setUserpic("");
+                                            }
+                                            if (followingId.has("name")) {
+                                                userfollow_unfollow.setName(followingId.getString("name"));
+                                            }else {
+                                                userfollow_unfollow.setName("");
+                                            }
+                                            if (followingId.has("_id")) {
+                                                userfollow_unfollow.setUserid(followingId.getString("_id"));
+                                            }else {
+                                                userfollow_unfollow.setUserid("");
+                                            }
                                         }
                                         userfollowingL.add(userfollow_unfollow);
                                     }
@@ -350,7 +365,7 @@ public class Userfollow_following extends AppCompatActivity {
                                     editsearch.addTextChangedListener(new TextWatcher() {
 
                                         public void afterTextChanged(Editable s) {
-                                            Log.d("edittext","::::"+adapterfollowing.getFilter());
+                                            //Log.d("edittext","::::"+adapterfollowing.getFilter());
                                             adapterfollowing.getFilter().filter(s.toString());
                                             adapterfollowing.notifyDataSetChanged();
                                             followinglist.setAdapter(adapterfollowing);
@@ -384,7 +399,7 @@ public class Userfollow_following extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -404,7 +419,7 @@ public class Userfollow_following extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -473,7 +488,7 @@ public class Userfollow_following extends AppCompatActivity {
 
 
     private void jsonfollow_followers(String url) {
-        Log.d("jsonParseuser", "user_follow_followers" + url);
+        //Log.d("jsonParseuser", "user_follow_followers" + url);
         loader();
 
         // prepare the Request
@@ -482,7 +497,7 @@ public class Userfollow_following extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responsefollow", response.toString());
+                        //Log.d("Responsefollow", response.toString());
                         animationView.cancelAnimation();
                         animationView.setVisibility(View.GONE);
                         if (response.length() != 0) {
@@ -495,16 +510,32 @@ public class Userfollow_following extends AppCompatActivity {
                                         Model_userfollow_unfollow userfollow_unfollow = new Model_userfollow_unfollow();
 
                                         JSONObject followersobj = followers.getJSONObject(k);
-                                        userfollow_unfollow.setPostid(followersobj.getString("_id"));
-                                        userfollow_unfollow.setFollowinguser(followersobj.getString("isFollowing"));
+                                        if (followersobj.has("_id")) {
+                                            userfollow_unfollow.setPostid(followersobj.getString("_id"));
+                                        }
+                                        if (followersobj.has("isFollowing")) {
+                                            userfollow_unfollow.setFollowinguser(followersobj.getString("isFollowing"));
+                                        }
                                         userfollow_unfollow.setProfiletype("userprofile");
                                         userfollow_unfollow.setUserprofilefollow("follower");
 
                                         if (followersobj.has("userId")) {
                                             JSONObject userId = followersobj.getJSONObject("userId");
-                                            userfollow_unfollow.setUserpic(userId.getString("profilePic"));
-                                            userfollow_unfollow.setName(userId.getString("name"));
-                                            userfollow_unfollow.setUserid(userId.getString("_id"));
+                                            if (userId.has("profilePic")) {
+                                                userfollow_unfollow.setUserpic(userId.getString("profilePic"));
+                                            }else {
+                                                userfollow_unfollow.setUserpic("");
+                                            }
+                                            if (userId.has("name")) {
+                                                userfollow_unfollow.setName(userId.getString("name"));
+                                            }else {
+                                                userfollow_unfollow.setName("");
+                                            }
+                                            if (userId.has("_id")) {
+                                                userfollow_unfollow.setUserid(userId.getString("_id"));
+                                            }else {
+                                                userfollow_unfollow.setUserid("");
+                                            }
                                         }
                                         userfollowL.add(userfollow_unfollow);
                                     }
@@ -553,7 +584,7 @@ public class Userfollow_following extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -574,7 +605,7 @@ public class Userfollow_following extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -644,6 +675,11 @@ public class Userfollow_following extends AppCompatActivity {
     }
 
     public void finishActivity(View v){
+        Intent intent = new Intent(Userfollow_following.this, ProfileActivity.class);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 

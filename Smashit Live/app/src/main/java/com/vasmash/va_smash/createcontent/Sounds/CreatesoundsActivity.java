@@ -27,6 +27,7 @@ import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.createcontent.Sounds.soundfile.SoundFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
@@ -112,7 +113,7 @@ public class CreatesoundsActivity extends Activity
         setContentView(R.layout.activity_createsounds);
 
 
-        Log.e("stand", String.valueOf(stand));
+      //  Log.e("stand", String.valueOf(stand));
 
         if(stand==0) {
             Intent intent_upload = new Intent();
@@ -140,7 +141,7 @@ public class CreatesoundsActivity extends Activity
 
                 mFilename= ImageFilePath.getPath(CreatesoundsActivity.this,uri);
                 System.out.println(mFilename);
-                Log.e("soundfile", mFilename);
+               // Log.e("soundfile", mFilename);
                 stand=1;
                 mWasGetContentIntent=false;
                 mSoundFile = null;
@@ -155,7 +156,7 @@ public class CreatesoundsActivity extends Activity
                     @Override
                     public void onClick(View v) {
                         onSave();
-                        Log.e("Smashsounds","Smashsounds");
+                       // Log.e("Smashsounds","Smashsounds");
                     }
                 });
 
@@ -408,7 +409,7 @@ public class CreatesoundsActivity extends Activity
             @Override
             public void onClick(View v) {
                 onSave();
-                Log.e("Smashsounds","Smashsounds");
+              //  Log.e("Smashsounds","Smashsounds");
             }
         });
         enableDisableButtons();
@@ -966,12 +967,14 @@ public class CreatesoundsActivity extends Activity
     private void showFinalAlert(Exception e, CharSequence message) {
         CharSequence title;
         if (e != null) {
+/*
             Log.e("Ringdroid", "Error: " + message);
             Log.e("Ringdroid", getStackTrace(e));
+*/
             title = getResources().getText(R.string.alert_title_failure);
             setResult(RESULT_CANCELED, new Intent());
         } else {
-            Log.v("Ringdroid", "Success: " + message);
+           // Log.v("Ringdroid", "Success: " + message);
             title = getResources().getText(R.string.alert_title_success);
         }
 
@@ -1063,7 +1066,7 @@ public class CreatesoundsActivity extends Activity
     }
 
     private void saveRingtone(final String title) {
-        Log.e("Smashsounds1",title);
+       // Log.e("Smashsounds1",title);
         double startTime = mWaveformView.pixelsToSeconds(mStartPos);
         double endTime = mWaveformView.pixelsToSeconds(mEndPos);
         final int startFrame = mWaveformView.secondsToFrames(startTime);
@@ -1104,8 +1107,10 @@ public class CreatesoundsActivity extends Activity
                     }
                     StringWriter writer = new StringWriter();
                     e.printStackTrace(new PrintWriter(writer));
+/*
                     Log.e("Ringdroid", "Error: Failed to create " + outPath);
                     Log.e("Ringdroid", writer.toString());
+*/
                     fallbackToWAV = true;
                 }
 
@@ -1200,7 +1205,11 @@ public class CreatesoundsActivity extends Activity
                         Intent intent=new Intent(CreatesoundsActivity.this, PostSoundActivity.class);
                         intent.putExtra("path",finalOutPath);
                         startActivity(intent);
-                        Log.e("finalOutPath",finalOutPath);
+                        finish();
+                       // Log.e("finalOutPath",finalOutPath);
+
+
+
 
 //                        afterSavingRingtone(title,
 //                                finalOutPath,
@@ -1356,7 +1365,7 @@ public class CreatesoundsActivity extends Activity
                     "com.ringdroid.ChooseContactActivity");
             startActivityForResult(intent, REQUEST_CODE_CHOOSE_CONTACT);
         } catch (Exception e) {
-            Log.e("Ringdroid", "Couldn't open Choose Contact window");
+           // Log.e("Ringdroid", "Couldn't open Choose Contact window");
         }
     }
 
@@ -1364,8 +1373,8 @@ public class CreatesoundsActivity extends Activity
         if (mIsPlaying) {
             handlePause();
         }
-        saveRingtone("Smashsounds");
-        Log.e("Smashsounds2","Smashsounds");
+        saveRingtone("SelectedAudio");
+       // Log.e("Smashsounds2","Smashsounds");
 //        final Handler handler = new Handler() {
 //            public void handleMessage(Message response) {
 //                CharSequence newTitle = (CharSequence)response.obj;

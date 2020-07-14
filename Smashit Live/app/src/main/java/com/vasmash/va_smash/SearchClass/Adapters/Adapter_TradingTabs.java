@@ -39,6 +39,7 @@ public class Adapter_TradingTabs extends RecyclerView.Adapter<Adapter_TradingTab
         this.dataObjectList = dataObjectList;
         this.context = context1;
         this.fileL=fileL;
+        //Log.d("adaptertrading",":::"+fileL);
 
     }
 
@@ -48,7 +49,6 @@ public class Adapter_TradingTabs extends RecyclerView.Adapter<Adapter_TradingTab
         public ImageView likeimg,image,playimg;
         TextView count;
         VideoView videosearch;
-
 
         public ViewHolder(View v){
 
@@ -82,7 +82,7 @@ public class Adapter_TradingTabs extends RecyclerView.Adapter<Adapter_TradingTab
         String searchtype=dataObjectList.get(position).getType();
 
 
-        Log.d("searchtypeeee",":::"+searchtype+":::::"+dataObjectList.get(position).getImage());
+        //Log.d("searchtypeeee",":::"+searchtype+":::::"+dataObjectList.get(position).getImage());
         if(searchtype.equals("0")){
 //            displayImage.setImageResource(Integer.parseInt(this.dataObjectList.get(position).getFile()));
             Picasso.with(context).load(dataObjectList.get(position).getImage()).into(holder.image);
@@ -101,36 +101,27 @@ public class Adapter_TradingTabs extends RecyclerView.Adapter<Adapter_TradingTab
             holder.likeimg.setBackgroundResource(R.drawable.commentunlike);
         }
 
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 Gson gson = new Gson();
-
                 String json = gson.toJson(dataObjectList);
                 editor.putString("arraydata", json);
                 editor.commit();
 
+                //Log.d("tradingadapter",":::"+fileL);
                 Intent intent = new Intent(context, SearchVerticalData.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("clikpos",position);
                 intent.putStringArrayListExtra("fileL",(ArrayList<String>) fileL);
                 context.startActivity(intent);
-
-
             }
         });
-
-
     }
-
     @Override
     public int getItemCount(){
         return dataObjectList.size();
     }
-
-
 }

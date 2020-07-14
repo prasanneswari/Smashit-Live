@@ -36,7 +36,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Christopher nolan"
                 android:textColor="#EBEBEB"
                 android:fontFamily="@font/rubik"
                 android:id="@+id/nameid"
@@ -51,6 +50,7 @@
                 android:id="@+id/name"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"
+                android:visibility="gone"
                 />
 
         </LinearLayout>

@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -21,6 +23,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.vasmash.va_smash.ProfileScreen.OtherprofileActivity;
 import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.SearchClass.Adapters.Adapter_TradingTabs;
 import com.vasmash.va_smash.SearchClass.ModelClass.Model_Trading;
@@ -37,9 +40,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.vasmash.va_smash.HomeScreen.homefragment.HomeFragment.catidL;
-import static com.vasmash.va_smash.ProfileScreen.ProfileActivity.createvideosclick;
 import static com.vasmash.va_smash.SearchClass.SearchData.both;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.homeapi_url;
+import static com.vasmash.va_smash.VASmashAPIS.APIs.otherprofileuser_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.search_url;
 
 public class SearchFragmentData extends Fragment {
@@ -54,6 +57,13 @@ public class SearchFragmentData extends Fragment {
     private RequestQueue mQueue;
     String token;
     LottieAnimationView animationView;
+
+    int pastVisibleItems11, visibleItemCount11, totalItemCount11;
+    Boolean loading11 = true;
+    int currentPage=-1;
+    int page_no;
+    ProgressBar p_bar;
+    private boolean loading;
 
 
     // TODO: Rename and change types and number of parameters
@@ -76,10 +86,11 @@ public class SearchFragmentData extends Fragment {
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         tradingtab=view.findViewById(R.id.tradingtab);
         animationView = view.findViewById(R.id.animation_view_1);
+        p_bar=view.findViewById(R.id.p_bar);
 
         cataddL=new ArrayList<>();
         int tabname = getArguments().getInt("tabcount");
-        Log.d("tabnameee",":::::"+both.get(tabname));
+        //Log.d("tabnameee",":::::"+both.get(tabname));
 
         String values=both.get(tabname);
 
@@ -90,42 +101,102 @@ public class SearchFragmentData extends Fragment {
         //here we select the particular tab category value
         for (int i = 0; i< both.size(); i++){
             if (values.equals(both.get(i))){
-                Log.d("catnameL.get(i)",":::"+both.get(i));
+               // Log.d("catnameL.get(i)",":::"+both.get(i));
                 String catid= catbothaddL.get(i);
-                Log.d("catiddddd",":::"+catid);
-                     if (both.get(i).equals("Trending")){
-                         searchapi(search_url+"1");
-                     }else {
-                         searchapi(homeapi_url + "?categoryId=" + catid);
-                     }
+               // Log.d("catiddddd",":::"+catid);
+                searchpagination(both.get(i),catid);
             }
         }
-
         return view;
     }
 
+    public void searchpagination(String both,String catid){
+        model = new ArrayList<>();
+        fileL=new ArrayList<>();
+
+        //commentimg
+        tradingtab.setHasFixedSize(true);
+        // set a GridLayoutManager with 3 number of columns
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
+        tradingtab.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+        // use a linear layout manager
+        // RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity());
+        commentimgAdapter = new Adapter_TradingTabs(getActivity(), model,fileL);
+        tradingtab.setAdapter(commentimgAdapter);
+
+        loading11 = false;
+        loading=false;
+
+        tradingtab.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //here we find the current item number
+                final int scrollOffset = recyclerView.computeVerticalScrollOffset();
+                final int height = recyclerView.getHeight();
+                page_no=scrollOffset / height;
+
+                if(page_no!=currentPage ){
+                    currentPage=page_no;
+                }
+
+                if (dy > 0)
+                {
+                    visibleItemCount11 = gridLayoutManager.getChildCount();
+                    totalItemCount11 = gridLayoutManager.getItemCount();
+                    pastVisibleItems11 = gridLayoutManager.findFirstVisibleItemPosition();
+                   // Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+
+                    if (!loading11) {
+                        // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
+                        //Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+model.size());
+                        if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == model.size()-1){
+                            loading11 = true;
+                            loading=true;
+                            if (both.equals("Trending")){
+                                searchapi(homeapi_url+"/postsByCategory?trending=1&limit=10&skip="+model.size());
+                            }else {
+                                searchapi(homeapi_url +"/postsByCategory?categoryId="+catid+"&limit=10&skip="+model.size());
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        if (both.equals("Trending")){
+            searchapi(homeapi_url+"/postsByCategory?trending=1&limit=10&skip=10");
+        }else {
+            searchapi(homeapi_url +"/postsByCategory?categoryId="+catid+"&limit=10&skip=0");
+        }
+    }
     public void searchapi(String homeapi_url){
-        loader();
-        Log.d("home api::::", homeapi_url);
+       // Log.d("home api::::", homeapi_url);
+        if (loading){
+            p_bar.setVisibility(View.VISIBLE);
+        }else {
+            loader();
+        }
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, homeapi_url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response homeee", response.toString());
-                        animationView.cancelAnimation();
-                        animationView.setVisibility(View.GONE);
+                       // Log.d("Response homeee", response.toString());
 
-                        model = new ArrayList<>();
-                        fileL=new ArrayList<>();
-                        fileL.clear();
-                        model.clear();
-
+                        if (loading){
+                            p_bar.setVisibility(View.GONE);
+                        }else {
+                            animationView.cancelAnimation();
+                            animationView.setVisibility(View.GONE);
+                        }
 
                         if (response.length() != 0) {
-                            createvideosclick="false";
-
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject employee = response.getJSONObject(i);
@@ -139,6 +210,8 @@ public class SearchFragmentData extends Fragment {
                                     if (employee.has("file")) {
                                         hm.setImage(employee.getString("file"));
                                         fileL.add(employee.getString("file"));
+                                       // Log.d("fileLLLLLL", ":::"+fileL);
+
                                     } else {
                                         hm.setImage("");
                                         fileL.add("");
@@ -198,12 +271,12 @@ public class SearchFragmentData extends Fragment {
 
                                     if (employee.has("userId")) {
                                         JSONObject nameobj=employee.getJSONObject("userId");
-                                        Log.d("nameobj","::::"+nameobj);
+                                        //Log.d("nameobj","::::"+nameobj);
                                         String username = nameobj.getString("name");
                                         String homeprofilePic = nameobj.getString("profilePic");
                                         String userid = nameobj.getString("_id");
 
-                                        Log.d("userid11111","::::"+userid);
+                                        //Log.d("userid11111","::::"+userid);
                                         hm.setUsername(username);
                                         hm.setProfilepic(homeprofilePic);
                                         hm.setUserid(userid);
@@ -215,21 +288,31 @@ public class SearchFragmentData extends Fragment {
                                         hm.setUserid("null");
                                     }
                                     if (employee.has("soundId")) {
-                                        JSONArray sounds = employee.getJSONArray("soundId");
-                                        Log.d("soundsss","::::"+sounds);
-                                        for (int k1 = 0; k1 < sounds.length(); k1++) {
-                                            JSONObject soundsobj = sounds.getJSONObject(k1);
-                                            String soundid=soundsobj.getString("_id");
-                                            String soundname=soundsobj.getString("name");
-                                            String soundurl=soundsobj.getString("url");
-                                            String soundpostId=soundsobj.getString("postId");
-                                            String sounduserId=soundsobj.getString("userId");
-                                            hm.setSoundname(soundname);
-                                            hm.setSoundurl(soundurl);
-                                            hm.setSoundpostid(soundpostId);
-                                            hm.setSounduserid(sounduserId);
+                                        //JSONArray sounds = employee.getJSONArray("soundId");
+                                        //Log.d("soundsss","::::"+sounds);
+                                        // for (int k1 = 0; k1 < sounds.length(); k1++) {
+                                        JSONObject soundsobj = employee.getJSONObject("soundId");
+                                        if(soundsobj.has("_id")) {
+                                            String soundid = soundsobj.getString("_id");
                                             hm.setSoundid(soundid);
                                         }
+                                        if (soundsobj.has("name")) {
+                                            String soundname = soundsobj.getString("name");
+                                            hm.setSoundname(soundname);
+                                        }
+                                        if (soundsobj.has("url")) {
+                                            String soundurl = soundsobj.getString("url");
+                                            hm.setSoundurl(soundurl);
+                                        }
+                                        if (soundsobj.has("postId")) {
+                                            String soundpostId = soundsobj.getString("postId");
+                                            hm.setSoundpostid(soundpostId);
+                                        }
+                                        if (soundsobj.has("userId")) {
+                                            String sounduserId = soundsobj.getString("userId");
+                                            hm.setSounduserid(sounduserId);
+                                        }
+                                        // }
                                     }else {
                                         hm.setSoundname("");
                                         hm.setSoundurl("");
@@ -238,26 +321,17 @@ public class SearchFragmentData extends Fragment {
                                     }
 
                                     model.add(hm);
-
-                                    //commentimg
-                                    tradingtab.setHasFixedSize(true);
-                                    // use a linear layout manager
-                                    // RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity());
-
-                                    tradingtab.setLayoutManager(new GridLayoutManager(getContext(),3));
-
-                                    commentimgAdapter = new Adapter_TradingTabs(getActivity(), model,fileL);
-                                    tradingtab.setAdapter(commentimgAdapter);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                             }
-
-
+                            commentimgAdapter.notifyDataSetChanged();
+                            loading11 = false;
                         }else {
                             // Toast.makeText(getActivity(), "No Data", Toast.LENGTH_SHORT).show();
                            // searchapi(search_url);
-
+                            loading = true;
                         }
                     }
                 },
@@ -274,11 +348,15 @@ public class SearchFragmentData extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
-                                            animationView.cancelAnimation();
-                                            animationView.setVisibility(View.GONE);
+                                            if (loading){
+                                                p_bar.setVisibility(View.GONE);
+                                            }else {
+                                                animationView.cancelAnimation();
+                                                animationView.setVisibility(View.GONE);
+                                            }
 
                                             JSONObject errors = obj.getJSONObject("errors");
                                             String message = errors.getString("message");
@@ -338,8 +416,12 @@ public class SearchFragmentData extends Fragment {
 
             @Override
             public void retry(VolleyError error) throws VolleyError {
-                animationView.cancelAnimation();
-                animationView.setVisibility(View.GONE);
+                if (loading){
+                    p_bar.setVisibility(View.GONE);
+                }else {
+                    animationView.cancelAnimation();
+                    animationView.setVisibility(View.GONE);
+                }
             }
 
         });

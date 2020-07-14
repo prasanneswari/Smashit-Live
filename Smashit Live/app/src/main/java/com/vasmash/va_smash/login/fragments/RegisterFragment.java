@@ -70,8 +70,8 @@ public class RegisterFragment extends AppCompatActivity {
     Button sendotp;
     LinearLayout rootlay;
     RequestQueue sch_RequestQueue;
-    EditText edtmail,countrycode,entermailid;
-    static  public String regid;
+    EditText enterphone,countrycode,entermailid;
+    private String regid;
     SharedPreferences pref;
 
     //this is the loader animationview
@@ -97,7 +97,7 @@ public class RegisterFragment extends AppCompatActivity {
         viewDialog = new ViewDialog(this);
 
         licencepopup();
-        edtmail=(EditText)findViewById(R.id.regst_emailid) ;
+        enterphone=(EditText)findViewById(R.id.regst_emailid) ;
         countrycode=(EditText)findViewById(R.id.countrycode) ;
         entermailid=findViewById(R.id.emailid);
 
@@ -113,7 +113,7 @@ public class RegisterFragment extends AppCompatActivity {
         sendotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String eml=edtmail.getText().toString();
+                String eml=enterphone.getText().toString();
                 String code=countrycode.getText().toString();
                 String entermailidS=entermailid.getText().toString();
                 //this is the mobile number validation
@@ -122,11 +122,11 @@ public class RegisterFragment extends AppCompatActivity {
                         popup("Please Enter Country code");
                     } else {
                         String AddS = "{\"countryCode\":\"" + countrycode.getText().toString() + "\",\"username\":\"" + eml + "\"}";
-                        Log.d("jsnresponse pernonal", "---" + AddS);
+                       // Log.d("jsnresponse pernonal", "---" + AddS);
                         JSONObject lstrmdt;
                         try {
                             lstrmdt = new JSONObject(AddS);
-                            Log.d("jsnresponse....", "---" + AddS);
+                            //Log.d("jsnresponse....", "---" + AddS);
                             // dialog_progress.show();
                             viewDialog.showDialog();
                             sendotp(lstrmdt);
@@ -137,11 +137,11 @@ public class RegisterFragment extends AppCompatActivity {
                 //this is the emial validation
                 else if (isEmailValid(entermailidS)){
                     String AddS = "{\"countryCode\":\"" + "" + "\",\"username\":\"" + entermailidS + "\"}";
-                    Log.d("jsnresponse pernonal", "---" + AddS);
+                   // Log.d("jsnresponse pernonal", "---" + AddS);
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(AddS);
-                        Log.d("jsnresponse....", "---" + AddS);
+                        //Log.d("jsnresponse....", "---" + AddS);
                         // dialog_progress.show();
                         viewDialog.showDialog();
                         sendotp(lstrmdt);
@@ -150,16 +150,16 @@ public class RegisterFragment extends AppCompatActivity {
                 }else{
                     if (eml.isEmpty() && entermailidS.isEmpty()) {
                         //Toast.makeText(RegisterFragment.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
-                        popup("Please Enter Mobile Number or Email");
+                        popup("Please enter mobile number or email Id");
                     }
                     else {
                         String regexStr = "^[0-9]*$";
                         String mailgex="[a-zA-Z ]+";
-                        if (edtmail.getText().toString().trim().matches(regexStr) && (!eml.isEmpty())) {
+                        if (enterphone.getText().toString().trim().matches(regexStr) && (!eml.isEmpty())) {
                             //write code here for success
-                            popup("Please Enter Valid Mobile Number");
+                            popup("Please enter valid mobile number");
                         } else if (entermailid.getText().toString().trim().matches(mailgex)){
-                            popup("Please Enter Valid Email");
+                            popup("Please enter valid email Id");
                         }
                     }
                 }
@@ -171,34 +171,28 @@ public class RegisterFragment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 InputMethodManager im=(InputMethodManager)RegisterFragment.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(edtmail.getWindowToken(),0);
+                im.hideSoftInputFromWindow(enterphone.getWindowToken(),0);
 
             }
         });
-
-        edtmail.addTextChangedListener(new TextWatcher() {
-
+        enterphone.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                Log.d("editetxtval",":::;"+s.length());
+                //Log.d("editetxtval",":::;"+s.length());
                 entermailid.getText().clear();
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
         entermailid.addTextChangedListener(new TextWatcher() {
-
             public void afterTextChanged(Editable s) {
-                edtmail.getText().clear();
+                enterphone.getText().clear();
                 countrycode.getText().clear();
-
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
         //hre we will select the country code
         countrycode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,21 +270,18 @@ public class RegisterFragment extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
     }
-
-
     private void sendotp(JSONObject lstrmdt) {
         final JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, Sendotp,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                       // Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
-
                         try {
-                            edtmail.setFocusable(true);
-                            edtmail.setEnabled(true);
-                            edtmail.setCursorVisible(true);
-                            edtmail.setKeyListener(null);
+                            enterphone.setFocusable(true);
+                            enterphone.setEnabled(true);
+                            enterphone.setCursorVisible(true);
+                            enterphone.setKeyListener(null);
 
                             SharedPreferences.Editor editor = pref.edit();
                             regid=response.getString("id");
@@ -309,7 +300,7 @@ public class RegisterFragment extends AppCompatActivity {
                             //we will enter the phone number we will get status 1
                             else if (status.equals("1")){
                                 Intent i = new Intent(RegisterFragment.this, OTPVerification.class);
-                                i.putExtra("number", edtmail.getText().toString());
+                                i.putExtra("number", enterphone.getText().toString());
                                 startActivity(i);
                                 finish();
                                 // Toast.makeText(RegisterFragment.this, regid , Toast.LENGTH_SHORT).show();
@@ -330,7 +321,7 @@ public class RegisterFragment extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();
@@ -344,7 +335,7 @@ public class RegisterFragment extends AppCompatActivity {
 
                                     JSONObject errors = obj.getJSONObject("errors");
                                     String message = errors.getString("message");
-                                    edtmail.getText().clear();
+                                    enterphone.getText().clear();
                                     countrycode.getText().clear();
                                     entermailid.getText().clear();
                                     popup(message);
@@ -404,7 +395,7 @@ public class RegisterFragment extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
 
                         dataModelArrayList = new ArrayList<>();
 
@@ -450,7 +441,7 @@ public class RegisterFragment extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -523,8 +514,7 @@ public class RegisterFragment extends AppCompatActivity {
         Pattern p;
         Matcher m;
 
-        String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+       String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         p = Pattern.compile(EMAIL_STRING);
 
@@ -541,7 +531,6 @@ public class RegisterFragment extends AppCompatActivity {
         final Context mContext = RegisterFragment.this;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.licencespopup, null);
-
 
         Button agree = (Button) layout.findViewById(R.id.agree);
         Button decline = (Button) layout.findViewById(R.id.decline);
@@ -610,26 +599,22 @@ public class RegisterFragment extends AppCompatActivity {
 
             try {
                 addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                Log.d("addresses", ":::::" + addresses);
+               // Log.d("addresses", ":::::" + addresses);
 
                 if (addresses.isEmpty()) {
-                    countrycode.setText("60");
+                   // countrycode.setText("60");
                 } else{
                     String countrycodes = addresses.get(0).getCountryCode();
-
-                    Log.d("TAG_DATA", getCountryZipCode(countrycodes));
+                   // Log.d("TAG_DATA", getCountryZipCode(countrycodes));
                     countrycode.setText(getCountryZipCode(countrycodes));
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-
             locationTrack.showSettingsAlert();
         }
     }
-
     public String getCountryZipCode(String country) {
         String CountryZipCode = "";
 
@@ -638,7 +623,7 @@ public class RegisterFragment extends AppCompatActivity {
             String[] g = aRl.split(",");
             if (g[1].trim().equals(country)) {
                 CountryZipCode = "+" + g[0];
-                Log.d("cuntrycode",":::"+CountryZipCode+":::"+g[1]);
+              //  Log.d("cuntrycode",":::"+CountryZipCode+":::"+g[1]);
 
                 break;
             }

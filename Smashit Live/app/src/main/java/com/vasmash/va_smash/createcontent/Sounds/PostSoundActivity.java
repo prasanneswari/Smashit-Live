@@ -1,8 +1,10 @@
 package com.vasmash.va_smash.createcontent.Sounds;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -87,7 +89,7 @@ public class PostSoundActivity extends AppCompatActivity {
         postsound = phoneauthshard.getString("token", "null");
 
         path=getIntent().getStringExtra("path");
-        Log.e("path",path);
+       // Log.e("path",path);
 
         sound_cate=(ListView) findViewById(R.id.sound_listview_cate);
         sound_lang=(ListView) findViewById(R.id.sound_listview_langes);
@@ -134,7 +136,7 @@ public class PostSoundActivity extends AppCompatActivity {
                 String valueid=items.get(position).getLang_code().toString();
 
                 catg_id=value;
-                Log.e("wwwwww",catg_id+" "+valueid);
+               // Log.e("wwwwww",catg_id+" "+valueid);
                 // Toast.makeText(PostcontentActivity.this, catg_id+" "+valueid, Toast.LENGTH_SHORT).show();
                 Languages model = items.get(position); //changed it to model because viewers will confused about it
 
@@ -168,7 +170,7 @@ public class PostSoundActivity extends AppCompatActivity {
 
 
                 lang_id=value;
-                Log.e("wwwwww",lang_id+" "+valueid);
+              //  Log.e("wwwwww",lang_id+" "+valueid);
                 // Toast.makeText(PostcontentActivity.this, lang_id+" "+valueid, Toast.LENGTH_SHORT).show();
                 Languages model = categ.get(position); //changed it to model because viewers will confused about it
 
@@ -217,7 +219,7 @@ public class PostSoundActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
 //                        viewDialog.hideDialog();
 
                         // spinner2.setVisibility(View.INVISIBLE);
@@ -241,8 +243,10 @@ public class PostSoundActivity extends AppCompatActivity {
 
 
 
+/*
                                     Log.d("Response", "createddateL:::" + items);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -268,7 +272,7 @@ public class PostSoundActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -310,7 +314,7 @@ public class PostSoundActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
 
 //                        viewDialog.hideDialog();
 
@@ -332,11 +336,10 @@ public class PostSoundActivity extends AppCompatActivity {
                                     categ.add(langu);
 
 
-
-
-
+/*
                                     Log.d("Response", "createddateL:::" + categ);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -360,7 +363,7 @@ public class PostSoundActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -413,10 +416,10 @@ public class PostSoundActivity extends AppCompatActivity {
                     new Response.Listener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
-                            Log.e("postaudio1", String.valueOf(response));
+                            //Log.e("postaudio1", String.valueOf(response));
                             try {
                                 JSONObject obj = new JSONObject(new String(response.data));
-                                Log.e("postaudio2", String.valueOf(obj));
+                                //Log.e("postaudio2", String.valueOf(obj));
 //                                JSONObject postid=obj.getJSONObject("data");
 
 
@@ -426,16 +429,16 @@ public class PostSoundActivity extends AppCompatActivity {
                                 String albumtxt=album.getText().toString();
                                 String artisttxt=artist.getText().toString();
 
-                                Log.e("postaudio3",img_id);
+                                //Log.e("postaudio3",img_id);
 
 
                                 String AddS = "{\"categoryId\":\"" + catg_id + "\",\"contentLangId\":\"" + lang_id + "\",\"_id\":\"" + img_id + "\",\"name\":\"" + nametxt + "\",\"artist\":\"" + artisttxt + "\",\"album\":"+ albumtxt + "}";
-                                Log.d("jsnresponse pernonal", "---" + AddS);
+                               // Log.d("jsnresponse pernonal", "---" + AddS);
                                 JSONObject lstrmdt;
 
                                 try {
                                     lstrmdt = new JSONObject(AddS);
-                                    Log.d("postaudio4....", "---" + AddS);
+                                    //Log.d("postaudio4....", "---" + AddS);
                                     JSONSenderVolleychecked(lstrmdt);
                                 } catch (JSONException ignored) {
                                 }
@@ -488,20 +491,50 @@ public class PostSoundActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("postaudiodata1", "---" + response);
+                        //Log.d("postaudiodata1", "---" + response);
 
                         Intent i=new Intent(PostSoundActivity.this, CameraActivity.class);
                         startActivity(i);
                         try {
                             if (response.length()!=0) {
                                 String message = response.getString("message");
-//                                if (message.equals("Post Added successfully")) {
-////                                    viewDialog.hideDialog();
-//
-//                                    //  Toast.makeText(PostcontentActivity.this, message, Toast.LENGTH_SHORT).show();
-//
-//
+
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(PostSoundActivity.this);
+                                builder1.setMessage(message);
+                                builder1.setCancelable(true);
+
+                                builder1.setPositiveButton(
+                                        "ok",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                Intent intent=new Intent(PostSoundActivity.this, CameraActivity.class);
+                                                intent.putExtra("createpath",path);
+                                                startActivity(intent);
+                                                dialog.cancel();
+                                                finish();
+                                            }
+                                        });
+
+
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+
+
+
+//                                File file = new File(path);
+//                                file.delete();
+//                                if(file.exists()){
+//                                    try {
+//                                        file.getCanonicalFile().delete();
+//                                    } catch (IOException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    if(file.exists()){
+//                                        getApplicationContext().deleteFile(file.getName());
+//                                    }
 //                                }
+
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -522,7 +555,7 @@ public class PostSoundActivity extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 if (obj.has("errors")) {
 //                                    viewDialog.hideDialog();

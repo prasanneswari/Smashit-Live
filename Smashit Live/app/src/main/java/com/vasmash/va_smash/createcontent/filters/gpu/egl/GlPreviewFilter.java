@@ -2,7 +2,8 @@ package com.vasmash.va_smash.createcontent.filters.gpu.egl;
 
 import android.opengl.GLES20;
 
-import com.daasuu.gpuv.egl.filter.GlFilter;
+
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.filter.GlFilter;
 
 import static android.opengl.GLES20.GL_ARRAY_BUFFER;
 import static android.opengl.GLES20.GL_FLOAT;

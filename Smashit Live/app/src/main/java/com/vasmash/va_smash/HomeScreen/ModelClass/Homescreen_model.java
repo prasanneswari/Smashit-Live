@@ -199,7 +199,16 @@ public class Homescreen_model {
     private String vidheight;
     private String soundid;
 
-
+    public int isIsloadmore() {
+        return isloadmore;
+    }
+    public void setIsloadmore(int isloadmore) {
+        this.isloadmore = isloadmore;
+    }
+    private int isloadmore=0;
+    public Homescreen_model(int isloadmore) {
+        this.isloadmore = isloadmore;
+    }
     public Homescreen_model() {
         this.createdDate = createdDate;
         this.id = id;
@@ -223,6 +232,7 @@ public class Homescreen_model {
         this.sounduserid=sounduserid;
         this.vidheight=vidheight;
         this.soundid=soundid;
+        this.isloadmore=isloadmore;
 
     }
 }

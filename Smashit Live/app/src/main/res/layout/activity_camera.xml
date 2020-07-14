@@ -5,17 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".createcontent.CameraActivity">
-    <com.vasmash.va_smash.createcontent.filters.gpu.PortraitFrameLayout
-        android:id="@+id/wrap_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/cameraglass">
+        <com.vasmash.va_smash.createcontent.filters.gpu.PortraitFrameLayout
+            android:id="@+id/wrap_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            />
+
 
 
     </RelativeLayout>
@@ -1066,6 +1067,7 @@
         android:paddingTop="10sp"
         android:visibility="gone"
 
+
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -1107,7 +1109,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_margin="5sp"
+                >
                 <TextView
                     android:id="@+id/cam_lange"
                     android:layout_width="wrap_content"
@@ -1228,6 +1232,18 @@
                         >
 
                     </ListView>
+
+
+                    <TextView
+                        android:id="@+id/sound_selecttxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:text="please select the language"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"/>
                 </RelativeLayout>
 
 
@@ -1255,6 +1271,7 @@
         android:background="@color/black"
         android:paddingTop="10sp"
         android:visibility="gone"
+
         >
 
 
@@ -1318,22 +1335,25 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
+                    android:background="@color/black"
                     android:orientation="horizontal">
 
                     <VideoView
-                        android:id="@+id/videoView"
+                        android:id="@+id/uploadvideoView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_above="@+id/camera_uploadseekbar"/>
 
                     <LinearLayout
+                        android:id="@+id/camera_uploadseekbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:background="@color/white"
                         android:orientation="horizontal"
-                        android:layout_margin="8sp">
+                        android:layout_margin="2sp">
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -1350,7 +1370,7 @@
                                 android:background="@drawable/ic_play" />
                         </RelativeLayout>
 
-                        <VideoView
+                        <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:background="@color/black" />

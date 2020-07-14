@@ -15,7 +15,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/launchingimg"
+                android:background="@drawable/smashitlogo"
                 android:id="@+id/btnlogo"
                 android:layout_gravity="center"
                 android:visibility="gone"

@@ -77,6 +77,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class Profile_Fragment extends AppCompatActivity {
     TextView countryT,gendername;
     EditText contactno;
     EditText usernameT;
-    EditText emalidT,date1;
+    EditText emalidT,date1,lastname;
     ImageView male,female,other,maleimg,femleimg,otherimg;
     EditText ccp;
     Button updatebtn;
@@ -108,7 +109,7 @@ public class Profile_Fragment extends AppCompatActivity {
     boolean countrycodeclick;
 
     String radiovalue="null";
-    int yearclck;
+    int  yearpicker;
     ArrayList<Languages> dataModelArrayList;
     CountryAdapter countryAdapter;
 
@@ -116,7 +117,7 @@ public class Profile_Fragment extends AppCompatActivity {
     //upload profile
     private int GALLERY = 1, CAMERA = 2;
     Bitmap frontthunm=null;
-    public static String proftoken,intentprofilepic,countrycode;
+    public static String proftoken,intentprofilepic,countrycode="null",firstName="null",lastName="null";
     String profilePicupload="null";
 
     //catogry
@@ -154,8 +155,9 @@ public class Profile_Fragment extends AppCompatActivity {
         otherimg=findViewById(R.id.otherimg);
         ccp = findViewById(R.id.countrycode);
         updatebtn=findViewById(R.id.updatebtn);
-        // dateE = (EditText) findViewById(R.id.date);
+        lastname = (EditText) findViewById(R.id.lastname);
         date1 = (EditText) findViewById(R.id.date);
+
 
         upload_pic_btn=findViewById(R.id.upload_pic_btn);
         profile_image=findViewById(R.id.profile_image_placeholder);
@@ -224,6 +226,7 @@ public class Profile_Fragment extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
                         year,month,day);
+                dialog.getDatePicker().setMaxDate(new Date().getTime());
 
                 // Divider changing:
                 DatePicker dpView = dialog.getDatePicker();
@@ -261,7 +264,7 @@ public class Profile_Fragment extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                Log.d(" ", "onDateSet: mm/dd/yyy: " + year + "/" + month + "/" + day);
+              //  Log.d(" ", "onDateSet: mm/dd/yyy: " + year + "/" + month + "/" + day);
                 String date = year + "/" + month + "/" + day;
                 date1.setText(date);
             }
@@ -272,6 +275,10 @@ public class Profile_Fragment extends AppCompatActivity {
             public void onClick(View v) {
                 code=1;
                 // Log.d("enteringgg..malee..", "---" + code+" ::");
+                maleimg.setBackgroundResource(R.drawable.femaleicon);
+                femleimg.setImageResource(R.drawable.femalelight);
+                otherimg.setImageResource(R.drawable.otherlight);
+
                 male.setBackgroundResource(R.drawable.continubuttom);
                 female.setImageResource(R.drawable.genderback);
                 other.setImageResource(R.drawable.genderback);
@@ -284,6 +291,10 @@ public class Profile_Fragment extends AppCompatActivity {
 
                 code=0;
                 //Log.d("enteringgg..femalee..", "---" + code+" ::");
+                maleimg.setBackgroundResource(R.drawable.malelight);
+                femleimg.setImageResource(R.drawable.maleicon);
+                otherimg.setImageResource(R.drawable.otherlight);
+
                 male.setBackgroundResource(R.drawable.genderback);
                 female.setImageResource(R.drawable.continubuttom);
                 other.setImageResource(R.drawable.genderback);
@@ -295,6 +306,10 @@ public class Profile_Fragment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 code=2;
+                maleimg.setBackgroundResource(R.drawable.malelight);
+                femleimg.setImageResource(R.drawable.femalelight);
+                otherimg.setImageResource(R.drawable.transgendericon);
+
                 male.setBackgroundResource(R.drawable.genderback);
                 female.setImageResource(R.drawable.genderback);
                 other.setImageResource(R.drawable.continubuttom);
@@ -325,6 +340,7 @@ public class Profile_Fragment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String usernameS=usernameT.getText().toString();
+                final String lastnameS=lastname.getText().toString();
                 final String emalidS=emalidT.getText().toString();
                 final String cityS=cityT.getText().toString();
                 final String countryTS=countryT.getText().toString();
@@ -332,26 +348,24 @@ public class Profile_Fragment extends AppCompatActivity {
 
                 final String ccpS=ccp.getText().toString();
                 String datefomate=date1.getText().toString();
-                Log.d("enteringgg..ccpS..", "---" + datefomate+" ::");
-                if (!datefomate.isEmpty()) {
-                    yearclck = Integer.parseInt(datefomate.substring(0, 4));
-                    Log.d("yearclck..", "---" + yearclck + " ::");
-                }
-
-                if (usernameS.isEmpty() || countryTS.isEmpty() /*|| contactnoS.isEmpty() || ccpS.isEmpty()*/ ||radiovalue.isEmpty()) {
+               // Log.d("enteringgg..ccpS..", "---" + datefomate+" ::");
+                if (usernameS.isEmpty() || lastnameS.isEmpty() || countryTS.isEmpty() /*|| contactnoS.isEmpty() || ccpS.isEmpty()*/ ||radiovalue.isEmpty()) {
                     //  Toast.makeText(Profile_Fragment.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
                     popup("Please enter the All Fields");
-                }else if (yearclck>2007){
-                    popup("Sorry, looks like you're not eligible for VASmash...But thanks for checking us out!");
                 }
+/*
+                else if (yearpicker < 12){
+                    popup("Sorry, you must be at least 13 years old to create an account");
+                }
+*/
                 else {
-                    Log.d("countryTS", "countryid:::"+countryTS);
-                    String AddS = "{\"name\":\"" + usernameS + "\",\"email\":\"" + emalidS + "\",\"mobile\":\"" + contactnoS + "\",\"gender\":"+code+",\"country\":\"" + valueid + "\",\"city\":\""+cityS+"\",\"countryCode\":\"" + ccpS + "\",\"dob\":\"" + datefomate + "\"}";
-                    Log.d("jsnresponse pernonal", "---" + AddS);
+                  //  Log.d("countryTS", "countryid:::"+countryTS);
+                    String AddS = "{\"firstName\":\"" + usernameS + "\",\"lastName\":\"" + lastnameS + "\",\"email\":\"" + emalidS + "\",\"mobile\":\"" + contactnoS + "\",\"gender\":"+code+",\"country\":\"" + valueid + "\",\"city\":\""+cityS+"\",\"countryCode\":\"" + ccpS + "\",\"dob\":\"" + datefomate + "\"}";
+                    //Log.d("jsnresponse pernonal", "---" + AddS);
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(AddS);
-                        Log.d("jsnresponse....", "---" + AddS);
+                        //Log.d("jsnresponse....", "---" + AddS);
                         viewDialog.showDialog();
                         JSONSenderVolleychecked(lstrmdt);
                     } catch (JSONException ignored) {
@@ -370,14 +384,28 @@ public class Profile_Fragment extends AppCompatActivity {
 
             intentprofilepic=intent.getStringExtra("userimg");
             countrycode=intent.getStringExtra("countryCode");
+            firstName=intent.getStringExtra("firstName");
+            lastName=intent.getStringExtra("lastName");
 
-            if (countrycode!=null) {
+            if (!(firstName.equals("null"))) {
+                usernameT.setText(firstName);
+            }
+            if (!(lastName.equals("null"))) {
+                lastname.setText(lastName);
+            }
+
+            //Log.d("profilrfragment","countrycode:::"+countrycode);
+            if (!(countrycode.equals("null"))) {
                 ccp.setText(intent.getStringExtra("countryCode"));
             }
-            Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
-            Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
+            Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
+            Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
             int gendeval=intent.getIntExtra("gender",0);
             if (gendeval==1) {
+                maleimg.setBackgroundResource(R.drawable.femaleicon);
+                femleimg.setImageResource(R.drawable.femalelight);
+                otherimg.setImageResource(R.drawable.otherlight);
+
                 male.setBackgroundResource(R.drawable.continubuttom);
                 female.setImageResource(R.drawable.genderback);
                 other.setImageResource(R.drawable.genderback);
@@ -385,6 +413,10 @@ public class Profile_Fragment extends AppCompatActivity {
                 gendername.setText(": Male");
 
             } else if (gendeval==0) {
+                maleimg.setBackgroundResource(R.drawable.malelight);
+                femleimg.setImageResource(R.drawable.maleicon);
+                otherimg.setImageResource(R.drawable.otherlight);
+
                 male.setBackgroundResource(R.drawable.genderback);
                 female.setImageResource(R.drawable.continubuttom);
                 other.setImageResource(R.drawable.genderback);
@@ -392,6 +424,10 @@ public class Profile_Fragment extends AppCompatActivity {
                 gendername.setText(": Female");
 
             } else if (gendeval==2) {
+                maleimg.setBackgroundResource(R.drawable.malelight);
+                femleimg.setImageResource(R.drawable.femalelight);
+                otherimg.setImageResource(R.drawable.transgendericon);
+
                 male.setBackgroundResource(R.drawable.genderback);
                 female.setImageResource(R.drawable.genderback);
                 other.setImageResource(R.drawable.continubuttom);
@@ -400,8 +436,7 @@ public class Profile_Fragment extends AppCompatActivity {
 
             }
 
-            //Log.d("countryname","::::"+intent.getStringExtra("contryname"));
-            usernameT.setText(intent.getStringExtra("username"));
+
             if (intent.getStringExtra("mobile")!=null) {
                 contactno.setText(intent.getStringExtra("mobile"));
             }
@@ -419,6 +454,7 @@ public class Profile_Fragment extends AppCompatActivity {
             valueid = intent.getStringExtra("contryid");
         }
     }
+
     public void countrydialog() {
         android.app.AlertDialog.Builder builder;
         final Context mContext = this;
@@ -488,12 +524,12 @@ public class Profile_Fragment extends AppCompatActivity {
 
     public void JSONSenderVolleychecked(JSONObject lstrmdt) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "update profile" + updateprofile_url);
+       // Log.d("555555", "update profile" + updateprofile_url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, updateprofile_url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderprofile", "---" + response);
+                       // Log.d("JSONSenderprofile", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             if (response.length()!=0) {
@@ -519,7 +555,7 @@ public class Profile_Fragment extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();
@@ -539,7 +575,7 @@ public class Profile_Fragment extends AppCompatActivity {
                         case 500:
                             try {
                                String  body1 = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body1);
+                               // Log.d("body", "---" + body1);
                                 JSONObject obj = new JSONObject(body1);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();
@@ -613,7 +649,7 @@ public class Profile_Fragment extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
                         dataModelArrayList = new ArrayList<>();
                         if (response.length() != 0) {
                             for (int i = 0; i < response.length(); i++) {
@@ -635,14 +671,16 @@ public class Profile_Fragment extends AppCompatActivity {
                                     langu.setLang_name(_id);
                                     dataModelArrayList.add(langu);
 
+/*
                                     Log.d("Response", "createddateL:::" + dataModelArrayList);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
 
-                            Log.d("clikkkk","::::"+countrycodeclick);
+                           // Log.d("clikkkk","::::"+countrycodeclick);
                             if (countrycodeclick){
                                 codelist.setVisibility(View.VISIBLE);
                                 cntry.setVisibility(View.GONE);
@@ -713,7 +751,7 @@ public class Profile_Fragment extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -908,7 +946,7 @@ public class Profile_Fragment extends AppCompatActivity {
     }
     private void uploadBitmap(final Bitmap bitmap) {
        viewDialog.showDialog();
-        Log.d("555555", "newTicketurl URL" + updateprofilepic_url+"::bitmap"+bitmap);
+       // Log.d("555555", "newTicketurl URL" + updateprofilepic_url+"::bitmap"+bitmap);
         //our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, updateprofilepic_url,
                 new Response.Listener<NetworkResponse>() {
@@ -922,14 +960,14 @@ public class Profile_Fragment extends AppCompatActivity {
 
                             profilePicupload=obj.getString("profilePic");
                             String message=obj.getString("message");
-                            Log.d("uploadprofile",":::"+profilePicupload);
+                            //Log.d("uploadprofile",":::"+profilePicupload);
 
-                            Picasso.with(Profile_Fragment.this).load(profilePicupload).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
+                            Picasso.with(Profile_Fragment.this).load(profilePicupload).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
 /*
                             BitmapDrawable background = new BitmapDrawable(getResources(), profilePic);
                             imagelay.setBackground(background);
 */
-                            Picasso.with(Profile_Fragment.this).load(profilePicupload).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
+                            Picasso.with(Profile_Fragment.this).load(profilePicupload).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
 
                            // Toast.makeText(Profile_Fragment.this, message, Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
@@ -942,8 +980,8 @@ public class Profile_Fragment extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         System.out.println("Success 22222 "+ error.getMessage()+":::"+error.toString());
                         viewDialog.hideDialog();
-                        Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
-                        Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
+                        Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
+                        Picasso.with(Profile_Fragment.this).load(intentprofilepic).placeholder(R.drawable.uploadpiclight).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
                         Toast.makeText(getApplicationContext(), "Profile Pic is not uploaded", Toast.LENGTH_SHORT).show();
                     }
                 }) {

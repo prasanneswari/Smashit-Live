@@ -51,22 +51,22 @@ public class Adapter_AllTransactions extends RecyclerView.Adapter<Adapter_AllTra
 
 
         String gettype=mainmodels.get(position).getType();
-        Log.d("usertype",":::::"+gettype);
+       // Log.d("usertype",":::::"+gettype);
 
         if (gettype.equals("1")){
-            Log.d("1 name",":::::"+mainmodels.get(position).getTodousername());
+            //Log.d("1 name",":::::"+mainmodels.get(position).getTodousername());
             holder.name.setText(mainmodels.get(position).getTodousername());
             Picasso.with(context)
                     .load(mainmodels.get(position).getTodoprofilepic())
-                    .placeholder(R.drawable.uploadpictureold)
+                    .placeholder(R.drawable.uploadpiclight)
                     .into(holder.transpic);
 
         }else if (gettype.equals("2")){
             holder.name.setText(mainmodels.get(position).getName());
-            Log.d("2 name",":::::"+mainmodels.get(position).getName());
+           // Log.d("2 name",":::::"+mainmodels.get(position).getName());
             Picasso.with(context)
                     .load(mainmodels.get(position).getProfilepic())
-                    .placeholder(R.drawable.uploadpictureold)
+                    .placeholder(R.drawable.uploadpiclight)
                     .into(holder.transpic);
 
         }else if (gettype.equals("0")){
@@ -90,7 +90,7 @@ public class Adapter_AllTransactions extends RecyclerView.Adapter<Adapter_AllTra
                     if (userarraypic.get(i)!=null) {
                         Picasso.with(context)
                                 .load(userarraypic.get(i))
-                                .placeholder(R.drawable.uploadpictureold)
+                                .placeholder(R.drawable.uploadpiclight)
                                 .into(holder.transpic);
                     }
                 }

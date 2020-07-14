@@ -20,6 +20,7 @@ public class Model_Trading {
     private String sounduserid;
     private String soundid;
     private String visibility;
+    private String searchstaus;
 
 
     public Model_Trading() {
@@ -41,6 +42,7 @@ public class Model_Trading {
         this.sounduserid=sounduserid;
         this.soundid=soundid;
         this.visibility=visibility;
+        this.searchstaus=searchstaus;
     }
 
 
@@ -188,5 +190,11 @@ public class Model_Trading {
         this.visibility = visibility;
     }
 
+    public String getSearchstaus() {
+        return searchstaus;
+    }
 
+    public void setSearchstaus(String searchstaus) {
+        this.searchstaus = searchstaus;
+    }
 }

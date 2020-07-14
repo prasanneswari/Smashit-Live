@@ -99,7 +99,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
         this.likecommentcount=likecommentcount;
         this.likecommenttype=likecommenttype;
         this.fragment_data_send=fragment_data_send;
-        Log.d("adapterreplyy","::"+mainmodel.size());
+        //Log.d("adapterreplyy","::"+mainmodel.size());
 
     }
     @NonNull
@@ -172,12 +172,12 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                 String commentidclik=mainmodel.get(position).getCommentid();
 
                 String loginS = "{\"userId\":\"" + useridclik + "\",\"commentId\":\"" + commentidclik + "\"}";
-                Log.d("jsnresponse login", "---" + loginS);
+                //Log.d("jsnresponse login", "---" + loginS);
                 String url=likescomment_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleycomment(lstrmdt,url,holder,position,null,null,null,false,null,false,null);
 
                 } catch (JSONException ignored) {
@@ -191,13 +191,13 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                 //replyunlike=false;
                 String idcomment=mainmodel.get(position).getCommentid();
                 String loginS = "{\"_id\":\"" + idcomment + "\"}";
-                Log.d("unlike comment", "---" + loginS);
+                //Log.d("unlike comment", "---" + loginS);
                 String url=unlikecomment_url;
                 JSONObject lstrmdt;
 
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleycomment(lstrmdt,url,holder,position,null,null,null,false,null,true,null);
                 } catch (JSONException ignored) {
                 }
@@ -265,7 +265,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
         holder.viewreply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("entringviewre", ":::"+position);
+                //Log.d("entringviewre", ":::"+position);
                 holder.viewreply.setVisibility(View.GONE);
                 holder.hidepely.setVisibility(View.VISIBLE);
                 holder.innerrepliesll.setVisibility(View.VISIBLE);
@@ -277,7 +277,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
         holder.hidepely.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("entringviewre", ":::"+position);
+                //Log.d("entringviewre", ":::"+position);
                 holder.hidepely.setVisibility(View.GONE);
                 holder.viewreply.setVisibility(View.VISIBLE);
                 holder.innerrepliesll.setVisibility(View.GONE);
@@ -289,14 +289,14 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
     }
 
     private void replycomment(ViewHolder holder, int position) {
-        Log.d("mainposition","::"+position);
+        //Log.d("mainposition","::"+position);
 
         ArrayList<Model_replycomment> replymodelInner=mainmodel.get(position).getReplymodel();
 
         if (replymodelInner!=null) {
             if (replymodelInner.size() != 0) {
                 //holder.innerrepliesll.setVisibility(View.VISIBLE);
-                Log.d("inside","::"+replymodelInner.size());
+                //Log.d("inside","::"+replymodelInner.size());
                 for (int i=0;i<replymodelInner.size();i++) {
 
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -351,18 +351,18 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                         @Override
                         public void onClick(View v) {
                             int  innerPos=(int)v.getTag();
-                            Log.d("commentlikeposs",":::"+innerPos);
+                           // Log.d("commentlikeposs",":::"+innerPos);
                             String useridclik=replymodelInner.get(innerPos).getUserid();
                             String commentidclik=replymodelInner.get(innerPos).getCommentid();
 
                             // Log.d("replypos....", "---" +innerPos+":::"+":::::"+commentidclik+":::"+position);
                             String loginS = "{\"userId\":\"" + useridclik + "\",\"commentId\":\"" + commentidclik + "\"}";
-                            Log.d("jsnresponse login", "---" + loginS);
+                            //Log.d("jsnresponse login", "---" + loginS);
                             String url=likescomment_url;
                             JSONObject lstrmdt;
                             try {
                                 lstrmdt = new JSONObject(loginS);
-                                Log.d("jsnresponse....", "---" + loginS);
+                                //Log.d("jsnresponse....", "---" + loginS);
                                 JSONSenderVolleycomment(lstrmdt,url,holder,innerPos,commentlike,commentunlike,likecount,true,replymodelInner,false,null);
 
                             } catch (JSONException ignored) {
@@ -376,16 +376,16 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                             int  innerPos=(int)v.getTag();
                             String commentidclik=replymodelInner.get(innerPos).getCommentid();
 
-                            Log.d("unclickreplypos....", "---" +":::::"+commentidclik+":::"+position);
+                            //Log.d("unclickreplypos....", "---" +":::::"+commentidclik+":::"+position);
                             //replyunlike=true;
                             String loginS = "{\"_id\":\"" + commentidclik + "\"}";
-                            Log.d("unlike comment", "---" + loginS);
+                            //Log.d("unlike comment", "---" + loginS);
                             String url=unlikecomment_url;
                             JSONObject lstrmdt;
 
                             try {
                                 lstrmdt = new JSONObject(loginS);
-                                Log.d("jsnresponse....", "---" + loginS);
+                                //Log.d("jsnresponse....", "---" + loginS);
                                 JSONSenderVolleycomment(lstrmdt,url,holder,innerPos,commentlike,commentunlike,likecount,false, replymodelInner,false,null);
 
                             } catch (JSONException ignored) {
@@ -398,7 +398,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                         @Override
                         public void onClick(View v) {
                             int replyposclick=(int)v.getTag();
-                            Log.d("recyclarposs",":::"+replyposclick+"::::"+position);
+                            //Log.d("recyclarposs",":::"+replyposclick+"::::"+position);
                             // String username=replymodelInner.get(replyposclick).getName();
                             String commentpostid=replymodelInner.get(replyposclick).getPostid();
                             String commentid= replymodelInner.get(replyposclick).getCommentid();
@@ -452,14 +452,14 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
 
     public void JSONSenderVolleycomment(JSONObject lstrmdt, String url, final ViewHolder holder, final int position, ImageView commentlike, ImageView commentunlike, TextView likecount, boolean replylikeunlike, ArrayList<Model_replycomment> replymodelInner,boolean commentlikeunlike,String postid) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
-        Log.d("replylikeunlike", "::::" + replylikeunlike+":::"+commentlikeunlike);
+        //Log.d("555555", "login" + url);
+        //Log.d("replylikeunlike", "::::" + replylikeunlike+":::"+commentlikeunlike);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                        //Log.d("JSONSenderVolleylogin", "---" + response);
                         try {
                             if (response.length()!=0) {
 
@@ -486,7 +486,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                             if (repltarray.has("userId")) {
                                                 JSONObject object = repltarray.getJSONObject("userId");
                                                 String _id = object.getString("_id");
-                                                Log.d("userid", "::" + _id);
+                                               // Log.d("userid", "::" + _id);
                                                 reply.setUserid(_id);
                                                 if (object.has("name")) {
                                                     reply.setName(object.getString("name"));
@@ -507,7 +507,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                             reply.setIsowner("true");
                                             reply.setPostid(postId);
                                             reply.setCommentid(commentid);
-                                            Log.d("commentsreplyyy","::"+repltarray.getString("comment"));
+                                           // Log.d("commentsreplyyy","::"+repltarray.getString("comment"));
 
                                             reply.setLikecount("0");
                                             reply.setLiketype("false");
@@ -522,7 +522,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                     }
                                 }
                                 else if (response.has("liked")) {
-                                    Log.d("positionnlikesres",":::"+position);
+                                    //Log.d("positionnlikesres",":::"+position);
                                     String message = response.getString("message");
                                     String liked = response.getString("liked");
                                     String count = response.getString("count");
@@ -582,7 +582,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -642,7 +642,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                 @Override
                 public boolean onSingleTapConfirmed(MotionEvent e) {
                     super.onSingleTapUp(e);
-                    Log.d("singlelcick","::");
+                   // Log.d("singlelcick","::");
                     commenttxt.setHint(username);
                     commenttxt.setActivated(true);
                     commenttxt.setPressed(true);
@@ -665,7 +665,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                 @Override
                 public void onLongPress(MotionEvent e) {
                     super.onLongPress(e);
-                    Log.d("longclick","::"+"::::"+"::::"+position);
+                    //Log.d("longclick","::"+"::::"+"::::"+position);
                     if (isonwer.equals("true")) {
                         popup(position,commentpostid,commentid,commentmodeldata,replymodelInner,commentreplycondition);
                     } else {
@@ -701,12 +701,12 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
             @Override
             public void onClick(View v) {
                 String loginS = "{\"_id\":\"" + commentid + "\",\"postId\":\"" + commentpostid + "\"}";
-                Log.d("delete comment", "---" + loginS);
+                //Log.d("delete comment", "---" + loginS);
                 String url=deletcomment_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleydelete(lstrmdt,url,position,commentmodeldata,replymodelInner,commentreplycondition);
                 } catch (JSONException ignored) {
                 }
@@ -750,12 +750,12 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
             public void onClick(View v) {
 
                 String loginS = "{\"userId\":\"" + userid + "\",\"commentId\":\"" + commentid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
-                Log.d("jsnresponse reason", "---" + loginS);
+                //Log.d("jsnresponse reason", "---" + loginS);
                 String url = reportcomment_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
 
                     JSONSenderVolleydelete(lstrmdt,url,position, null, null, false);
 
@@ -778,12 +778,12 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
 
     public void JSONSenderVolleydelete(JSONObject lstrmdt, String url, int position, ArrayList<Model_Commentlist> commentmodeldata, ArrayList<Model_replycomment> replymodelInner, boolean commentreplycondition) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "delete" + url);
+        //Log.d("555555", "delete" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("jsondelete", "---" + response);
+                        //Log.d("jsondelete", "---" + response);
                         if (response.length()!=0){
                             try {
                                 String message=response.getString("message");
@@ -825,7 +825,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -875,13 +875,13 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
         } else {
 
             String loginS = "{\"postId\":\"" + commentpostid + "\",\"commentId\":\"" + commentid + "\",\"comment\":\"" + commenttxtS + "\"}";
-            Log.d("jsnresponse reply", "---" + loginS);
+           // Log.d("jsnresponse reply", "---" + loginS);
             String url=replycomment_url;
             JSONObject lstrmdt;
 
             try {
                 lstrmdt = new JSONObject(loginS);
-                Log.d("jsnresponse....", "---" + loginS);
+                //Log.d("jsnresponse....", "---" + loginS);
                 //loader(dialog);
                 JSONSenderVolleycomment(lstrmdt,url,holder,position,null,null,null,false,null,false,commentpostid);
 
@@ -907,12 +907,12 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsestoredata0000", response.toString());
+                        //Log.d("Responsestoredata0000", response.toString());
 
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
                             for (int j = 0; j < response.length() ; j++ ) {
-                                Log.d("lengtharayyy",  ":::"+j);
+                                //Log.d("lengtharayyy",  ":::"+j);
 
                                 Model_Commentlist ts=new Model_Commentlist();
                                 try {
@@ -948,7 +948,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                                 if (_idarray.has("user")) {
                                                     JSONObject object = _idarray.getJSONObject("user");
                                                     String _id = object.getString("_id");
-                                                    Log.d("userid", "::" + _id);
+                                                    //Log.d("userid", "::" + _id);
                                                     ts.setUserid(_id);
                                                     if (object.has("name")) {
                                                         ts.setName(object.getString("name"));
@@ -990,7 +990,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                                     if (repltarray.has("user")) {
                                                         JSONObject object = repltarray.getJSONObject("user");
                                                         String _id = object.getString("_id");
-                                                        Log.d("userid", "::" + _id);
+                                                        //Log.d("userid", "::" + _id);
                                                         reply.setUserid(_id);
                                                         if (object.has("name")) {
                                                             reply.setName(object.getString("name"));
@@ -1024,7 +1024,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                         ts.setReplymodel(replymodel);
                                         mainmodel.add(ts);
 
-                                        Log.d("replymodel","::"+replymodel.size());
+                                        //Log.d("replymodel","::"+replymodel.size());
                                         commentlst.setHasFixedSize(true);
                                         // use a linear layout manager
                                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
@@ -1056,7 +1056,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -1074,7 +1074,7 @@ public class Adapter_commentlist extends RecyclerView.Adapter<Adapter_commentlis
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

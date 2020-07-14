@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VASmash</string>
+    <string name="app_name">Smashit Live</string>
 
     <string name="facebook_app_id">989903808129041</string>
     <string name="fb_login_protocol_scheme">fb989903808129041</string>
@@ -35,16 +35,18 @@
     <string name="ok">Ok</string>
 
 
-    <string name="email">Email / Phone Number</string>
+    <string name="email">Phone Number / Email</string>
     <string name="Password">Password</string>
     <string name="Login">Login</string>
-    <string name="signin">LOG IN</string>
+    <string name="signin">LOGIN</string>
     <string name="guest">OR Login as Guest User</string>
     <string name="donthaveaccount">Don’t have an account?</string>
     <string name="signup">SIGN UP</string>
     <string name="forgotpwd">Forgot Password</string>
-    <string name="enterphone">Enter Phone Number</string>
-    <string name="entermail">Enter Email</string>
+    <string name="enterphone">Phone Number</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="entermail">Email</string>
     <string name="getstarted">GET STARTED</string>
     <string name="SignUp">Sign Up</string>
     <string name="newpwd">Set New Password</string>
@@ -66,7 +68,7 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="likes">Likes</string>
-    <string name="create">Create</string>
+    <string name="create">Created</string>
     <string name="created">Created</string>
     <string name="liked">Liked</string>
     <string name="follow">Follow</string>
@@ -82,7 +84,7 @@
     <string name="claim">Claim</string>
     <string name="hashtags">#HashTags</string>
     <string name="share">Share</string>
-    <string name="views">0 Views</string>
+    <string name="views">0 Posts</string>
     <string name="wallet">Wallet</string>
     <string name="viewtransaction">View Transaction History</string>
     <string name="vasmash">VA-Smash</string>

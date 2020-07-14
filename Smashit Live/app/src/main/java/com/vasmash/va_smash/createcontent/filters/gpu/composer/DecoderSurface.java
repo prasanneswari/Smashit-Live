@@ -11,14 +11,12 @@ import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 
-import com.daasuu.gpuv.composer.FillMode;
-import com.daasuu.gpuv.composer.FillModeCustomItem;
-import com.daasuu.gpuv.composer.Rotation;
-import com.daasuu.gpuv.egl.EglUtil;
-import com.daasuu.gpuv.egl.GlFramebufferObject;
-import com.daasuu.gpuv.egl.GlPreviewFilter;
-import com.daasuu.gpuv.egl.GlSurfaceTexture;
-import com.daasuu.gpuv.egl.filter.GlFilter;
+
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.EglUtil;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.GlFramebufferObject;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.GlPreviewFilter;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.GlSurfaceTexture;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.filter.GlFilter;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;

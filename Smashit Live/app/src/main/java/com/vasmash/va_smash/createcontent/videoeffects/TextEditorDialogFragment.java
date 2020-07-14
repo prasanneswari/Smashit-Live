@@ -162,7 +162,7 @@ public class TextEditorDialogFragment extends DialogFragment {
         fontIds.add(R.font.handlerregular);
         fontIds.add(R.font.saucerbb);
         fontIds.add(R.font.youmurdererbb_reg);
-        fontIds.add(R.font.bree_serif);
+        fontIds.add(R.font.rubik);
         return fontIds;
     }
 

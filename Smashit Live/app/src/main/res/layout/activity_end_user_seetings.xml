@@ -90,7 +90,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:fontFamily="@font/rubik"
-                            android:text="This Mobile Application (VA Smash) End user License Agreement is entered into between “you” and
+                            android:text="This Mobile Application (Smashit Live) End user License Agreement is entered into between “you” and
 “your” (the entity that has entered into this agreement) and Chakravuyha Software Technologies
 (“Company” or “we”). This agreement consists of the below terms and conditions and the Online Services
 Use Rights. This agreement is effective on the date you accept it or upon your first use of the Mobile
@@ -127,8 +127,8 @@ organization"
                                 android:text="“Company” means Chakravuyha Software Technologies located at 319, Manjeera Commercial, JNTURoad, Kukatpally, Hyderabad
 “License” means the rights to copy, install, use, access, display, run and/or otherwise interact with an “Online Service”, as applicable, and as may be further described in the Online Services Use Rights. “Online Service” means any service that may include Software and/or any subscription as available.
 “Register” means to create an Account on the Mobile Application and Registration means the act of creating such an Account.
-“Services” means all the services provided via the Mobile Application to Users, and Service means an one of them, “Subscription” means the part of the Order identifying the specific Online Service being ordered and include other information. “User” means the person registering and installing the VA Smash application.
-“User” Data” means all data, including all text, sound, or image files that you provide, or are provided on your behalf, to us through your use of the Online Services “VA Smash” means the mobile application available is VA Store and the product Virtual Arena."
+“Services” means all the services provided via the Mobile Application to Users, and Service means an one of them, “Subscription” means the part of the Order identifying the specific Online Service being ordered and include other information. “User” means the person registering and installing the Smashit Live application.
+“User” Data” means all data, including all text, sound, or image files that you provide, or are provided on your behalf, to us through your use of the Online Services “Smashit Live” means the mobile application available is VA Store and the product Virtual Arena."
                                 />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -249,7 +249,7 @@ work on Your device."
                                 android:fontFamily="@font/rubik"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="20dp"
-                                android:text="5.1.1 iOS Application. In the event of VA Smash’s failure to conform to any applicable warranty,
+                                android:text="5.1.1 iOS Application. In the event of Smashit Live’s failure to conform to any applicable warranty,
 you may notify Apple, and Apple will refund the purchase price for the Mobile App. TO
 THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, APPLE WILL HAVE NO OTHER
 WARRANTY OBLIGATION WHATSOEVER WITH RESPECT TO (A) THE MOBILE APP, AND (B)
@@ -543,7 +543,7 @@ applicable third-party agreement between You and Your any third-party, including
                                 android:fontFamily="@font/rubik"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginLeft="10dp"
-                                android:text="If You have any questions regarding this EULA, please contact COMPANY by email at support@vasmash.com."
+                                android:text="If You have any questions regarding this EULA, please contact COMPANY by email at support@smashit.live"
                                 />
 
 

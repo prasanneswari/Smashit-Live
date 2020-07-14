@@ -72,7 +72,7 @@ public class SoundsAdapter extends BaseAdapter {
 
         holder.soundname.setText(model.getSound_name());
         holder.soundid.setText(model.getSound_code());
-        Log.e("soundadapter",model.getSound_name()+"  "+model.getSound_code());
+       // Log.e("soundadapter",model.getSound_name()+"  "+model.getSound_code());
 
         if (model.isSelected())
             holder.soundCheckBox.setBackgroundResource(R.drawable.check_box_custom);

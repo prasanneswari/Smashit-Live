@@ -80,7 +80,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
     static public ProgressBar progressBarView;
     static public CountDownTimer countDownTimer;
     private RequestQueue mQueue;
-    String token,profilepic="null";
+    String token="null",profilepic="null";
     static public String guestvalues="null";
     static public String coinsPerVid="null";
     static public String clamiedget="null";
@@ -192,34 +192,33 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
     public void sendData1(String message, String claimed, String climedhome) {
         claimedtopnav=claimed;
         claimhometopnav=climedhome;
-        Log.d("message",":::"+message+":::"+claimedtopnav+":::"+claimhometopnav);
-
+        //Log.d("messagetopnav",":::"+message+":::"+claimedtopnav+":::"+claimhometopnav);
         if (message.equals("nodata")){
             progressBarView.setProgress(0);
             if (countDownTimer!=null) {
                 countDownTimer.cancel();
             }
         }else if (claimedtopnav.equals("true")) {
-            Log.d("entring claimed","::");
+            //Log.d("entring claimed","::");
             progressBarView.setProgress(100);
             if (countDownTimer != null) {
                 countDownTimer.cancel();
             }
         }
         else if (clamiedget.equals("true")){
-            Log.d("entring claimedget","::");
+           // Log.d("entring claimedget","::");
             progressBarView.setProgress(100);
             if (countDownTimer != null) {
                 countDownTimer.cancel();
             }else if (claimhometopnav.equals("false")) {
-                Log.d("entring claimedhome","::");
+                //Log.d("entring claimedhome","::");
                 progressBarView.setProgress(0);
                 if (countDownTimer != null) {
                     countDownTimer.start();
                 }
             }
             else if (claimhometopnav.equals("true")) {
-                Log.d("entring claimedhometop","::");
+               // Log.d("entring claimedhometop","::");
                 progressBarView.setProgress(100);
                 if (countDownTimer != null) {
                     countDownTimer.cancel();
@@ -228,11 +227,11 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
         }
         else {
 //            countDownTimer.start();
-            Log.d("entring countertime","::");
+           // Log.d("entring countertime","::");
             millis = Integer.parseInt(message);
             int seconds = (millis / 1000) % 60;
-            Log.d("seconds", ":::" + seconds+"::::"+millis);
-            if (!token.equals("null")) {
+            //Log.d("seconds", ":::" + seconds+"::::"+millis);
+            if (!(token.equals("null"))) {
                 progressBarView.setProgress(0);
                 fn_countdown(millis);
             }
@@ -259,7 +258,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
     }
     private void fn_countdown(int message) {
         int dur= message;
-        Log.d("videocount",":::"+dur);
+        //Log.d("videocount",":::"+dur);
         if (dur>0) {
             myProgress = 0;
             try {
@@ -283,7 +282,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
                     int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
 
                     String newtime = hours + ":" + minutes + ":" + seconds;
-                   Log.d("hoursss",":::::"+newtime);
+                   //Log.d("hoursss",":::::"+newtime);
                     String earningpointS=earningpoints.getText().toString();
                     //splitString(earningpointS);
 
@@ -338,15 +337,13 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responses earning", response.toString());
+                       // Log.d("Responses earning", response.toString());
                         //viewDialog.hideDialog();
-
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
-
                             try {
                                 String status=response.getString("status");
-                                Log.d("statuscode",":::"+status);
+                                //Log.d("statuscode",":::"+status);
 
                                 if (status.equals("2")){
                                     String message=response.getString("message");
@@ -366,7 +363,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
                                 else if (status.equals("1")){
                                     coinsPerVid = response.getString("vidAmount");
                                     clamiedget = response.getString("claim");
-                                    Log.d("coinsPerVid", "::::" + clamiedget);
+                                   // Log.d("coinsPerVid", "::::" + clamiedget);
 
                                     if (response.has("user")) {
                                         JSONObject object = response.getJSONObject("user");
@@ -437,7 +434,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             //viewDialog.hideDialog();
@@ -456,7 +453,7 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                        //Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             //viewDialog.hideDialog();
@@ -550,17 +547,17 @@ public class TopNavigationview extends AppCompatActivity implements  HomeFragmen
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+       // if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 backprofile = data.getStringExtra("topback");
-                Log.d("topbakimg", ":::" + backprofile);
+                //Log.d("topbakimg", ":::" + backprofile);
                 if (!backprofile.equals("null")) {
-                    Log.d("strdit111", ":::" + backprofile);
-                    Picasso.with(TopNavigationview.this).load(backprofile).placeholder(R.drawable.uploadpictureold).into(earningpic);
+                    //Log.d("strdit111", ":::" + backprofile);
+                    Picasso.with(TopNavigationview.this).load(backprofile).placeholder(R.drawable.uploadpiclight).into(earningpic);
                 }else {
-                    Picasso.with(TopNavigationview.this).load(profilePic).placeholder(R.drawable.uploadpictureold).into(earningpic);
+                    Picasso.with(TopNavigationview.this).load(profilePic).placeholder(R.drawable.uploadpiclight).into(earningpic);
                 }
             }
-        }
+        //}
     }
 }

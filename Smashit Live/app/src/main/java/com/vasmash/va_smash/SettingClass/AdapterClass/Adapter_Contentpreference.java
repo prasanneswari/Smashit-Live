@@ -125,7 +125,7 @@ public class Adapter_Contentpreference extends BaseAdapter {
             public void onClick(View v) {
 
                 if (settingscatnameL.contains(modelArrayList.get(position).getLang_code())) {
-                    Log.d("enter iff", ":::");
+                    //Log.d("enter iff", ":::");
                     int index = settingscatnameL.indexOf(modelArrayList.get(position).getLang_code());
                     settingscatnameL.remove(index);
                     int catindex = settingscatL.indexOf(modelArrayList.get(position).getLang_name());
@@ -133,7 +133,7 @@ public class Adapter_Contentpreference extends BaseAdapter {
                     holder.checkBox.setVisibility(View.GONE);
                     holder.name.setTextColor(Color.parseColor("#ffffff"));
                 } else {
-                    Log.d("elseee", ":::");
+                   // Log.d("elseee", ":::");
                     settingscatnameL.add(modelArrayList.get(position).getLang_code());
                     settingscatL.add(modelArrayList.get(position).getLang_name());
                     holder.checkBox.setVisibility(View.VISIBLE);

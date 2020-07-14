@@ -101,7 +101,6 @@ public class LoginFragment extends AppCompatActivity {
 
     //this is the loader animationview
     ViewDialog viewDialog;
-    String regid;
     SharedPreferences pref;
 
     //loaction permisions
@@ -188,9 +187,9 @@ public class LoginFragment extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
                     String firebasetoken = task.getResult().getToken();
-                    Log.d("firebasetoken", ":::" + firebasetoken);
+                   // Log.d("firebasetoken", ":::" + firebasetoken);
                     String loginS = "{\"token\":\"" + firebasetoken + "\",\"device\":\"" + "android" + "\"}";
-                    Log.d("jsnresponse firebase", "---" + loginS);
+                   // Log.d("jsnresponse firebase", "---" + loginS);
                     String url = fcmtoken_url;
                     JSONObject lstrmdt;
                     try {
@@ -215,17 +214,14 @@ public class LoginFragment extends AppCompatActivity {
                 if (mailS.isEmpty() || pwdS.isEmpty()) {
                     //Toast.makeText(getActivity(), "Please enter the All Fields", Toast.LENGTH_SHORT).show();
                     popup("Please fill all the fields to login");
-
                 } else {
-
                     String loginS = "{\"username\":\"" + mailS + "\",\"password\":\"" + pwdS + "\"}";
-                    Log.d("jsnresponse login", "---" + loginS);
+                   // Log.d("jsnresponse login", "---" + loginS);
                     String url = login_pwdurl;
                     JSONObject lstrmdt;
-
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                       // Log.d("jsnresponse....", "---" + loginS);
                         viewDialog.showDialog();
                         JSONSenderVolleylogin(lstrmdt, url);
 
@@ -297,13 +293,13 @@ public class LoginFragment extends AppCompatActivity {
             @Override
             public void onCancel() {
                 // App code
-                Log.d("cancell", ":::");
+               // Log.d("cancell", ":::");
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Log.d("error", ":::" + exception.getMessage());
+                //Log.d("error", ":::" + exception.getMessage());
             }
         });
 
@@ -316,7 +312,7 @@ public class LoginFragment extends AppCompatActivity {
                 .requestIdToken(serverClientId)
                 .requestEmail()
                 .build();
-
+        setGooglePlusButtonText(signInButton,"Sign in with Google");
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -327,15 +323,27 @@ public class LoginFragment extends AppCompatActivity {
         });
 
     }
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
 
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
+        //Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                       // Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             if (response.has("status")) {
@@ -344,7 +352,7 @@ public class LoginFragment extends AppCompatActivity {
                                 String message = response.getString("message");
 
                                 SharedPreferences.Editor editor = pref.edit();
-                                regid = response.getString("id");
+                                String regid = response.getString("id");
                                 editor.putString("id", regid);
                                 editor.commit();
 
@@ -388,7 +396,7 @@ public class LoginFragment extends AppCompatActivity {
                             try {
 
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                              //  Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -444,12 +452,12 @@ public class LoginFragment extends AppCompatActivity {
     }
 
     public void notofication(JSONObject lstrmdt, String url) {
-        Log.d("loginurl", "---" + url);
+       // Log.d("loginurl", "---" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("notificationres", "---" + response);
+                       // Log.d("notificationres", "---" + response);
                         try {
                             if (response.has("user")) {
                                 JSONObject user = response.getJSONObject("user");
@@ -494,11 +502,12 @@ public class LoginFragment extends AppCompatActivity {
                                                 email = object.getString("email");
                                             }
                                         }
-
+                                        LoginManager.getInstance().logOut();
                                         Intent intent = new Intent(LoginFragment.this, RegisterformActivity.class);
                                         intent.putExtra("gaid",id);
                                         intent.putExtra("profilePic",profilePic);
                                         intent.putExtra("name",firstName);
+                                        intent.putExtra("lastName",lastName);
                                         intent.putExtra("email",email);
                                         intent.putExtra("mobile","");
                                         intent.putExtra("country","");
@@ -525,7 +534,7 @@ public class LoginFragment extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -573,7 +582,7 @@ public class LoginFragment extends AppCompatActivity {
 
             @Override
             public void retry(VolleyError error) throws VolleyError {
-                Log.d("errorvaloyyer", ":::" + error);
+               // Log.d("errorvaloyyer", ":::" + error);
                 viewDialog.hideDialog();
 
             }
@@ -595,7 +604,7 @@ public class LoginFragment extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("loginwith ga", response.toString());
+                       // Log.d("loginwith ga", response.toString());
                         try {
                             urlga = response.getString("url");
                             accountId = response.getString("accountId");
@@ -625,7 +634,7 @@ public class LoginFragment extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                     //   Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -828,7 +837,7 @@ public class LoginFragment extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("resultscode", "::::" + resultCode + ":::::" + data);
+       // Log.d("resultscode", "::::" + resultCode + ":::::" + data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
 
@@ -850,9 +859,9 @@ public class LoginFragment extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.w("Googleaccount", "code=" + account);
+           // Log.w("Googleaccount", "code=" + account);
             String loginS = "{\"token\":\"" + account.getIdToken() + "\"}";
-            Log.d("jsnresponse google", "---" + loginS);
+           // Log.d("jsnresponse google", "---" + loginS);
             String url = googlesignin_url;
             JSONObject lstrmdt;
             try {
@@ -868,7 +877,7 @@ public class LoginFragment extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
+           // Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
             Toast.makeText(LoginFragment.this, "Failed", Toast.LENGTH_LONG).show();
         }
     }
@@ -889,10 +898,10 @@ public class LoginFragment extends AppCompatActivity {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         // Application code
-                        Log.i("Response", response.toString());
+                       // Log.i("Response", response.toString());
 
                         String loginS = "{\"token\":\"" + token + "\"}";
-                        Log.d("jsnresponse facebook", "---" + loginS);
+                       // Log.d("jsnresponse facebook", "---" + loginS);
                         String url = facebooklogin_url;
                         JSONObject lstrmdt;
                         try {

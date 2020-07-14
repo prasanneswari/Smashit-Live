@@ -23,7 +23,7 @@ public class Tablayout_searchtabAdapter extends FragmentStatePagerAdapter {
     public Tablayout_searchtabAdapter(FragmentManager fm,int tabCount, String searchadaptertext,String searchtext) {
         super(fm);
         //Initializing tab count
-        Log.d("adaptersearchtext",":::;"+searchtext+"::::"+searchadaptertext);
+      //  Log.d("adaptersearchtext",":::;"+searchtext+"::::"+searchadaptertext);
         this.tabCount=tabCount;
         this.searchadaptertext=searchadaptertext;
         this.searchtext=searchtext;

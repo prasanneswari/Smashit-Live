@@ -137,10 +137,10 @@ public class HashtagsFragment extends Fragment {
                             loading=true;
                             if (searchadaptertext.equals("null")) {
                                 hashtext.setText("#"+" "+searchtext);
-                                jsonhashtags(hashtagsearch_url+searchtext+"&limit=10&skip="+userfollowingL.size());
+                                jsonhashtags(hashtagsearch_url+searchtext+"&skip="+userfollowingL.size());
                             }else {
                                 hashtext.setText("#"+" "+searchadaptertext);
-                                jsonhashtags(hashtagsearch_url+searchadaptertext+"&limit=10&skip="+userfollowingL.size());
+                                jsonhashtags(hashtagsearch_url+searchadaptertext+"&skip="+userfollowingL.size());
                             }
                         }
                     }
@@ -149,16 +149,16 @@ public class HashtagsFragment extends Fragment {
         });
         if (searchadaptertext.equals("null")) {
             hashtext.setText("#"+" "+searchtext);
-            jsonhashtags(hashtagsearch_url+searchtext+"&limit=10&skip=0");
+            jsonhashtags(hashtagsearch_url+searchtext+"&skip=0");
         }else {
             hashtext.setText("#"+" "+searchadaptertext);
-            jsonhashtags(hashtagsearch_url+searchadaptertext+"&limit=10&skip=0");
+            jsonhashtags(hashtagsearch_url+searchadaptertext+"&skip=0");
         }
 
     }
 
     private void jsonhashtags(String url) {
-        Log.d("jsonParseuser", "hashtags" + url);
+      //  Log.d("jsonParseuser", "hashtags" + url);
         userfollowingL=new ArrayList<>();
 
         // prepare the Request
@@ -167,7 +167,7 @@ public class HashtagsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responssound", response.toString());
+                       // Log.d("Responssound", response.toString());
 
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
@@ -176,8 +176,12 @@ public class HashtagsFragment extends Fragment {
                                 for (int k = 0; k < response.length(); k++) {
                                     JSONObject hashtagobj = response.getJSONObject(k);
                                     Model_Searchlatest userfollow_unfollow = new Model_Searchlatest();
-                                    userfollow_unfollow.setHashtagsname(hashtagobj.getString("name"));
-                                    userfollow_unfollow.setHashtagsviews("10");
+                                    if (hashtagobj.has("name")) {
+                                        userfollow_unfollow.setHashtagsname(hashtagobj.getString("name"));
+                                    }
+                                    if (hashtagobj.has("count")) {
+                                        userfollow_unfollow.setHashtagsviews(hashtagobj.getString("count"));
+                                    }
                                     userfollowingL.add(userfollow_unfollow);
                                 }
                                 hashagslay.setVisibility(View.VISIBLE);
@@ -207,7 +211,7 @@ public class HashtagsFragment extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                      //  Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -225,7 +229,7 @@ public class HashtagsFragment extends Fragment {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

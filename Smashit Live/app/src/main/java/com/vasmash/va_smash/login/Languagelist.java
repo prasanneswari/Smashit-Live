@@ -45,7 +45,7 @@ public class Languagelist extends AppCompatActivity {
     private RequestQueue mQueue;
     String ln = Languagesapi;
     Language_popup_adapter language_popup_adapter;
-    //this is the loader animationview
+    //this is the loader animationviewT
     ViewDialog viewDialog;
 
     @Override
@@ -92,7 +92,7 @@ public class Languagelist extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
                         viewDialog.hideDialog();
                         modelArrayList = new ArrayList<>();
 
@@ -109,8 +109,10 @@ public class Languagelist extends AppCompatActivity {
                                     langu.setLang_code(name);
                                     modelArrayList.add(langu);
 
+/*
                                     Log.d("Response", "createddateL:::" + modelArrayList);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -135,7 +137,7 @@ public class Languagelist extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             viewDialog.hideDialog();

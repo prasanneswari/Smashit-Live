@@ -83,7 +83,7 @@ public class UsersFragment extends Fragment {
     }
     private void userpagination(){
         userfollowingL = new ArrayList<>();
-        Log.d("enterinfolloww",":::"+userfollowingL);
+       // Log.d("enterinfolloww",":::"+userfollowingL);
         userslay.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutfollow = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         userlist.setLayoutManager(layoutfollow);
@@ -122,10 +122,10 @@ public class UsersFragment extends Fragment {
                             loading=true;
                             if (searchadaptertext.equals("null")) {
                                 username.setText(searchtext);
-                                jsonfollow_following(usersearch_url+searchtext+"&limit=10&skip="+userfollowingL.size());
+                                jsonfollow_following(usersearch_url+searchtext+"&skip="+userfollowingL.size());
                             }else {
                                 username.setText(searchadaptertext);
-                                jsonfollow_following(usersearch_url+searchadaptertext+"&limit=10&skip="+userfollowingL.size());
+                                jsonfollow_following(usersearch_url+searchadaptertext+"&skip="+userfollowingL.size());
                             }
                         }
                     }
@@ -134,15 +134,15 @@ public class UsersFragment extends Fragment {
         });
         if (searchadaptertext.equals("null")) {
             username.setText(searchtext);
-            jsonfollow_following(usersearch_url+searchtext+"&limit=10&skip=0");
+            jsonfollow_following(usersearch_url+searchtext+"&skip=0");
         }else {
             username.setText(searchadaptertext);
-            jsonfollow_following(usersearch_url+searchadaptertext+"&limit=10&skip=0");
+            jsonfollow_following(usersearch_url+searchadaptertext+"&skip=0");
         }
     }
 
     private void jsonfollow_following(String url) {
-        Log.d("jsonParseuser", "user_follow_folloewing" + url);
+       // Log.d("jsonParseuser", "user_follow_folloewing" + url);
         if (loading){
             p_bar.setVisibility(View.VISIBLE);
         }
@@ -153,7 +153,7 @@ public class UsersFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsefollow", response.toString());
+                       // Log.d("Responsefollow", response.toString());
                         if (loading){
                             p_bar.setVisibility(View.GONE);
                         }
@@ -200,7 +200,7 @@ public class UsersFragment extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                      //  Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
@@ -221,7 +221,7 @@ public class UsersFragment extends Fragment {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                      //  Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             if (loading){

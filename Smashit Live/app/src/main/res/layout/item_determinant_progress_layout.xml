@@ -24,8 +24,8 @@
         android:indeterminate="false"
         android:progress="0"
         android:theme="@style/Progressbar_style"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_marginTop="5dp"
         android:layout_centerVertical="true"/>
 
 </LinearLayout>

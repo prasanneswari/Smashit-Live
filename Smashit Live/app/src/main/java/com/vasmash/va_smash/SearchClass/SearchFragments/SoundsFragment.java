@@ -135,10 +135,10 @@ public class SoundsFragment extends Fragment {
                             loading=true;
                             if (searchadaptertext.equals("null")) {
                                 soundtext.setText(searchtext);
-                                jsonsound(usersound_url+searchtext+"&limit=10&skip="+songmodeldata.size());
+                                jsonsound(usersound_url+searchtext+"&skip="+songmodeldata.size());
                             }else {
                                 soundtext.setText(searchadaptertext);
-                                jsonsound(usersound_url+searchadaptertext+"&limit=10&skip="+songmodeldata.size());
+                                jsonsound(usersound_url+searchadaptertext+"&skip="+songmodeldata.size());
                             }
                         }
                     }
@@ -147,17 +147,17 @@ public class SoundsFragment extends Fragment {
         });
         if (searchadaptertext.equals("null")) {
             soundtext.setText(searchtext);
-            jsonsound(usersound_url+searchtext+"&limit=10&skip=0");
+            jsonsound(usersound_url+searchtext+"&skip=0");
         }else {
             soundtext.setText(searchadaptertext);
-            jsonsound(usersound_url+searchadaptertext+"&limit=10&skip=0");
+            jsonsound(usersound_url+searchadaptertext+"&skip=0");
         }
 
     }
 
 
     private void jsonsound(String url) {
-        Log.d("jsonParseuser", "soundurll" + url);
+       // Log.d("jsonParseuser", "soundurll" + url);
 
         // prepare the Request
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -165,7 +165,7 @@ public class SoundsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responssound", response.toString());
+                       // Log.d("Responssound", response.toString());
 
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
@@ -179,29 +179,31 @@ public class SoundsFragment extends Fragment {
                                     if (soundobj.has("album")) {
                                         songdata.setSongname(soundobj.getString("album"));
                                     }
-                                    songdata.setSongurl(soundobj.getString("url"));
-                                    songdata.setSongid(soundobj.getString("_id"));
+                                    if (soundobj.has("url")) {
+                                        songdata.setSongurl(soundobj.getString("url"));
+                                    }
+                                    if (soundobj.has("_id")) {
+                                        songdata.setSongid(soundobj.getString("_id"));
+                                    }
                                     boolean sel = false;
                                     songdata.setSelected(sel);
-                                    songdata.setSongduration("0.43");
-                                    songdata.setSongviews("10");
-
+                                    if (soundobj.has("duration")) {
+                                        songdata.setSongduration(soundobj.getString("duration"));
+                                    }
+                                    if (soundobj.has("posts")) {
+                                        songdata.setSongviews(soundobj.getString("posts"));
+                                    }
                                     if (soundobj.has("userId")) {
                                         JSONObject songobj = soundobj.getJSONObject("userId");
                                         songdata.setSongusername(songobj.getString("name"));
-
                                     }
-
                                     songmodeldata.add(songdata);
                                 }
-
                                 adapterhashtags.notifyDataSetChanged();
                                 loading11=false;
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        }else {
-
                         }
                     }
                 },
@@ -218,7 +220,7 @@ public class SoundsFragment extends Fragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -236,7 +238,7 @@ public class SoundsFragment extends Fragment {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                      //  Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

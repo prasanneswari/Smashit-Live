@@ -1,6 +1,7 @@
 package com.vasmash.va_smash.SearchClass;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -16,9 +17,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -52,8 +56,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.daasuu.gpuv.composer.GPUMp4Composer;
-import com.daasuu.gpuv.egl.filter.GlWatermarkFilter;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -63,6 +65,11 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -83,7 +90,11 @@ import com.vasmash.va_smash.HomeScreen.homeadapters.VideoAction_F;
 import com.vasmash.va_smash.HomeScreen.homefragment.HashTagsDisplay;
 import com.vasmash.va_smash.HomeScreen.homefragment.HomeFragment;
 import com.vasmash.va_smash.HomeScreen.homefragment.OriginalSoundDisplay;
+import com.vasmash.va_smash.ProfileScreen.OtherprofileActivity;
+import com.vasmash.va_smash.ProfileScreen.ProfileActivity;
+import com.vasmash.va_smash.ProfileScreen.Profile_Fragment;
 import com.vasmash.va_smash.R;
+import com.vasmash.va_smash.SearchClass.ModelClass.Model_Searchlatest;
 import com.vasmash.va_smash.SearchClass.ModelClass.Model_Trading;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -104,23 +115,32 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+import com.vasmash.va_smash.createcontent.filters.gpu.composer.GPUMp4Composer;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.filter.GlWatermarkFilter;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.claimtext;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.clamlay;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.countDownTimer;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.earningpoints;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.earningtxt;
+import static com.vasmash.va_smash.HomeScreen.homefragment.OriginalSoundDisplay.mAdaptersounds;
 import static com.vasmash.va_smash.ProfileScreen.ProfileActivity.createvideosclick;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.deletepost_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.earningpost_url;
@@ -128,6 +148,7 @@ import static com.vasmash.va_smash.VASmashAPIS.APIs.likesend_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.postreport_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.unlike_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.visibility_url;
+import static com.yalantis.ucrop.UCropFragment.TAG;
 
 public class SearchVerticalData extends AppCompatActivity implements Player.EventListener, Fragment_Data_Send {
 
@@ -155,7 +176,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     ArrayList<Model_Trading> data_list;
     ArrayList<String> fileclickL;
 
-    public static String soundname,soundid,soundurl,searchimage,searchcount,searchlikecondition,searchtypeval,searchcomment,postid,username;
+    public static String searchstatus,soundname,soundid,soundurl,searchimage,searchcount,searchlikecondition,searchtypeval,searchcomment,postid,username;
 
     String dynamiclink;
     int position;
@@ -165,6 +186,14 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     String post_visibilty;
     private Toolbar toolbar;
     AppBarLayout appBarLayout;
+    static public boolean postdeleted=false;
+
+    String   defaultVideo;
+
+    int progress = 0;
+    CountDownTimer countDownTimer;
+    FFmpeg ffmpeg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +220,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             appBarLayout.setVisibility(View.GONE);
         }
 
+        loadFFMpegBinary();
         SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(SearchVerticalData.this);
         proftoken = phoneauthshard.getString("token", "null");
 
@@ -201,7 +231,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             position = bundle.getIntExtra("clikpos", 0);
             dynamiclink = bundle.getStringExtra("dynamiclink");
             fileclickL = bundle.getStringArrayListExtra("fileL");
-            Log.d("fileclickL",":::"+fileclickL);
+           // Log.d("fileclickL",":::"+fileclickL);
 
         }
         //here get the sharedpreference data from profile activity,otherprofile,hashtags and search data.
@@ -282,15 +312,15 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     }
     @Override
     public void onPositionDiscontinuity(int reason) {
-        Log.d("repeatemode","::::"+reason);
+       // Log.d("repeatemode","::::"+reason);
         //here it shows the complete video and it will call post api. Here it gives 1% for 1 video watching.
         String loginS = "{\"postId\":\"" + postid + "\"}";
-        Log.d("jsnresponse earning ", "---" + loginS);
+       // Log.d("jsnresponse earning ", "---" + loginS);
         String url = earningpost_url;
         JSONObject lstrmdt;
         try {
             lstrmdt = new JSONObject(loginS);
-            Log.d("jsnresponse....", "---" + loginS);
+           // Log.d("jsnresponse....", "---" + loginS);
             JSONSenderVolleylikessend(lstrmdt,url,currentPage, liketxt, likes, unlike);
 
         } catch (JSONException ignored) {
@@ -309,10 +339,10 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     public void Set_Player(final int currentPage){
         final Model_Trading item= data_list.get(currentPage);
 
-        Log.d("currentPage","currentPage"+currentPage);
-        searchimage = fileclickL.get(currentPage);
-        //searchimage = data_list.get(currentPage).getImage();
-        Log.d("searchimage","searchimage"+searchimage);
+       // Log.d("currentPage","currentPage"+currentPage);
+        //searchimage = fileclickL.get(currentPage);
+        searchimage = data_list.get(currentPage).getImage();
+       // Log.d("searchimage","searchimage"+searchimage);
         searchtypeval = item.getType();
         postid = item.getId();
         //searchcount = likeclickL.get(currentPage);
@@ -380,7 +410,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
                 long realDurationMillis = player.getDuration();
-                Log.d("timeinmills",":::::"+realDurationMillis);
+                //Log.d("timeinmills",":::::"+realDurationMillis);
 
             }
 
@@ -404,14 +434,14 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     if(player.getVideoFormat()!=null){
                         height = player.getVideoFormat().height;
                     }
-                    Log.e("height", "::::" + height);
+                  //  Log.e("height", "::::" + height);
                     if(searchimage.contains(".mp4")) {
-                        Log.e("if mp4","");
+                       // Log.e("if mp4","");
                         if (height > 900) {
-                            Log.e("if mp4 if ","1000>");
+                           // Log.e("if mp4 if ","1000>");
                             playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
                         } else {
-                            Log.e("if mp4 if ","1000<");
+                            //Log.e("if mp4 if ","1000<");
                             playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
                         }
                     }
@@ -455,8 +485,9 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
 
 
         if (soundurl!=null){
+          //  Log.d("originalsound","::::"+soundname);
             soundlay.setVisibility(View.VISIBLE);
-            song.setText(soundname +"-"+ soundurl);
+            song.setText(soundname +"-"+"  "+ "\uD83C\uDFB5Use Audio\uD83C\uDFB5 .");
             song.setSelected(true);
         }else {
             soundlay.setVisibility(View.INVISIBLE);
@@ -507,7 +538,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     @Override
                     public void onLongPress(MotionEvent e) {
                         super.onLongPress(e);
-                        Log.d("longpresss",":::::");
+                        //Log.d("longpresss",":::::");
                         reportpopup(postid, liketxt, likes, unlike,lottieAnimationView);
                     }
                     //it select the like while clcikng the double tap
@@ -527,13 +558,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                         } else {
 
                             String loginS = "{\"postId\":\"" + postid + "\"}";
-                            Log.d("jsnresponse login", "---" + loginS);
+                           // Log.d("jsnresponse login", "---" + loginS);
                             String url = likesend_url;
                             JSONObject lstrmdt;
 
                             try {
                                 lstrmdt = new JSONObject(loginS);
-                                Log.d("jsnresponse....", "---" + loginS);
+                               // Log.d("jsnresponse....", "---" + loginS);
                                 JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike);
 
                                 iv.setImageDrawable(getResources().getDrawable(
@@ -587,7 +618,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             playerView.setVisibility(View.VISIBLE);
             playerView.setPlayer(player);
 
-            Log.d("plaerduration",":::::");
+           // Log.d("plaerduration",":::::");
         }
 
         player.setPlayWhenReady(true);
@@ -610,13 +641,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     // popup();
                 }else {
                     String loginS = "{\"postId\":\"" + postid + "\"}";
-                    Log.d("jsnresponse login", "---" + loginS);
+                    //Log.d("jsnresponse login", "---" + loginS);
                     String url = likesend_url;
                     JSONObject lstrmdt;
 
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleylikessend(lstrmdt, url, currentPage,liketxt,likes,unlike);
                         searchlikecondition="true";
 
@@ -633,13 +664,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     //  popup();
                 }else {
                     String loginS = "{\"_id\":\"" + postid + "\"}";
-                    Log.d("jsnresponse login", "---" + loginS);
+                    //Log.d("jsnresponse login", "---" + loginS);
                     String url = unlike_url;
                     JSONObject lstrmdt;
 
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
 
                         JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike);
                         searchlikecondition="false";
@@ -687,7 +718,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     if (countDownTimer!=null) {
                         countDownTimer.cancel();
                     }
-                    final VideoAction_F fragment = new VideoAction_F(searchimage,postid, new Fragment_Callback() {
+                    final VideoAction_F fragment = new VideoAction_F(searchimage,postid,username, new Fragment_Callback() {
                     @Override
                     public void Responce(Bundle bundle) {
                         if(bundle.getString("action").equals("save")){
@@ -753,13 +784,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                     } else {
 
                         String loginS = "{\"postId\":\"" + postid + "\"}";
-                        Log.d("jsnresponse login", "---" + loginS);
+                        //Log.d("jsnresponse login", "---" + loginS);
                         String url = likesend_url;
                         JSONObject lstrmdt;
 
                         try {
                             lstrmdt = new JSONObject(loginS);
-                            Log.d("jsnresponse....", "---" + loginS);
+                            //Log.d("jsnresponse....", "---" + loginS);
                             JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike);
 
                             iv.setImageDrawable(getResources().getDrawable(
@@ -860,12 +891,12 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
 
     public void JSONSenderVolleylikessend(JSONObject lstrmdt, String url, final int position, final TextView liketxt, final ImageView likes, final ImageView unlike) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
+       // Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                        //Log.d("JSONSenderVolleylogin", "---" + response);
                         try {
                             if (response.length()!=0) {
                                 String message = response.getString("message");
@@ -876,51 +907,56 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                                         dialog.dismiss();
                                         //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                         fallowpopup(message);
-                                    }
-                                    else if (status.equals("1")) {
+                                    } else if (status.equals("1")) {
                                         String amount = response.getString("vidAmount");
                                         String claim = response.getString("claim");
                                         clamlay.setBackgroundResource(R.drawable.roundedbtn);
-                                        earningpoints.setText(amount+""+"%");
+                                        earningpoints.setText(amount + "" + "%");
                                         claimtext.setVisibility(View.GONE);
                                         earningtxt.setVisibility(View.VISIBLE);
                                         earningtxt.setText("Earnings");
                                         // claimedL.set(position,"true");
                                     }
-                                }
-                                else if (response.has("count")) {
-                                    String count = response.getString("count");
-                                    if (message.equals("liked successfully")) {
-                                        //likeclickL.set(position, count);
-                                        data_list.get(position).setCount(count);
-                                        data_list.get(position).setLikescondition("true");
-                                        liketxt.setText(count);
-                                        unlike.setVisibility(View.VISIBLE);
-                                        likes.setVisibility(View.GONE);
-                                    } else if (message.equals("Unliked successfully")) {
-                                        //likeclickL.set(position, count);
-                                        // userlikeclickL.set(position,"false");
-                                        data_list.get(position).setCount(count);
-                                        data_list.get(position).setLikescondition("false");
+                                       else if (status.equals("4")) {
+                                        String count = response.getString("count");
 
-                                        liketxt.setText(count);
-                                        likes.setVisibility(View.VISIBLE);
-                                        unlike.setVisibility(View.GONE);
-                                    }
-                                }
-                                else if (message.equals("Post Updated Successfully")){
-                                    dialog.dismiss();
+                                        //likeclickL.set(position, count);
+                                            data_list.get(position).setCount(count);
+                                            data_list.get(position).setLikescondition("true");
+                                            liketxt.setText(count);
+                                            unlike.setVisibility(View.VISIBLE);
+                                            likes.setVisibility(View.GONE);
 
-                                }
-                                else if (message.equals("Post Deleted successfully")){
+                                        } else if (status.equals("5")) {
+                                        String count = response.getString("count");
+
+                                        //likeclickL.set(position, count);
+                                            // userlikeclickL.set(position,"false");
+                                            data_list.get(position).setCount(count);
+                                            data_list.get(position).setLikescondition("false");
+
+                                            liketxt.setText(count);
+                                            likes.setVisibility(View.VISIBLE);
+                                            unlike.setVisibility(View.GONE);
+
+                                        }
+                                     else if (status.equals("6")) {
+                                        dialog.dismiss();
+
+                                    } else if (status.equals("7")) {
+                                        postdeleted = true;
+                                        Toast.makeText(SearchVerticalData.this, message, Toast.LENGTH_SHORT).show();
+/*
                                     fileclickL.remove(currentPage);
                                     data_list.remove(currentPage);
                                     Log.d("remoefile","::::"+fileclickL);
-/*
+                                    homeadapter.notifyDataSetChanged();
+
                                     Intent intent=new Intent(SearchVerticalData.this, ProfileActivity.class);
                                     startActivity(intent);
+                                    finish();
 */
-                                    homeadapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
 
@@ -943,7 +979,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -1023,13 +1059,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             @Override
             public void onClick(View v) {
                 String loginS = "{\"postId\":\"" + postid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
-                Log.d("jsnresponse reason", "---" + loginS);
+                //Log.d("jsnresponse reason", "---" + loginS);
                 String url = postreport_url;
                 JSONObject lstrmdt;
 
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                   // Log.d("jsnresponse....", "---" + loginS);
 
                     JSONSenderVolleylikessend(lstrmdt,url,currentPage, liketxt, likes, unlike);
 
@@ -1083,22 +1119,30 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     }
 
     public void finishActivity(View v) {
-        Log.d("dynamiclink",":::"+dynamiclink);
+        //Log.d("dynamiclink",":::"+dynamiclink+"::::"+postdeleted);
         if (dynamiclink != null) {
             Intent intent = new Intent(SearchVerticalData.this, TopNavigationview.class);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        } else {
+        } else if (postdeleted==true){
+            Intent intent = new Intent(SearchVerticalData.this, ProfileActivity.class);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
-
+            postdeleted=false;
+        }
+        else {
+            finish();
         }
     }
 
     @Override
     public void onDataSent(String yourData) {
-        Log.d("cmmentdata",":::"+yourData);
+        //Log.d("cmmentdata",":::"+yourData);
         homecommenttxt.setText(yourData);
         // commentclickL.set(currentPage, yourData);
         data_list.get(currentPage).setComment(yourData);
@@ -1130,13 +1174,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                 startActivity(settingintent);
 */
                 String loginS = "{\"_id\":\"" + postid + "\"}";
-                Log.d("jsnresponse login", "---" + loginS);
+                //Log.d("jsnresponse login", "---" + loginS);
                 String url = deletepost_url;
                 JSONObject lstrmdt;
 
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleylikessend(lstrmdt, url, currentPage,liketxt,likes,unlike);
 
                 } catch (JSONException ignored) {
@@ -1156,6 +1200,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     public void popupviews() {
 
         String visibility=data_list.get(currentPage).getVisibility();
+        //Log.d("visibility",":::"+visibility);
 
         android.app.AlertDialog.Builder builder;
         final Context mContext = SearchVerticalData.this;
@@ -1245,13 +1290,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
     }
     public void viewspost(String post_visibilty){
         String loginS = "{\"_id\":\"" + postid + "\",\"visibility\":\""+post_visibilty+"\"}";
-        Log.d("jsnresponse visibility", "---" + loginS);
+        //Log.d("jsnresponse visibility", "---" + loginS);
         String url = visibility_url;
         JSONObject lstrmdt;
 
         try {
             lstrmdt = new JSONObject(loginS);
-            Log.d("jsnresponse....", "---" + loginS);
+            //Log.d("jsnresponse....", "---" + loginS);
             JSONSenderVolleylikessend(lstrmdt, url, currentPage,liketxt,likes,unlike);
 
         } catch (JSONException ignored) {
@@ -1301,24 +1346,43 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
             public void onDownloadComplete() {
                 Functions.cancel_determinent_loader();
                 //Delete_file_no_watermark(item);
-                Scan_file(item);
+               // Scan_file(item);
 
                 // Applywatermark(item);
-            }
 
+                Functions.cancel_determinent_loader();
+                Functions.Show_determinent_loader(SearchVerticalData.this,false,false);
+                //  Scan_file(resolveInfo);
+                String path=Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+".mp4";
+                // defaultVideo=Environment.getExternalStorageDirectory() +"/Tittic/watermark/"+postid+".mp4";
+
+                try {
+                    File f = new File(Environment.getExternalStorageDirectory() + File.separator + item.getId()+".mp4");
+
+                    defaultVideo=f.getAbsolutePath();
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // String[] imageCommand =  { "-y", "-i", path, "-y", "-i", saveAppIcon(), "-filter_complex", "overlay=x=20:y=20", "-strict", "experimental", defaultVideo};
+                ///String[]  imageCommand = {"-i",  path,  "-vf", "drawtext=fontfile=/system/fonts/DroidSans.ttf:text='SiteName hulluway':fontsize=30:fontcolor=white: x=20:y=20", "-acodec", "copy", "-y",  defaultVideo};
+
+                String[] imageCommand =  { "-y", "-i", path, "-y", "-i", saveAppIcon(), "-filter_complex", "overlay=x=20:y=20,drawtext=fontfile=/system/fonts/DroidSans.ttf:text='"+item.getUsername()+"':fontsize=18:fontcolor=white: x=20:y=80", "-strict", "experimental","-preset", "ultrafast", defaultVideo};
+
+                execFFmpegBinary(imageCommand,new File(path),item);
+
+            }
             @Override
             public void onError(Error error) {
                 //  Delete_file_no_watermark(item);
-                Log.d("error","::::"+error);
+                //Log.d("error","::::"+error);
                 Toast.makeText(SearchVerticalData.this, "Error", Toast.LENGTH_SHORT).show();
                 Functions.cancel_determinent_loader();
             }
 
-
         });
     }
-
-
     public void Applywatermark(Model_Trading item){
 
         Bitmap myLogo = ((BitmapDrawable)SearchVerticalData.this.getResources().getDrawable(R.drawable.ic_action_action_search)).getBitmap();
@@ -1330,7 +1394,7 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                 .listener(new GPUMp4Composer.Listener() {
                     @Override
                     public void onProgress(double progress) {
-                        Log.d("resp",""+(int) (progress*100));
+                        //Log.d("resp",""+(int) (progress*100));
                         Functions.Show_loading_progress((int)((progress*100)/2)+50);
                     }
 
@@ -1344,13 +1408,13 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
 
                     @Override
                     public void onCanceled() {
-                        Log.d("resp", "onCanceled");
+                       // Log.d("resp", "onCanceled");
                     }
 
                     @Override
                     public void onFailed(Exception exception) {
 
-                        Log.d("resp",exception.toString());
+                        //Log.d("resp",exception.toString());
 
                         try {
 
@@ -1383,7 +1447,6 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
                 })
                 .start();
     }
-
     public void Scan_file(Model_Trading item){
         MediaScannerConnection.scanFile(SearchVerticalData.this,
                 new String[] { Environment.getExternalStorageDirectory() +"/Tittic/"+item.getId()+".mp4" },
@@ -1392,8 +1455,10 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
 
                     public void onScanCompleted(String path, Uri uri) {
 
+/*
                         Log.i("ExternalStorage", "Scanned " + path + ":");
                         Log.i("ExternalStorage", "-> uri=" + uri);
+*/
                     }
                 });
     }
@@ -1403,6 +1468,181 @@ public class SearchVerticalData extends AppCompatActivity implements Player.Even
         if(file.exists()){
             file.delete();
         }
+    }
+
+    private void loadFFMpegBinary() {
+        try {
+            if (ffmpeg == null) {
+                //Log.d("", "ffmpeg : era nulo");
+                ffmpeg = FFmpeg.getInstance(SearchVerticalData.this);
+            }
+            ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
+                @Override
+                public void onFailure() {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                    //Log.d(TAG, "ffmpeg : correct Loaded");
+                }
+            });
+        } catch (FFmpegNotSupportedException e) {
+
+        } catch (Exception e) {
+            //Log.d(TAG, "EXception no controlada : " + e);
+        }
+    }
+
+
+    private void execFFmpegBinary(final String[] command, File file, Model_Trading item) {
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//use one of overloaded setDataSource() functions to set your data source
+            retriever.setDataSource(SearchVerticalData.this, Uri.fromFile(file));
+            String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            long totalDur = Long.parseLong(time );
+            retriever.release();
+            if (totalDur != 0) {
+/*
+                            float progress = (Integer.parseInt(matchSplit[0]) * 3600 +
+                                    Integer.parseInt(matchSplit[1]) * 60 +
+                                    Float.parseFloat(matchSplit[2])) / totalDur;
+                            float showProgress = (progress * 1000);
+                            Log.d(TAG, "=======PROGRESS======== "+progress+" showProgress  **** " + showProgress);
+                            Functions.Show_loading_progress((int)(showProgress));
+*/
+
+
+                String timeInterval = String.valueOf(totalDur);
+                int endTime = Integer.parseInt(timeInterval); // up to finish time
+                //Log.d("onTick progress","::::"+endTime);
+
+
+                countDownTimer = new CountDownTimer(endTime /** 1000*/, 1000) {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                       // Log.d("onTick progress","::::"+progress);
+                        //setProgress(progress, endTime / 1000);
+                        Functions.Show_loading_progress(progress);
+                        progress=progress+1;
+                    }
+                    @Override
+                    public void onFinish() {
+                        //  Functions.Show_loading_progress((int)(endTime));
+                        if (countDownTimer!=null){
+                            countDownTimer.cancel();
+                        }
+                    }
+                };
+            }
+            ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
+                @Override
+                public void onFailure(String s) {
+                    //Log.d("tag", "FAILED with output : " + s);
+                    Functions.cancel_determinent_loader();
+                }
+
+                @Override
+                public void onSuccess(String s) {
+                    //Log.d("tag", "sucess with output : " + s);
+                    Functions.cancel_determinent_loader();
+                    if (countDownTimer!=null){
+                        countDownTimer.cancel();
+                    }
+                    Scan_file(item);
+
+                }
+
+                @Override
+                public void onProgress(String message) {
+                    countDownTimer.start();
+/*
+                    Log.d("tag", "onProgress  progress1 " + message);
+                    Log.d(TAG, "Started command : ffmpeg " + Arrays.toString(command));
+                    Log.d(TAG, "progress : " + message);
+*/
+                    Pattern timePattern = Pattern.compile("(?<=time=)[\\d:.]*");
+                    Scanner sc = new Scanner(message);
+
+                    String match = sc.findWithinHorizon(timePattern, 0);
+                    if (match != null) {
+                        String[] matchSplit = match.split(":");
+                        // int totalDur=25;
+
+                    }
+                 /*   int start = message.indexOf("time=");
+                    int end = message.indexOf(" bitrate");
+                    if (start != -1 && end != -1) {
+                        String duration = message.substring(start+5, end);
+                        if (duration != "") {
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                              //  dialog.setProgress((int)sdf.parse("1970-01-01 "+ duration).getTime());
+                              //  Functions.Show_loading_progress((int)((progress*100)/2)+50);
+                                Functions.Show_loading_progress((int)sdf.parse("1970-01-01 "+ duration).getTime());
+
+
+                            }catch (ParseException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }*/
+                }
+
+                @Override
+                public void onStart() {
+                    //Log.d("tag", "Started command : ffmpeg " + command);
+
+                }
+
+                @Override
+                public void onFinish() {
+                   // Log.d("tag", "Finished command : ffmpeg " + command);
+                }
+            });
+        } catch (FFmpegCommandAlreadyRunningException e) {
+            // do nothing for now
+        }
+    }
+    private String saveAppIcon(){
+        String imagePath=null;
+        try{
+            Bitmap myLogo = ((BitmapDrawable)SearchVerticalData.this.getResources().getDrawable(R.drawable.watermarkicon)).getBitmap();
+            Bitmap bitmap_resize=Bitmap.createScaledBitmap(myLogo, 150, 60, false);
+
+            // Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.launchicon);
+
+            //replace "R.drawable.bubble_green" with the image resource you want to share from drawable
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap_resize.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+            // you can create a new file name "test.jpg" in sdcard folder.
+            File f = new File(Environment.getExternalStorageDirectory() + File.separator + "test.png");
+
+            imagePath=f.getAbsolutePath();
+
+            f.createNewFile();
+
+            // write the bytes in file
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+
+            // remember close de FileOutput
+            fo.close();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       // Log.d("","imagePath  "+imagePath);
+        return imagePath;
+
+
     }
 
 

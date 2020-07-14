@@ -135,7 +135,7 @@ public class PostcontentActivity extends AppCompatActivity {
         SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(PostcontentActivity.this);
         post = phoneauthshard.getString("token", "null");
         userid = phoneauthshard.getString("id", "null");
-        Log.e("token",post);
+       // Log.e("token",post);
 
         sendpost=(Button)findViewById(R.id.sendpost);
         savepost=(Button)findViewById(R.id.draftpost);
@@ -168,7 +168,7 @@ public class PostcontentActivity extends AppCompatActivity {
 
 //        path="/data/user/0/com.vasmash.va_smash/files/VA_Smash/Smash.mp4";
 
-        Log.e("pathpostt", String.valueOf(cam)+"   "+ path);
+        //Log.e("pathpostt", String.valueOf(cam)+"   "+ path);
 
         if (cam==0){
             post_video.setVisibility(View.INVISIBLE);
@@ -186,17 +186,14 @@ public class PostcontentActivity extends AppCompatActivity {
                 }
             });
             post_video.start();
-            Log.e("cam11111", String.valueOf(cam)+"   "+path);
+            //Log.e("cam11111", String.valueOf(cam)+"   "+path);
         }
-
-
         if(getIntent().hasExtra("byteArray")) {
             ImageView _imv= new ImageView(this);
             bitmap = BitmapFactory.decodeByteArray(
                     getIntent().getByteArrayExtra("byteArray"),0,getIntent().getByteArrayExtra("byteArray").length);
             post_img.setImageBitmap(bitmap);
         }
-
         post_cate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,8 +284,8 @@ public class PostcontentActivity extends AppCompatActivity {
                 String valueid=items.get(position).getLang_code().toString();
 
                 catg_id=value;
-                Log.e("wwwwww",catg_id+" "+valueid);
-               // Toast.makeText(PostcontentActivity.this, catg_id+" "+valueid, Toast.LENGTH_SHORT).show();
+                //Log.e("wwwwww",catg_id+" "+valueid);
+                // Toast.makeText(PostcontentActivity.this, catg_id+" "+valueid, Toast.LENGTH_SHORT).show();
                 Languages model = items.get(position); //changed it to model because viewers will confused about it
 
                 model.setSelected(true);
@@ -321,8 +318,8 @@ public class PostcontentActivity extends AppCompatActivity {
 
 
                 lang_id=value;
-                Log.e("wwwwww",lang_id+" "+valueid);
-               // Toast.makeText(PostcontentActivity.this, lang_id+" "+valueid, Toast.LENGTH_SHORT).show();
+                //Log.e("wwwwww",lang_id+" "+valueid);
+                // Toast.makeText(PostcontentActivity.this, lang_id+" "+valueid, Toast.LENGTH_SHORT).show();
                 Languages model = categ.get(position); //changed it to model because viewers will confused about it
 
                 model.setSelected(true);
@@ -425,14 +422,14 @@ public class PostcontentActivity extends AppCompatActivity {
                         if (cam == 0) {
 //                        viewDialog.showDialog();
                             //  spinner.setVisibility(View.VISIBLE);
-                            Log.e("twrwrwr0", catg_id + lang_id);
+                           // Log.e("twrwrwr0", catg_id + lang_id);
 //                if (ca.equals("Categories") && la.equals("Laguages")){
                             sendimg();
                             sendpost.setClickable(false);
                         } else if (cam == 1) {
 //                        viewDialog.showDialog();
                             // spinner.setVisibility(View.VISIBLE);
-                            Log.e("twrwrwr1", catg_id + lang_id);
+                            //Log.e("twrwrwr1", catg_id + lang_id);
                             sendvideo();
                             sendpost.setClickable(false);
                         }
@@ -545,7 +542,7 @@ public class PostcontentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
 //                        viewDialog.hideDialog();
 
                         // spinner2.setVisibility(View.INVISIBLE);
@@ -569,8 +566,10 @@ public class PostcontentActivity extends AppCompatActivity {
 
 
 
+/*
                                     Log.d("Response", "createddateL:::" + items);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -596,7 +595,7 @@ public class PostcontentActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -639,7 +638,7 @@ public class PostcontentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                        //Log.d("Response", response.toString());
 
 //                        viewDialog.hideDialog();
 
@@ -664,8 +663,10 @@ public class PostcontentActivity extends AppCompatActivity {
 
 
 
+/*
                                     Log.d("Response", "createddateL:::" + categ);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -689,7 +690,7 @@ public class PostcontentActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -737,7 +738,7 @@ public class PostcontentActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderprofile", "---" + response);
+                        //Log.d("JSONSenderprofile", "---" + response);
 
                         //  spinner.setVisibility(View.INVISIBLE);
                         sendpost.setClickable(true);
@@ -748,7 +749,7 @@ public class PostcontentActivity extends AppCompatActivity {
                                 if (message.equals("Post Added successfully")) {
 //                                    viewDialog.hideDialog();
 
-                                  //  Toast.makeText(PostcontentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    //  Toast.makeText(PostcontentActivity.this, message, Toast.LENGTH_SHORT).show();
 
                                     dialog.cancel();
                                     dialog("10");
@@ -773,7 +774,7 @@ public class PostcontentActivity extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                              //  Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 if (obj.has("errors")) {
 //                                    viewDialog.hideDialog();
@@ -846,24 +847,24 @@ public class PostcontentActivity extends AppCompatActivity {
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Log.e("postimg", String.valueOf(response));
+                       // Log.e("postimg", String.valueOf(response));
                         try {
                             JSONObject obj = new JSONObject(new String(response.data));
-                            Log.e("postimg", String.valueOf(obj));
+                           // Log.e("postimg", String.valueOf(obj));
                             JSONObject postid=obj.getJSONObject("data");
 
                             String img_id = postid.getString("_id");
-                            Log.e("idddd",img_id);
+                           // Log.e("idddd",img_id);
                             String categoryId=catg_id;
                             String contentLangId=lang_id;
                             String descp = post_description.getText().toString().trim();
 
                             String AddS = "{\"categoryId\":\"" + categoryId + "\",\"contentLangId\":\"" + lang_id + "\",\"_id\":\"" + img_id + "\",\"userId\":\"" + userid + "\",\"description\":\"" + descp + "\",\"visibility\":"+ post_visibilty + "}";
-                            Log.d("jsnresponse pernonal", "---" + AddS);
+                           // Log.d("jsnresponse pernonal", "---" + AddS);
                             JSONObject lstrmdt;
                             try {
                                 lstrmdt = new JSONObject(AddS);
-                                Log.d("jsnresponse....", "---" + AddS);
+                               // Log.d("jsnresponse....", "---" + AddS);
                                 JSONSenderVolleychecked(lstrmdt);
                             } catch (JSONException ignored) {
                             }
@@ -916,13 +917,13 @@ public class PostcontentActivity extends AppCompatActivity {
 
 
 
-   // send video  to server api
+    // send video  to server api
     public void sendvideo(){
 
         File myFile = new File(getFilesDir().getAbsolutePath(),"VA_Smash");
         String path123 = myFile+"/Smash.mp4";
         uri=Uri.fromFile(new File(path));
-        Log.d("posturlll","::::"+uri);
+       // Log.d("posturlll","::::"+uri);
         InputStream iStream = null;
 
         try {
@@ -934,26 +935,26 @@ public class PostcontentActivity extends AppCompatActivity {
                     new Response.Listener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
-                            Log.e("postimg", String.valueOf(response));
+                           // Log.e("postimg", String.valueOf(response));
                             try {
                                 JSONObject obj = new JSONObject(new String(response.data));
-                                Log.e("postimg", String.valueOf(obj));
+                                //Log.e("postimg", String.valueOf(obj));
                                 JSONObject postid=obj.getJSONObject("data");
 
 
 
                                 String img_id = postid.getString("_id");
 
-                                Log.e("idddd",img_id);
+                                //Log.e("idddd",img_id);
                                 String descp = post_description.getText().toString().trim();
 
                                 String AddS = "{\"categoryId\":\"" + catg_id + "\",\"contentLangId\":\"" + lang_id + "\",\"_id\":\"" + img_id + "\",\"userId\":\"" + userid + "\",\"description\":\"" + descp + "\",\"visibility\":"+ post_visibilty + "}";
-                                Log.d("jsnresponse pernonal", "---" + AddS);
+                                //Log.d("jsnresponse pernonal", "---" + AddS);
                                 JSONObject lstrmdt;
 
                                 try {
                                     lstrmdt = new JSONObject(AddS);
-                                    Log.d("jsnresponse....", "---" + AddS);
+                                    //Log.d("jsnresponse....", "---" + AddS);
                                     JSONSenderVolleychecked(lstrmdt);
                                 } catch (JSONException ignored) {
                                 }
@@ -1026,7 +1027,7 @@ public class PostcontentActivity extends AppCompatActivity {
         loadpopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("popuptest","done");
+                //Log.e("popuptest","done");
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(PostcontentActivity.this);
                 builder1.setMessage("please wait untill upload content");
                 builder1.setCancelable(true);
@@ -1055,5 +1056,13 @@ public class PostcontentActivity extends AppCompatActivity {
         dialog.show();
 
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PostcontentActivity.this, CameraActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

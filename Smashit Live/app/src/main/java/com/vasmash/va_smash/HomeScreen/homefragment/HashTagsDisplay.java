@@ -78,8 +78,7 @@ public class HashTagsDisplay extends AppCompatActivity {
     int page_no;
     ProgressBar p_bar;
     private boolean loading;
-    String hashtagname,dynamiclink;
-
+    String hashtagname,dynamiclink="null";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class HashTagsDisplay extends AppCompatActivity {
             hashtagname = intent.getStringExtra("hashtag");
             dynamiclink = intent.getStringExtra("dynamiclink");
 
-            Log.d("hashnameitent", ":::" + hashtagname);
+            //Log.d("hashnameitent", ":::" + hashtagname);
             hashtags.setText("#"+""+hashtagname);
             hashtagspagination(hashtagname);
         }
@@ -164,28 +163,28 @@ public class HashTagsDisplay extends AppCompatActivity {
                     visibleItemCount11 = gridLayoutManager.getChildCount();
                     totalItemCount11 = gridLayoutManager.getItemCount();
                     pastVisibleItems11 = gridLayoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                    //Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
 
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
+                        //Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
                         if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == searchindividualmodel.size()-1){
                             loading11 = true;
                             loading=true;
-                            jsonhashtags(hashtags_url+hashtagname+"&limit=10&skip="+searchindividualmodel.size());
+                            jsonhashtags(hashtags_url+hashtagname+"&skip="+searchindividualmodel.size());
 
                         }
                     }
                 }
             }
         });
-        jsonhashtags(hashtags_url+hashtagname+"&limit=10&skip=0");
+        jsonhashtags(hashtags_url+hashtagname+"&skip=0");
 
     }
 
     //this is the json hashtags response
     private void jsonhashtags(String url) {
-        Log.d("jsonParseuser", "hashtags" + url);
+        //Log.d("jsonParseuser", "hashtags" + url);
         if (loading){
             p_bar.setVisibility(View.VISIBLE);
         }else {
@@ -198,7 +197,7 @@ public class HashTagsDisplay extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("follow data", response.toString());
+                        //Log.d("follow data", response.toString());
                         if (loading){
                             p_bar.setVisibility(View.GONE);
                         }else {
@@ -214,8 +213,8 @@ public class HashTagsDisplay extends AppCompatActivity {
                                 JSONObject lkks = null;
                                 try {
                                     lkks = response.getJSONObject(j);
-                                    Log.d("response2222","jItem:::"+lkks);
-                                    tagviews.setText(j+1+" "+"Views");
+                                   // Log.d("response2222","jItem:::"+lkks);
+                                    tagviews.setText(j+1+" "+"Posts");
 /*
                                     if (response.has("posts")) {
                                         JSONArray likes = response.getJSONArray("posts");
@@ -296,7 +295,7 @@ public class HashTagsDisplay extends AppCompatActivity {
 
                                     if (lkks.has("soundId")) {
                                         JSONArray sounds = lkks.getJSONArray("soundId");
-                                        Log.d("soundsss","::::"+sounds);
+                                        //Log.d("soundsss","::::"+sounds);
                                         for (int k1 = 0; k1 < sounds.length(); k1++) {
                                             JSONObject soundsobj = sounds.getJSONObject(k1);
                                             if(soundsobj.has("_id")) {
@@ -326,6 +325,7 @@ public class HashTagsDisplay extends AppCompatActivity {
                                         searchhm.setSoundpostid("");
                                         searchhm.setSounduserid("");
                                     }
+
                                     searchindividualmodel.add(searchhm);
 
                                 } catch (JSONException e) {
@@ -353,7 +353,7 @@ public class HashTagsDisplay extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
@@ -377,7 +377,7 @@ public class HashTagsDisplay extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             if (loading){
@@ -458,7 +458,7 @@ public class HashTagsDisplay extends AppCompatActivity {
 
 
     public void createreflink(String  hashtagname){
-        Log.d("entringlink",":::");
+        //Log.d("entringlink",":::");
 
         Task<ShortDynamicLink> dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://sh.vasmash.com"+"?"+hashtagname+"-"+"hashtags"))
@@ -478,17 +478,17 @@ public class HashTagsDisplay extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Short link created
                             Uri shortLink = task.getResult().getShortLink();
-                            Log.d("shortlink",":::"+shortLink);
+                           // Log.d("shortlink",":::"+shortLink);
                             Uri flowchartLink = task.getResult().getPreviewLink();
                             Intent i = new Intent(android.content.Intent.ACTION_SEND);
                             i.setType("text/plain");
-                            String sub="\n Hi, have a look. I found this crazy stuff in VA-Smash!!\n";
+                            String sub="\n Hi, have a look. I found this crazy stuff in Smashit Live!!\n";
                             String shareMessage= sub+" " +"\n"+ shortLink +"\n"+" "+ "\n I am enjoying and earning. Install to join me.\n\n";
                             i.putExtra(android.content.Intent.EXTRA_TEXT, shareMessage.toString());
                             startActivity(Intent.createChooser(i, "Share Via"));
 
                         } else {
-                            Log.d("error",":::"+task);
+                            //Log.d("error",":::"+task);
                             // Error
                             // ...
                         }
@@ -499,14 +499,15 @@ public class HashTagsDisplay extends AppCompatActivity {
 
 
     public void finishActivity(View v){
-        if (dynamiclink.equals("null")) {
-            finish();
-        } else {
+        if (dynamiclink!=null && (!dynamiclink.equals("null"))) {
             Intent intent = new Intent(HashTagsDisplay.this, TopNavigationview.class);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+
+        } else {
+            finish();
 
         }
     }

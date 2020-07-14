@@ -71,7 +71,7 @@ public class Adapter_commentusrlist extends ArrayAdapter<Model_commentuserlst> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("clik values",":::"+customers.get(position).getUsername());
+                //Log.d("clik values",":::"+customers.get(position).getUsername());
 
                 clikuserpos=customers.get(position).getUsername();
                 commenttxt.setText(clikuserpos);

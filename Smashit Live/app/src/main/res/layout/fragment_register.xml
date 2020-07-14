@@ -73,7 +73,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:ems="10"
-                    android:hint="+ 60"
+                    android:hint="Code"
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:fontFamily="@font/rubik"
@@ -81,7 +81,7 @@
                     android:id="@+id/countrycode"
                     android:focusable="false"
                     android:layout_gravity="center"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:layout_marginTop="6dp"
                     android:textColorHint="@color/hintcolor"
                     />

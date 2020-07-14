@@ -108,12 +108,12 @@ public class OTPVerification extends AppCompatActivity {
                 } else {
 
                     String stotp = "{\"id\":\"" + idS + "\",\"otp\":\"" + otpenterd + "\"}";
-                    Log.d("jsnresponse pernonal", "---" + stotp);
+                   // Log.d("jsnresponse pernonal", "---" + stotp);
                     String url = Submitotp;
                     JSONObject sbmtotp;
                     try {
                         sbmtotp = new JSONObject(stotp);
-                        Log.d("jsnresponse....", "---" + stotp);
+                       // Log.d("jsnresponse....", "---" + stotp);
                         viewDialog.showDialog();
                         submitotp(sbmtotp, url);
 
@@ -137,13 +137,13 @@ public class OTPVerification extends AppCompatActivity {
 
 
                 String loginS = "{\"username\":\"" + number + "\"}";
-                Log.d("jsnresponse loginotp", "---" + loginS);
+               // Log.d("jsnresponse loginotp", "---" + loginS);
                 String url=resendotp_url;
                 JSONObject lstrmdt;
 
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                   // Log.d("jsnresponse....", "---" + loginS);
                     viewDialog.showDialog();
                     submitotp(lstrmdt, url);
                 } catch (JSONException ignored) {
@@ -160,22 +160,23 @@ public class OTPVerification extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                      //  Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
 
                         try {
-
                             id = response.getString("id");
-                            //  String status=response.getString("status");
                             String msg=response.getString("message");
                             //dialogbox(msg);
-                            Log.d("otp",id+" "+msg);
-                            if (msg.equals("Login OTP sent")){
-                                popup(msg);
+                           // Log.d("otp",id+" "+msg);
+                            if (response.has("status")) {
+                                String status = response.getString("status");
+                                if (status.equals("1")) {
+                                    Intent i = new Intent(OTPVerification.this, RegisterformActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
                             }else {
-                                Intent i = new Intent(OTPVerification.this, RegisterformActivity.class);
-                                startActivity(i);
-                                finish();
+                                popup(msg);
                             }
 
                         } catch (JSONException e) {
@@ -196,14 +197,14 @@ public class OTPVerification extends AppCompatActivity {
                         case 400:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj1 = new JSONObject(body);
                                 if (obj1.has("errors")) {
                                     viewDialog.hideDialog();
                                     id = obj1.getString("id");
                                     JSONObject errors = obj1.getJSONObject("errors");
                                     String message = errors.getString("message");
-                                    Log.d("msg",  message);
+                                   // Log.d("msg",  message);
                                     popup(message);
                                 }
                             } catch (UnsupportedEncodingException e) {
@@ -217,7 +218,7 @@ public class OTPVerification extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {

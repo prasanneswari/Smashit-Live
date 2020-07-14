@@ -40,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="22k views"
+                android:text="0 Posts"
                 android:textColor="@color/redcolor"
                 android:layout_gravity="center"
                 android:gravity="center"

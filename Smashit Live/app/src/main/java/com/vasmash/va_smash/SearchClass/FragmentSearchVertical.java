@@ -108,7 +108,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
         viewDialog = new ViewDialog((Activity) context);
 
         usernamesearchclick=mainmodels.get(position).getUsername();
-        Log.d("username",":::"+usernamesearchclick);
+        //Log.d("username",":::"+usernamesearchclick);
        // holder.sharetxt.setText(mainmodels.get(position).getSharecount());
         holder.homecontent.setText(mainmodels.get(position).getDescription());
 
@@ -160,7 +160,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
 
         if (mainmodels.get(position).getProfilepic() != null){
 
-            Picasso.with(context).load(mainmodels.get(position).getProfilepic()).placeholder(R.drawable.uploadpictureold).into(holder.otherprofile);
+            Picasso.with(context).load(mainmodels.get(position).getProfilepic()).placeholder(R.drawable.uploadpiclight).into(holder.otherprofile);
         }else {
             //Picasso.with(context).load(R.drawable.uploadpictureold).into(holder.otherprofile);
             holder.otherprofile.setImageResource(R.drawable.uploadpictureold);
@@ -178,7 +178,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
                 }
                 Intent intent = new Intent(context, OtherprofileActivity.class);
                 intent.putExtra("posteduserid", mainmodels.get(position).getUserid());
-                Log.e("posteduserid", mainmodels.get(position).getUserid());
+               // Log.e("posteduserid", mainmodels.get(position).getUserid());
                 context.startActivity(intent);
             }
         });
@@ -347,14 +347,14 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
 
     private void jsoneashare(String earningpoints_url, final CustomViewHolder holder,final int position) {
         // prepare the Request
-        Log.d("earning share", earningpoints_url);
+       // Log.d("earning share", earningpoints_url);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, earningpoints_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responses share", response.toString());
+                        //Log.d("Responses share", response.toString());
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
                             try {
@@ -382,7 +382,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -400,7 +400,7 @@ public class FragmentSearchVertical extends RecyclerView.Adapter<FragmentSearchV
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

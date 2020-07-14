@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -78,7 +79,7 @@ public class OtherprofileActivity extends AppCompatActivity {
     public static ArrayList<String> fileL;
 
     // private Profile_ContentAdapter mAdapter;
-    private Adapter_TradingTabs mAdapter;
+    static public Adapter_TradingTabs mAdapterother;
     ImageView otherprofile_image,displayimg;
     TextView followingclick,followersclick,otherlikes_count,otherprofile_username,otherfollowing_count,otherfollower_count;
     LinearLayout follow,unfollow,profilelay,displayimglay;
@@ -114,7 +115,7 @@ public class OtherprofileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_otherprofile);
         if (getIntent().getExtras() != null) {
             posteduserid = getIntent().getStringExtra("posteduserid");
-            Log.e("usid", posteduserid);
+            //Log.e("usid", posteduserid);
         }
         mQueue = Volley.newRequestQueue(this);
         otherprofile_image=(ImageView)findViewById(R.id.otherprofile_image);
@@ -129,7 +130,6 @@ public class OtherprofileActivity extends AppCompatActivity {
         profilelay=findViewById(R.id.profilelay);
         displayimglay=findViewById(R.id.displayimglay);
         displayimg=findViewById(R.id.displayimg);
-
         viewDialog = new ViewDialog(this);
 
         //it checks where network available or not
@@ -140,7 +140,6 @@ public class OtherprofileActivity extends AppCompatActivity {
             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Network connection is not available", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-
 
         jsonotherdata(posteduserid);
         setSupportActionBar(toolbar);
@@ -167,18 +166,16 @@ public class OtherprofileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String loginS = "{\"userId\":\"" + posteduserid + "\"}";
-                Log.d("jsnresponse follow", "---" + loginS);
+                //Log.d("jsnresponse follow", "---" + loginS);
                 String url=follow_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     viewDialog.showDialog();
                     JSONSenderVolleylogin(lstrmdt,url);
-
                 } catch (JSONException ignored) {
                 }
-
             }
         });
         //here it gives the user unfollowing
@@ -186,20 +183,19 @@ public class OtherprofileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String loginS = "{\"followingId\":\"" + posteduserid + "\"}";
-                Log.d("jsnresponse follow", "---" + loginS);
+                //Log.d("jsnresponse follow", "---" + loginS);
                 String url=unfollow_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     viewDialog.showDialog();
                     JSONSenderVolleylogin(lstrmdt,url);
-
                 } catch (JSONException ignored) {
                 }
             }
         });
-
+/*
         followingclick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,6 +223,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+*/
         otherprofile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +231,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                 profilelay.setVisibility(View.GONE);
                 displayimglay.setVisibility(View.VISIBLE);
                 if (!otherprofileimg.equals("null")) {
-                    Picasso.with(OtherprofileActivity.this).load(otherprofileimg).placeholder(R.drawable.uploadpictureold).into(displayimg);
+                    Picasso.with(OtherprofileActivity.this).load(otherprofileimg).placeholder(R.drawable.uploadpiclight).into(displayimg);
                 }
             }
         });
@@ -249,8 +246,8 @@ public class OtherprofileActivity extends AppCompatActivity {
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
         // recyclerView.setLayoutManager(new GridLayoutManager(ProfileActivity.this, 3));
-        mAdapter = new Adapter_TradingTabs(OtherprofileActivity.this, searchindividualmodel,fileL);
-        recyclerView.setAdapter(mAdapter);
+        mAdapterother = new Adapter_TradingTabs(OtherprofileActivity.this, searchindividualmodel,fileL);
+        recyclerView.setAdapter(mAdapterother);
 
         loading11 = false;
         loading=false;
@@ -277,27 +274,27 @@ public class OtherprofileActivity extends AppCompatActivity {
                     visibleItemCount11 = gridLayoutManager.getChildCount();
                     totalItemCount11 = gridLayoutManager.getItemCount();
                     pastVisibleItems11 = gridLayoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                    //Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
 
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
+                        //Log.d("checkpage","::"+gridLayoutManager.findLastCompletelyVisibleItemPosition()+":::"+searchindividualmodel.size());
                         if(gridLayoutManager.findLastCompletelyVisibleItemPosition() == searchindividualmodel.size()-1){
                             loading11 = true;
                             loading=true;
-                            jsongetvastore(otherprofileuser_url+posteduserid+"&limit=10&skip="+searchindividualmodel.size());
+                            jsongetvastore(otherprofileuser_url+posteduserid+"&skip="+searchindividualmodel.size());
 
                         }
                     }
                 }
             }
         });
-        jsongetvastore(otherprofileuser_url+posteduserid+"&limit=10&skip=0");
+        jsongetvastore(otherprofileuser_url+posteduserid+"&skip=0");
 
     }
 
     private void jsongetvastore(String url) {
-        Log.d("jsonParseuser", "store data" + url);
+       // Log.d("jsonParseuser", "store data" + url);
         if (loading){
             p_bar.setVisibility(View.VISIBLE);
         }else {
@@ -309,7 +306,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("followotherdata", response.toString());
+                        //Log.d("followotherdata", response.toString());
                         if (loading){
                             p_bar.setVisibility(View.GONE);
                         }else {
@@ -387,7 +384,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                             }
                                             if (lkks.has("userId")) {
                                                 JSONArray nameobj = lkks.getJSONArray("userId");
-                                                Log.d("ntringguseridd", "::::" + nameobj);
+                                                //Log.d("ntringguseridd", "::::" + nameobj);
                                                 for (int k1 = 0; k1 < nameobj.length(); k1++) {
                                                     JSONObject userarray = nameobj.getJSONObject(k1);
                                                     if (userarray.has("name")) {
@@ -396,7 +393,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                                     }
                                                     if (userarray.has("profilePic")) {
                                                         String userimg = userarray.getString("profilePic");
-                                                        Picasso.with(OtherprofileActivity.this).load(userimg).placeholder(R.drawable.uploadpictureold).into(otherprofile_image);
+                                                        Picasso.with(OtherprofileActivity.this).load(userimg).placeholder(R.drawable.uploadpiclight).into(otherprofile_image);
                                                         //searchhm.setProfilepic(userimg);
                                                         searchhm.setProfilepic(userimg);
                                                     } else {
@@ -408,7 +405,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                             }
                                             if (lkks.has("soundId")) {
                                                 JSONArray sounds = lkks.getJSONArray("soundId");
-                                                Log.d("soundsss","::::"+sounds);
+                                               // Log.d("soundsss","::::"+sounds);
                                                 for (int k1 = 0; k1 < sounds.length(); k1++) {
                                                     JSONObject soundsobj = sounds.getJSONObject(k1);
                                                     if(soundsobj.has("_id")) {
@@ -438,19 +435,22 @@ public class OtherprofileActivity extends AppCompatActivity {
                                                 searchhm.setSoundpostid("");
                                                 searchhm.setSounduserid("");
                                             }
+
                                             searchindividualmodel.add(searchhm);
                                         }
-                                        mAdapter.notifyDataSetChanged();
+                                        mAdapterother.notifyDataSetChanged();
                                         loading11 = false;
                                     }
-                                    else {
-                                        loading11 = true;
-                                    }
+                                } else {
+                                    loading11 = true;
                                 }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
+                        }else {
+                            loading11 = true;
                         }
                     }
                 },
@@ -467,7 +467,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
@@ -489,7 +489,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             if (loading){
@@ -562,12 +562,12 @@ public class OtherprofileActivity extends AppCompatActivity {
     }
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "url" + url);
+        //Log.d("555555", "url" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONfollowand unfollow", "---" + response);
+                        //Log.d("JSONfollowand unfollow", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             String message=response.getString("message");
@@ -593,7 +593,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                 popup(message);
                                 //  Toast.makeText(OtherprofileActivity.this, message, Toast.LENGTH_SHORT).show();
                             }else if (status.equals("4")){
-                                Log.d("enteringgblock",":::");
+                               // Log.d("enteringgblock",":::");
                                 popup(message);
                                 blockmenu.setVisible(false);
                                 unblockmenu.setVisible(true);
@@ -621,7 +621,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -790,17 +790,22 @@ public class OtherprofileActivity extends AppCompatActivity {
         reportbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String loginS = "{\"userId\":\"" + posteduserid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
-                Log.d("jsnresponse reason", "---" + loginS);
-                String url = userreport_url;
-                JSONObject lstrmdt;
+                if (selectedItemText.equals("Select Reasons")){
+                    // popupreport("please select the reasons");
+                    Toast.makeText(OtherprofileActivity.this, "please select reasons", Toast.LENGTH_SHORT).show();
+                }else {
+                    String loginS = "{\"userId\":\"" + posteduserid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
+                    //Log.d("jsnresponse reason", "---" + loginS);
+                    String url = userreport_url;
+                    JSONObject lstrmdt;
 
-                try {
-                    lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
-                    viewDialog.showDialog();
-                    JSONSenderVolleylogin(lstrmdt,url);
-                } catch (JSONException ignored) {
+                    try {
+                        lstrmdt = new JSONObject(loginS);
+                       // Log.d("jsnresponse....", "---" + loginS);
+                        viewDialog.showDialog();
+                        JSONSenderVolleylogin(lstrmdt, url);
+                    } catch (JSONException ignored) {
+                    }
                 }
             }
         });
@@ -818,14 +823,14 @@ public class OtherprofileActivity extends AppCompatActivity {
     }
     //this is the block popup
     public void block(String url){
-        Log.d("url1111", "---" + url);
+       // Log.d("url1111", "---" + url);
         String loginS = "{\"userId\":\"" + posteduserid + "\"}";
-        Log.d("jsnresponse block", "---" + loginS);
+        //Log.d("jsnresponse block", "---" + loginS);
         JSONObject lstrmdt;
 
         try {
             lstrmdt = new JSONObject(loginS);
-            Log.d("jsnresponse....", "---" + loginS);
+            //Log.d("jsnresponse....", "---" + loginS);
             viewDialog.showDialog();
             JSONSenderVolleylogin(lstrmdt,url);
         } catch (JSONException ignored) {
@@ -850,14 +855,14 @@ public class OtherprofileActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void jsonotherdata(String posteduserid) {
-        Log.d("jsonParseuser", "other_url " + other_url+posteduserid);
+      //  Log.d("jsonParseuser", "other_url " + other_url+posteduserid);
         //  viewDialog.showDialog();
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, other_url+posteduserid, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         //  viewDialog.hideDialog();
-                        Log.d("JSONgabal", "---" + response);
+                       // Log.d("JSONgabal", "---" + response);
                         if (response.length()!=0) {
                             try {
                                 //JSONArray array = response.getJSONArray("stackingTransactions");
@@ -868,14 +873,14 @@ public class OtherprofileActivity extends AppCompatActivity {
                                     otherusername=ids.getString("username");
                                     if (ids.has("profilePic")) {
                                         otherprofileimg = ids.getString("profilePic");
-                                        Picasso.with(OtherprofileActivity.this).load(otherprofileimg).placeholder(R.drawable.uploadpictureold).into(otherprofile_image);
+                                        Picasso.with(OtherprofileActivity.this).load(otherprofileimg).placeholder(R.drawable.uploadpiclight).into(otherprofile_image);
                                     }
                                     follower=ids.getString("followers");
                                     follewing=ids.getString("followings");
                                     String followingUser=ids.getString("followingUser");
                                     // String created=ids.getString("created");
                                     String totalLikes=ids.getString("totalLikes");
-                                    Log.d("folloersss",":::"+follower);
+                                   // Log.d("folloersss",":::"+follower);
 
                                     blocked=ids.getString("blocked");
 
@@ -911,7 +916,7 @@ public class OtherprofileActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -982,6 +987,11 @@ public class OtherprofileActivity extends AppCompatActivity {
             finish();
         }
         return;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       // Log.d("otherprofile", ":::" +resultCode);
     }
 
 }

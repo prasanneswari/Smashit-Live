@@ -74,8 +74,10 @@ public class Adapter_SoundFragment extends RecyclerView.Adapter<Adapter_SoundFra
 
         holder.soundname.setText(mainmodels.get(position).getSongname());
         holder.soundusername.setText(mainmodels.get(position).getSongusername());
-        holder.soundduration.setText(mainmodels.get(position).getSongduration());
-        holder.soundviews.setText(mainmodels.get(position).getSongviews()+" "+"Views");
+        if (mainmodels.get(position).getSongduration()!=null) {
+            holder.soundduration.setText(mainmodels.get(position).getSongduration());
+        }
+        holder.soundviews.setText(mainmodels.get(position).getSongviews()+" "+"Posts");
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,134 +93,6 @@ public class Adapter_SoundFragment extends RecyclerView.Adapter<Adapter_SoundFra
             }
 
         });
-/*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //String value = mainmodels.get(position).getSongname();
-                String valueid = mainmodels.get(position).getSongurl();
-                Boolean checkvalue = mainmodels.get(position).isSelected();
-                Log.e("checkvalue", String.valueOf(checkvalue));
-
-                Down_load_mp3(valueid);
-
-
-                AlertDialog.Builder builder;
-
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                View layout = inflater.inflate(R.layout.sound_play, null);
-                TextView pop_text = (TextView) layout.findViewById(R.id.pop_text);
-                TextView pop_select = (TextView) layout.findViewById(R.id.pop_select);
-                ImageView pop_play_btn = (ImageView) layout.findViewById(R.id.pop_play_btn);
-                ImageView pop_pause_btn = (ImageView) layout.findViewById(R.id.pop_pause_btn);
-                ImageView pop_close_btn = (ImageView) layout.findViewById(R.id.pop_close_btn);
-                RelativeLayout pop_lay = (RelativeLayout) layout.findViewById(R.id.pop_lay);
-                pop_lay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if(mediaPlayer==null){
-                            dialog.dismiss();
-                        }else {
-                            mediaPlayer.stop();
-                            dialog.dismiss();
-                        }
-                    }
-                });
-
-                if (checkvalue == false) {
-                    pop_select.setText("Select");
-
-                } else {
-                    pop_select.setText("Unselect");
-                }
-                pop_text.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(pop_text.getText().toString().equals("play")){
-                            pop_text.setText("Playing");
-                            Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                            Log.e("defaultSound", defaultSound);
-                            mediaPlayer = MediaPlayer.create(context, ur);
-                            mediaPlayer.start();
-                            pop_pause_btn.setVisibility(View.VISIBLE);
-                            pop_play_btn.setVisibility(View.INVISIBLE);
-
-                        }
-                        else if(pop_text.getText().toString().equals("Playing")){
-                            pop_text.setText("play");
-                            mediaPlayer.pause();
-                            pop_pause_btn.setVisibility(View.INVISIBLE);
-                            pop_play_btn.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-                pop_play_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        pop_text.setText("Playing");
-                        Uri ur = Uri.parse(defaultSound + "/" + SelectedAudio);
-                        Log.e("defaultSound", defaultSound);
-                        mediaPlayer = MediaPlayer.create(context, ur);
-                        mediaPlayer.start();
-                        pop_pause_btn.setVisibility(View.VISIBLE);
-                        pop_play_btn.setVisibility(View.INVISIBLE);
-                    }
-                });
-                pop_pause_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        pop_text.setText("play");
-                        mediaPlayer.pause();
-                        pop_pause_btn.setVisibility(View.INVISIBLE);
-                        pop_play_btn.setVisibility(View.VISIBLE);
-                    }
-                });
-                pop_close_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mediaPlayer!=null){
-                            mediaPlayer.stop();
-                            dialog.dismiss();
-                        }else {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                pop_select.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (checkvalue == false) {
-                            pop_select.setText("Un select");
-                            if (mediaPlayer ==  null) {
-
-                            } else {
-                                if (mediaPlayer.isPlaying()) {
-                                    mediaPlayer.stop();
-
-                                }
-                            }
-                            Intent intent = new Intent(context, CameraActivity.class);
-                            intent.putExtra("song", defaultSound);
-                            context.startActivity(intent);
-
-                            dialog.dismiss();
-                          //  Log.e("wwwwww", value + " " + valueid);
-                        }
-                    }
-                });
-
-
-                builder = new AlertDialog.Builder(context);
-//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                builder.setView(layout);
-                dialog = builder.create();
-                dialog.setCancelable(false);
-                dialog.show();
-
-            }
-        });
-*/
     }
 
 
@@ -296,7 +170,7 @@ public class Adapter_SoundFragment extends RecyclerView.Adapter<Adapter_SoundFra
             @Override
             public void onDownloadComplete() {
                 progressDialog.dismiss();
-                Log.e("sound", "done");
+                //Log.e("sound", "done");
 //                Intent output = new Intent();
 //                output.putExtra("isSelected","yes");
 //                output.putExtra("sound_name",sound_name);
@@ -309,7 +183,7 @@ public class Adapter_SoundFragment extends RecyclerView.Adapter<Adapter_SoundFra
             @Override
             public void onError(Error error) {
                 progressDialog.dismiss();
-                Log.e("sound", String.valueOf(error));
+               // Log.e("sound", String.valueOf(error));
             }
 
 

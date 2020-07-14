@@ -1,7 +1,6 @@
 package com.vasmash.va_smash.createcontent.filters.gpu.egl;
 
 
-import com.daasuu.gpuv.egl.DefaultContextFactory;
 
 public class GlContextFactory extends DefaultContextFactory {
 

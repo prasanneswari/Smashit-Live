@@ -72,6 +72,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class RegisterformActivity extends AppCompatActivity {
     TextView gendername, contry;
     EditText name, pass, repass, date1,lastname;
     Button reg_sub;
-    ImageView maleline,femaleline,otherline;
+    ImageView maleline,femaleline,otherline,malelight,femalelight,otherlight;
     ImageView imagelay;
     LinearLayout rootlay;
 
@@ -108,10 +109,11 @@ public class RegisterformActivity extends AppCompatActivity {
 
     private int GALLERY = 1, CAMERA = 2;
     Bitmap frontthunm=null;
-    String gaid="null",gaprofilepic="null",ganame="null",gaemail="null",gamobile="null",gacountry="null",gacountrycode="null";
+    String gaid="null",gaprofilepic="null",ganame="null",galastName="null",gaemail="null",gamobile="null",gacountry="null",gacountrycode="null";
     EditText editsearch;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     public static final int REQUEST_IMAGE = 100;
+    int yearpicker;
 
 
     @Override
@@ -135,6 +137,10 @@ public class RegisterformActivity extends AppCompatActivity {
         femaleline = findViewById(R.id.female);
         otherline = findViewById(R.id.other);
         gendername=findViewById(R.id.gendername);
+        malelight = findViewById(R.id.maleimg);
+        femalelight = findViewById(R.id.femaleimg);
+        otherlight = findViewById(R.id.otherimg);
+
 
 
         upload_pic_btn=findViewById(R.id.upload_pic_btn);
@@ -148,17 +154,18 @@ public class RegisterformActivity extends AppCompatActivity {
             gaid=intent.getStringExtra("gaid");
             gaprofilepic=intent.getStringExtra("profilePic");
             ganame=intent.getStringExtra("name");
+            galastName=intent.getStringExtra("lastName");
             gaemail=intent.getStringExtra("email");
             gamobile=intent.getStringExtra("mobile");
             gacountry=intent.getStringExtra("country");
             gacountrycode=intent.getStringExtra("countryCode");
-            Log.d("profilepicc","::::"+gaprofilepic);
+            //Log.d("profilepicc","::::"+gaprofilepic);
 
             Picasso.with(RegisterformActivity.this).load(gaprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(imagelay);
             Picasso.with(RegisterformActivity.this).load(gaprofilepic).placeholder(R.drawable.uploadpictureold).networkPolicy(NetworkPolicy.NO_CACHE).into(profile_image);
 
             name.setText(ganame);
-
+            lastname.setText(galastName);
         }
         //this is the country code popup selection
         contry.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +188,6 @@ public class RegisterformActivity extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
                         year,month,day);
-
                 // Divider changing:
                 DatePicker dpView = dialog.getDatePicker();
                 LinearLayout llFirst = (LinearLayout) dpView.getChildAt(0);
@@ -217,8 +223,9 @@ public class RegisterformActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                Log.d(" ", "onDateSet: mm/dd/yyy: " + year + "/" + month + "/" + day);
+               // Log.d(" ", "onDateSet: mm/dd/yyy: " + year + "/" + month + "/" + day);
                 String date = year + "/" + month + "/" + day;
+                getAge(year,month,day);
                 date1.setText(date);
             }
         };
@@ -236,19 +243,17 @@ public class RegisterformActivity extends AppCompatActivity {
 
                 String repassS=date1.getText().toString();
                 //int yearclck = Integer.parseInt(repassS.substring(0,4));
-                Log.d("jsnresponse..ccpS..", "---" + code + " ::");
+               // Log.d("jsnresponse..ccpS..", "---" + code + " ::");
                 //here passowrd and cofirm pwd is matched we will entring
                 if(passS.equals(cpassS)) {
                     if (nameS.isEmpty() || lastnameS.isEmpty() || passS.isEmpty() || repassS.isEmpty() || radiovalue.isEmpty() ) {
                         // Toast.makeText(RegisterformActivity.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
                         popupresponse("Please enter the All Fields");
                     }
-/*
                     //here only allow above 13 years age
-                    else if (yearclck>2007){
-                        popupresponse("Sorry, looks like you're not eligible for VASmash...But thanks for checking us out!");
+                    else if (yearpicker < 12){
+                        popupresponse("Sorry, you must be at least 13 years old to create an account");
                     }
-*/
                     //here all data intent to launge class
                     else {
                         Intent intent = new Intent(RegisterformActivity.this, Languagelist.class);
@@ -259,7 +264,7 @@ public class RegisterformActivity extends AppCompatActivity {
                         intent.putExtra("repassS", repassS);
                         intent.putExtra("countryS", valueid);
                         intent.putExtra("code", code);
-                        Log.d("iddsss",":::"+"::::"+gaid+"::::"+idS);
+                       // Log.d("iddsss",":::"+"::::"+gaid+"::::"+idS);
 
                         /*if (useridget != null &&!useridget.equals("null")) {
                             intent.putExtra("id", useridget);
@@ -268,17 +273,14 @@ public class RegisterformActivity extends AppCompatActivity {
                         }else {
                             intent.putExtra("id", idS);
                         }
-
                         startActivity(intent);
                     }
                 }else {
                     //dialogbox("password and confirm password is not matched");
                     popupresponse("password and confirm password is not matched");
                 }
-
             }
         });
-
         upload_pic_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,6 +317,10 @@ public class RegisterformActivity extends AppCompatActivity {
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.maleimg:
+                malelight.setImageResource(R.drawable.femaleicon);
+                femalelight.setImageResource(R.drawable.femalelight);
+                otherlight.setImageResource(R.drawable.otherlight);
+
                 maleline.setImageResource(R.drawable.continubuttom);
                 femaleline.setImageResource(R.drawable.genderback);
                 otherline.setImageResource(R.drawable.genderback);
@@ -326,6 +332,10 @@ public class RegisterformActivity extends AppCompatActivity {
                     }*/
                 break;
             case R.id.femaleimg:
+                malelight.setImageResource(R.drawable.malelight);
+                femalelight.setImageResource(R.drawable.maleicon);
+                otherlight.setImageResource(R.drawable.otherlight);
+
                 maleline.setImageResource(R.drawable.genderback);
                 femaleline.setImageResource(R.drawable.continubuttom);
                 otherline.setImageResource(R.drawable.genderback);
@@ -337,6 +347,10 @@ public class RegisterformActivity extends AppCompatActivity {
                     }*/
                 break;
             case R.id.otherimg:
+                malelight.setImageResource(R.drawable.malelight);
+                femalelight.setImageResource(R.drawable.femalelight);
+                otherlight.setImageResource(R.drawable.transgendericon);
+
                 maleline.setImageResource(R.drawable.genderback);
                 femaleline.setImageResource(R.drawable.genderback);
                 otherline.setImageResource(R.drawable.continubuttom);
@@ -348,6 +362,25 @@ public class RegisterformActivity extends AppCompatActivity {
                     }*/
                 break;
         }
+    }
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ages=ageInt.toString();
+        yearpicker = Integer.parseInt(ages);
+       // Log.d("agecal","::::"+yearpicker);
+
+        return ages;
     }
 
     public void countrydialog() {
@@ -414,7 +447,7 @@ public class RegisterformActivity extends AppCompatActivity {
     }
 
     public void countryapi(String ul) {
-        Log.d("countryurl", "::::"+ul);
+      //  Log.d("countryurl", "::::"+ul);
 
 
         mQueue = Volley.newRequestQueue(RegisterformActivity.this.getApplicationContext());
@@ -425,7 +458,7 @@ public class RegisterformActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
 
 
                         dataModelArrayList = new ArrayList<>();
@@ -444,8 +477,10 @@ public class RegisterformActivity extends AppCompatActivity {
                                     dataModelArrayList.add(langu);
 
 
+/*
                                     Log.d("Response", "createddateL:::" + dataModelArrayList);
                                     Log.d("Response", "createddateL:::" + _id + name);
+*/
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -470,7 +505,7 @@ public class RegisterformActivity extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -675,7 +710,8 @@ public class RegisterformActivity extends AppCompatActivity {
     }
     //this is the image upload volley multipart code
     private void uploadBitmap(final Bitmap bitmap) {
-        String userid=pref.getString("id", null);Log.d("555555", "newTicketurl URL" + regupload+userid+"::bitmap"+bitmap);
+        String userid=pref.getString("id", null);
+       // Log.d("555555", "newTicketurl URL" + regupload+userid+"::bitmap"+bitmap);
         //our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, regupload+userid,
                 new Response.Listener<NetworkResponse>() {

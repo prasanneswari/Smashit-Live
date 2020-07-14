@@ -76,6 +76,7 @@ public class CountryAdapter extends ArrayAdapter<Languages> {
                     if (cust.getLang_code().toLowerCase().startsWith(constraint.toString().toLowerCase())) {
                         suggestions.add(cust);
                     }
+
                 }
 
                 FilterResults filterResults = new FilterResults();

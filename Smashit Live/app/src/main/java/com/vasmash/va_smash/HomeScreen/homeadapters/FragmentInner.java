@@ -65,12 +65,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.countDownTimer;
+import static com.vasmash.va_smash.HomeScreen.homefragment.HomeFragment.hometoken;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.share_url;
 
-
-
-
-public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomViewHolder> /*implements CommentsFragment.SendMessagecomment*/ {
+public class FragmentInner extends RecyclerView.Adapter<RecyclerView.ViewHolder> /*implements CommentsFragment.SendMessagecomment*/ {
     Dialog dialog;
 
     ArrayList<Homescreen_model> mainmodels;
@@ -79,10 +77,7 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
     Context context;
 
     static public String getid,postid,likescoutn;
-    private RequestQueue mQueue;
-    private String proftoken;
     int pos;
-    ViewDialog viewDialog;
 
 
     String userprofilepic,username,sharecount,claimtype;
@@ -93,134 +88,100 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         this.mainmodels = mainmodels;
         this.des = desL;
         this.context = context;
-
     }
 
     @NonNull
     @Override
-    public FragmentInner.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.homesceen_modelview, null);
-        view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
-        FragmentInner.CustomViewHolder viewHolder = new FragmentInner.CustomViewHolder(view);
-
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+        if(viewtype==0){
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.homesceen_modelview, null);
+            view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
+            return new CustomViewHolder(view);
+        }else{
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_load, null);
+            view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
+            return new LoadHolder(view);
+        }
+    }
+    static class LoadHolder extends RecyclerView.ViewHolder{
+        public LoadHolder(View itemView) {
+            super(itemView);
+        }
     }
 
+
     @Override
-    public void onBindViewHolder(final FragmentInner.CustomViewHolder holder, final int position) {
-        final Homescreen_model item = mainmodels.get(position);
-        pos=position;
-        holder.setIsRecyclable(false);
-        mQueue = Volley.newRequestQueue(context.getApplicationContext());
-        SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(context);
-        proftoken = phoneauthshard.getString("token", "null");
-        viewDialog = new ViewDialog((Activity) context);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder1, final int position) {
+        if(getItemViewType(position)==0) {
+            CustomViewHolder holder = ((CustomViewHolder) holder1);
+
+            final Homescreen_model item = mainmodels.get(position);
+            pos = position;
+            holder.setIsRecyclable(false);
+
+            postid = mainmodels.get(position).getPostid();
+            //commentuser=mainmodels.get(position).getComments();
+            username = mainmodels.get(position).getUsername();
+            //sharecount=shareL.get(position);
+            sharecount = mainmodels.get(position).getShare();
 
 
-        postid=mainmodels.get(position).getPostid();
-        //commentuser=mainmodels.get(position).getComments();
-        username=mainmodels.get(position).getUsername();
-        //sharecount=shareL.get(position);
-        sharecount=mainmodels.get(position).getShare();
-
-
-        userprofilepic=mainmodels.get(position).getUserprofilepic();
-        Log.d("profilepichome",":::"+userprofilepic);
-        if (userprofilepic !=null){
-            Picasso.with(context).load(userprofilepic).into(holder.otherprofile);
+            userprofilepic = mainmodels.get(position).getUserprofilepic();
+            //Log.d("profilepichome", ":::" + userprofilepic);
+            if (userprofilepic != null) {
+                Picasso.with(context).load(userprofilepic).placeholder(R.drawable.uploadpiclight).into(holder.otherprofile);
 /*
             Glide.with(context)
                     .load(userprofilepic)
                     .into(holder.otherprofile);
 */
 
-        }else {
-            // Picasso.with(context).load(R.drawable.uploadpictureold).into(holder.otherprofile);
-            holder.otherprofile.setImageResource(R.drawable.uploadpictureold);
-        }
-
-        holder.homename.setText(username);
-        holder.description.setText(mainmodels.get(position).getDescription());
-        if (des.get(position).getName()!=null) {
-            holder.description.setVisibility(View.VISIBLE);
-            holder.hometags.setText(/*holder.hometags.getText() + " " +*/des.get(position).getName());
-        }else {
-            holder.description.setVisibility(View.GONE);
-        }
-/*
-        holder.shareimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (proftoken.equals("null")){
-                    popup();
-                }else {
-                    postid = mainmodels.get(position).getPostid();
-                    createreflink(postid,holder,position);
-                }
-
+            } else {
+                // Picasso.with(context).load(R.drawable.uploadpictureold).into(holder.otherprofile);
+                holder.otherprofile.setImageResource(R.drawable.uploadpictureold);
             }
-        });
-*/
 
-        holder.vastore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
-                if (proftoken.equals("null")){
-                    popup();
-                }else {
-                    if (countDownTimer!=null) {
-                        countDownTimer.cancel();
-                    }
-
-                    Intent intent = new Intent(context, VAStoreActivity.class);
-                    context.startActivity(intent);
-                }
+            holder.homename.setText(username);
+            holder.description.setText(mainmodels.get(position).getDescription());
+            if (des.get(position).getName() != null) {
+                holder.description.setVisibility(View.VISIBLE);
+                holder.hometags.setText(/*holder.hometags.getText() + " " +*/des.get(position).getName());
+            } else {
+                holder.description.setVisibility(View.GONE);
             }
-        });
-
-        holder.otherprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userid=mainmodels.get(position).getUserid();
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-
-                if (proftoken.equals("null")){
-                    popup();
-                }else {
-                    if (countDownTimer!=null) {
-                        countDownTimer.cancel();
+            holder.otherprofile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userid = mainmodels.get(position).getUserid();
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
                     }
+                    mLastClickTime = SystemClock.elapsedRealtime();
 
+                    if (hometoken.equals("null")) {
+                        popup();
+                    } else {
+                        if (countDownTimer != null) {
+                            countDownTimer.cancel();
+                        }
+                        Intent intent = new Intent(context, OtherprofileActivity.class);
+                        intent.putExtra("posteduserid", userid);
+                        context.startActivity(intent);
+                        //Log.e("posteduserid", userid);
+                    }
+                }
+            });
+            holder.homename.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userid = mainmodels.get(position).getUserid();
                     Intent intent = new Intent(context, OtherprofileActivity.class);
                     intent.putExtra("posteduserid", userid);
                     context.startActivity(intent);
-                    Log.e("posteduserid", userid);
-                }
-            }
-        });
-        holder.homename.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userid=mainmodels.get(position).getUserid();
-                Intent intent = new Intent(context, OtherprofileActivity.class);
-                intent.putExtra("posteduserid", userid);
-                context.startActivity(intent);
 
-            }
-        });
+                }
+            });
+        }
 
     }
 /*
@@ -234,8 +195,6 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
     public int getItemCount() {
         return (null != mainmodels ? mainmodels.size() : 0);
     }
-
-
     @Override
     public long getItemId(int position) {
         return position;
@@ -243,46 +202,13 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
 
     @Override
     public int getItemViewType(int position) {
-        return position;
-    }
-
-
-    public void createreflink(String postid, CustomViewHolder holder, int position){
-
-        Task<ShortDynamicLink> dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(mainmodels.get(position).getFile()+"?"+postid+"-"+"true"))
-                .setDomainUriPrefix("https://sh.vasmash.com")
-                // Open links with this app on Android
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                // Open links with com.example.ios on iOS
-                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.smash").build())
-                .setSocialMetaTagParameters(
-                        new DynamicLink.SocialMetaTagParameters.Builder()
-                                .setTitle("Example of a Dynamic Link")
-                                .setDescription("This link works whether the app is installed or not!")
-                                .build())
-                .buildShortDynamicLink().addOnCompleteListener((Activity) context, new OnCompleteListener<ShortDynamicLink>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                        if (task.isSuccessful()) {
-                            // Short link created
-                            Uri shortLink = task.getResult().getShortLink();
-                            Uri flowchartLink = task.getResult().getPreviewLink();
-                            Intent i = new Intent(android.content.Intent.ACTION_SEND);
-                            i.setType("text/plain");
-                            String sub="\n Hi, have a look. I found this crazy stuff in VA-Smash!!\n";
-                            String shareMessage= sub+" " +"\n"+ shortLink +"\n"+" "+ "\n I am enjoying and earning. Install to join me.\n\n";
-                            i.putExtra(android.content.Intent.EXTRA_TEXT, shareMessage.toString());
-                            context.startActivity(Intent.createChooser(i, "Share Via"));
-                            jsoneashare(share_url + postid, holder, position);
-
-                        } else {
-                            // Error
-                            // ...
-                        }
-                    }
-                });
-
+        Log.d("Adapter","getItemViewType  "+mainmodels.get(position).isIsloadmore());
+        // return position;
+        if(mainmodels.get(position).isIsloadmore()==0){
+            return 0;
+        }else{
+            return 1;
+        }
     }
 
     public void popup() {
@@ -325,7 +251,7 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
         TextView description,homename,hometags,song,sharetxt;
-        ImageView shareimg,vastore,giftimg;
+        ImageView shareimg,giftimg;
         CircleImageView otherprofile;
 
 
@@ -336,7 +262,6 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
             homename=rootView.findViewById(R.id.homename);
             hometags=rootView.findViewById(R.id.hometags);
            // sharetxt=rootView.findViewById(R.id.share);
-            vastore=rootView.findViewById(R.id.vastore);
             otherprofile=rootView.findViewById(R.id.otherprofile);
             description=rootView.findViewById(R.id.homecontent);
             //giftimg=rootView.findViewById(R.id.giftimg);
@@ -347,8 +272,6 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         }
 
     }
-
-
     public void shareItem(final String url) {
         Picasso.with(context).load(url).into(new Target() {
             @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -381,153 +304,5 @@ public class FragmentInner extends RecyclerView.Adapter<FragmentInner.CustomView
         return bmpUri;
     }
 
-    private void jsoneashare(String earningpoints_url, final CustomViewHolder holder, final int position) {
-        // prepare the Request
-        Log.d("earning share", earningpoints_url);
-
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, earningpoints_url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        Log.d("Responses share", response.toString());
-                        if (response.length() != 0) {
-                            // Iterate the inner "data" array
-                            try {
-                                String sharepoints=response.getString("count");
-                                mainmodels.get(position).setShare(sharepoints);
-                                holder.sharetxt.setText(sharepoints);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Log.d("Error.Response1111111", error.toString());
-                        String body;
-                        //get status code here
-                        //Log.d("statusCode", "---" + error.toString());
-                        NetworkResponse response = error.networkResponse;
-                        if(response != null && response.data != null){
-                            switch(response.statusCode){
-                                case 422:
-                                    try {
-                                        body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
-                                        JSONObject obj = new JSONObject(body);
-                                        if (obj.has("errors")) {
-                                            JSONObject errors = obj.getJSONObject("errors");
-                                            String message = errors.getString("message");
-                                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    break;
-
-                                case 404:
-                                    try {
-                                        String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
-                                        JSONObject obj = new JSONObject(bodyerror);
-                                        if (obj.has("errors")) {
-                                            JSONObject errors = obj.getJSONObject("errors");
-                                            String message = errors.getString("message");
-                                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-
-                                        }
-
-                                    } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-        )
-        {
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                //Log.d("", "volleyError" + volleyError.getMessage());
-                return super.parseNetworkError(volleyError);
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                //Log.d("paamssssssss","" +params);
-                return new HashMap<>();
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-
-                //  Authorization: Basic $auth
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization",proftoken);
-
-                return headers;
-            }
-        };
-
-        // add it to the RequestQueue
-        mQueue.add(getRequest);
-    }
-
-
-
-    public abstract static class DoubleClickListener implements View.OnClickListener {
-        private static final long DEFAULT_QUALIFICATION_SPAN = 200;
-        private boolean isSingleEvent;
-        private long doubleClickQualificationSpanInMillis;
-        private long timestampLastClick;
-        private Handler handler;
-        private Runnable runnable;
-
-        public DoubleClickListener() {
-            doubleClickQualificationSpanInMillis = DEFAULT_QUALIFICATION_SPAN;
-            timestampLastClick = 0;
-            handler = new Handler();
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (isSingleEvent) {
-                        onSingleClick();
-                    }
-                }
-            };
-        }
-
-        @Override
-        public void onClick(View v) {
-            if((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
-                isSingleEvent = false;
-                handler.removeCallbacks(runnable);
-                onDoubleClick();
-                return;
-            }
-
-            isSingleEvent = true;
-            handler.postDelayed(runnable, DEFAULT_QUALIFICATION_SPAN);
-            timestampLastClick = SystemClock.elapsedRealtime();
-        }
-
-        public abstract void onDoubleClick();
-        public abstract void onSingleClick();
-    }
-    public void paginationsave(ArrayList<Homescreen_model> pagemodel){
-        for (Homescreen_model model : pagemodel){
-            mainmodels.add(model);
-        }
-        notifyDataSetChanged();
-    }
 
 }

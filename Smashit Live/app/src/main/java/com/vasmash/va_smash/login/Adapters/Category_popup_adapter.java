@@ -88,7 +88,7 @@ public class Category_popup_adapter extends BaseAdapter {
 
 
 
-        Log.e("adr",modelArrayList.get(position).getLang_name()+"  "+modelArrayList.get(position).getLang_code());
+        //Log.e("adr",modelArrayList.get(position).getLang_name()+"  "+modelArrayList.get(position).getLang_code());
 
         holder.checkBox.setTag(R.integer.btnplusview, convertView);
         holder.checkBox.setTag( position);
@@ -100,7 +100,7 @@ public class Category_popup_adapter extends BaseAdapter {
                 TextView name = (TextView) tempview.findViewById(R.id.lang_mod);
                 TextView ic = (TextView) tempview.findViewById(R.id.lang_mod);
                 Integer pos = (Integer)  holder.checkBox.getTag();
-                Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
 
                 if(modelArrayList.get(pos).getSelected()){
                     modelArrayList.get(pos).setSelected(false);
@@ -118,7 +118,7 @@ public class Category_popup_adapter extends BaseAdapter {
 
 
                 if (lanarrayL.contains(modelArrayList.get(position).getLang_code())){
-                    Log.d("enter iff",":::");
+                   // Log.d("enter iff",":::");
 
                     int index=lanarrayL.indexOf(modelArrayList.get(position).getLang_code());
                     lanarrayL.remove(index);
@@ -131,7 +131,7 @@ public class Category_popup_adapter extends BaseAdapter {
                     holder.name.setTextColor(Color.parseColor("#ffffff"));
 
                 }else {
-                    Log.d("elseee",":::");
+                    //Log.d("elseee",":::");
                     lanarrayL.add(modelArrayList.get(position).getLang_code());
                     catcodeL.add(modelArrayList.get(position).getLang_name());
 

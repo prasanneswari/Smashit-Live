@@ -63,9 +63,11 @@ public class SetNewPassword extends AppCompatActivity {
         sch_RequestQueue = Volley.newRequestQueue(getApplicationContext());
         viewDialog = new ViewDialog(this);
 
-        Intent intent=getIntent();
-        otpget=intent.getStringExtra("otp");
-        idget=intent.getStringExtra("id");
+        if( getIntent().getExtras() != null) {
+            Intent intent = getIntent();
+            otpget = intent.getStringExtra("otp");
+            idget = intent.getStringExtra("id");
+        }
 
         //this is the submit save post code
         save.setOnClickListener(new View.OnClickListener() {
@@ -77,17 +79,16 @@ public class SetNewPassword extends AppCompatActivity {
                 if (newpwdS.equals(confirmpwdS)) {
                     if (newpwdS.isEmpty() || confirmpwdS.isEmpty()) {
                       //  Toast.makeText(SetNewPassword.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
-                        popup("Please enter the All Fields");
+                        popup("Please enter all the fields");
                     } else {
 
                         String loginS = "{\"id\":\"" + idget + "\",\"otp\":\"" + otpget + "\",\"password\":\"" + confirmpwdS + "\"}";
-                        Log.d("jsnresponse login", "---" + loginS);
+                        //Log.d("jsnresponse login", "---" + loginS);
                         String url = activeuser_url;
                         JSONObject lstrmdt;
-
                         try {
                             lstrmdt = new JSONObject(loginS);
-                            Log.d("jsnresponse....", "---" + loginS);
+                            //Log.d("jsnresponse....", "---" + loginS);
                             viewDialog.showDialog();
                             JSONSenderVolleylogin(lstrmdt, url);
 
@@ -114,15 +115,15 @@ public class SetNewPassword extends AppCompatActivity {
 
     //this the jsonvolley post
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url) {
-        Log.d("555555", "login" + url);
+        //Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                        //Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
 
-                        Toast.makeText(SetNewPassword.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(SetNewPassword.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
                         try {
                             if (response.has("user")) {
                                 JSONObject user = response.getJSONObject("user");
@@ -160,7 +161,7 @@ public class SetNewPassword extends AppCompatActivity {
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {

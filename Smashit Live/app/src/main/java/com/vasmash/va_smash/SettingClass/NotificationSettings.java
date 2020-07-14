@@ -95,11 +95,11 @@ public class NotificationSettings extends AppCompatActivity {
                     switch6 = "false";
 
                 String AddS = "{\"receiveChatNotification\":" + switch1 + ",\"anyOtherRelatedActivity\":" + switch2 + " ,\"likesMyActivity\":" + switch3 + ",\"commentMyActivity\":" + switch4 + ",\"followsMe\":" + switch5 + ",\"occasionalUpdates\":" + switch6 + "}";
-                Log.d("jsnresponse notifi", "---" + AddS);
+                //Log.d("jsnresponse notifi", "---" + AddS);
                 JSONObject update;
                 try {
                     update = new JSONObject(AddS);
-                    Log.d("register", "---" + AddS);
+                   // Log.d("register", "---" + AddS);
                     viewDialog.showDialog();
                     updateregst(update);
                 } catch (JSONException ignored) {
@@ -120,7 +120,7 @@ public class NotificationSettings extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Response", response.toString());
+                       // Log.d("Response", response.toString());
                         viewDialog.hideDialog();
 
                         try {
@@ -132,7 +132,7 @@ public class NotificationSettings extends AppCompatActivity {
                             String followsMe=object.getString("followsMe");
                             String occasionalUpdates=object.getString("occasionalUpdates");
 
-                            Log.d("receiveChatNotification","::"+receiveChatNotification);
+                           // Log.d("receiveChatNotification","::"+receiveChatNotification);
 
                             if (receiveChatNotification.equals("true")){
                                 //receiveS.isChecked();
@@ -185,7 +185,7 @@ public class NotificationSettings extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             viewDialog.hideDialog();
@@ -255,7 +255,7 @@ public class NotificationSettings extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("jsonnotifivation", "---" + response);
+                       // Log.d("jsonnotifivation", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             String message=response.getString("message");
@@ -278,7 +278,7 @@ public class NotificationSettings extends AppCompatActivity {
                         case 400:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj1 = new JSONObject(body);
                                 if (obj1.has("errors")) {
                                     viewDialog.hideDialog();
@@ -297,7 +297,7 @@ public class NotificationSettings extends AppCompatActivity {
                         case 422:
                             try {
                                 String body1 = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body1);
+                               // Log.d("body", "---" + body1);
                                 JSONObject obj = new JSONObject(body1);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();

@@ -5,12 +5,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -38,6 +42,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -57,8 +62,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.daasuu.gpuv.composer.GPUMp4Composer;
-import com.daasuu.gpuv.egl.filter.GlWatermarkFilter;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -68,6 +71,11 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -90,6 +98,8 @@ import com.vasmash.va_smash.R;
 import com.vasmash.va_smash.SearchClass.SearchData;
 import com.vasmash.va_smash.VaContentScreen.ModeClass.Tags;
 import com.vasmash.va_smash.createcontent.CameraActivity;
+import com.vasmash.va_smash.createcontent.filters.gpu.composer.GPUMp4Composer;
+import com.vasmash.va_smash.createcontent.filters.gpu.egl.filter.GlWatermarkFilter;
 import com.vasmash.va_smash.login.fragments.LoginFragment;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -118,12 +128,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.vasmash.va_smash.BottmNavigation.TopNavigationview.claimedtopnav;
@@ -150,6 +166,7 @@ import static com.vasmash.va_smash.VASmashAPIS.APIs.homepagination_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.likesend_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.postreport_url;
 import static com.vasmash.va_smash.VASmashAPIS.APIs.unlike_url;
+import static com.yalantis.ucrop.UCropFragment.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -189,7 +206,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
 
     boolean catclik;
-    String token,fcmtoken;
+    public static String hometoken;
     ArrayList<Tags> des;
 
     //report
@@ -209,6 +226,12 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     private boolean followpagination=false;
     private boolean catpagiation=false;
     private boolean allposts=false;
+
+    String   defaultVideo;
+
+    int progress = 0;
+    private CountDownTimer countDownTimerhome;
+    FFmpeg ffmpeg;
 
     String catid;
     public static HomeFragment newInstance() {
@@ -232,12 +255,13 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         viewDialog = new ViewDialog(getActivity());
 
         SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        token = phoneauthshard.getString("token", "null");
-        if (!token.equals("null")) {
+        hometoken = phoneauthshard.getString("token", "null");
+        if (!hometoken.equals("null")) {
             //this is the firebase notifictaion send
             fcmtokensend();
         }
         recyclarview();
+        loadFFMpegBinary();
 
         numberPicker = (NumberPicker)view. findViewById(R.id.number_picker);
         numberpickerly=view.findViewById(R.id.numberpickerly);
@@ -272,7 +296,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (token.equals("null")){
+                if (hometoken.equals("null")){
                     popup();
                 }else {
                     foryou.setBackgroundResource(R.color.transparent);
@@ -287,7 +311,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     recyclerView.setAdapter(homeadapter);
                     followpagination=true;
                     // homeapi(homeapi_url + "/following");
-                    homeapi(homeapi_url + "/following?limit=10&skip=0");
+                    homeapi(homeapi_url + "/following?skip=0");
                 }
             }
         });
@@ -304,7 +328,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             public void onClick(View v) {
                 // viewPager.setCurrentItem(3);
 
-                if (token.equals("null")){
+                if (hometoken.equals("null")){
                     popup();
                 }else {
                     if (countDownTimer!=null) {
@@ -320,7 +344,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             @Override
             public void onClick(View v) {
                 // viewPager.setCurrentItem(3);
-                if (token.equals("null")){
+                if (hometoken.equals("null")){
                     popup();
                 }else {
                     if (countDownTimer!=null) {
@@ -335,7 +359,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (token.equals("null")){
+                if (hometoken.equals("null")){
                     popup();
                 }else {
                     Intent intent = new Intent(getActivity(), CameraActivity.class);
@@ -353,14 +377,14 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
                 if (task.isSuccessful()){
                     String firebasetoken=task.getResult().getToken();
-                    Log.d("firebasetoken",":::"+firebasetoken);
+                   // Log.d("firebasetoken",":::"+firebasetoken);
                     String loginS = "{\"token\":\"" + firebasetoken + "\",\"device\":\"" + "android" + "\"}";
-                    Log.d("ofterlogin firebase", "---" + loginS);
+                    //Log.d("ofterlogin firebase", "---" + loginS);
                     String url=fcmtoken_url;
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                       // Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleyearning(lstrmdt,url,currentPage);
 
                     } catch (JSONException ignored) {
@@ -397,26 +421,33 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     visibleItemCount11 = layoutManager.getChildCount();
                     totalItemCount11 = layoutManager.getItemCount();
                     pastVisibleItems11 = layoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
+                    //Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
                     if (!loading11) {
                         // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+layoutManager.findLastCompletelyVisibleItemPosition()+":::"+tags.size());
+                       // Log.d("checkpage","::"+layoutManager.findLastCompletelyVisibleItemPosition()+":::"+tags.size());
                         if(layoutManager.findLastCompletelyVisibleItemPosition() == tags.size()-1){
                             loading11 = true;
                             loading=true;
-                            Log.d("printvall",":::;"+followpagination+"::"+catpagiation);
-                            if (tags.size()!=0) {
-                                if (followpagination == true) {
-                                    homeapi(homeapi_url + "/following?limit=10&skip=" + tags.size());
-                                } else if (followpagination == false && catpagiation == false && allposts == false) {
-                                    homeapi(homepagination_url + tags.size());
-                                }else if (catpagiation == true){
-                                    homeapi(homeapi_url+"/postsByCategory?limit=10&skip="+tags.size()+"&categoryId="+catid);
-                                }else if (allposts==true){
-                                    homeapi(homeapi_url + "/allPosts?limit=10&skip="+tags.size());
+                            //Log.d("printvall",":::;"+followpagination+"::"+catpagiation);
+                            if (loading) {
+                                tags.add(new Homescreen_model(1));
+                                homeadapter.notifyItemInserted(tags.size() - 1);
+
+                               // if (tags.size() != 0) {
+                                    if (followpagination == true) {
+                                        homeapi(homeapi_url + "/following?skip=" + (tags.size()-1));
+                                    } else if (followpagination == false && catpagiation == false && allposts == false) {
+                                        homeapi(homepagination_url + (tags.size()-1));
+                                    } else if (catpagiation == true) {
+                                        homeapi(homeapi_url + "/postsByCategory?skip=" + (tags.size()-1) + "&categoryId=" + catid);
+                                    } else if (allposts == true) {
+                                        homeapi(homeapi_url + "/allPosts?skip=" + (tags.size()-1));
+                                    }
+/*
+                                } else {
+                                    Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_SHORT).show();
                                 }
-                            }else {
-                                Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_SHORT).show();
+*/
                             }
                         }
                     }
@@ -434,39 +465,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     currentPage=page_no;
                     Release_Privious_Player();
                     Set_Player(currentPage);
-                    Log.d("currentpagecount","::::"+currentPage);
+                    //Log.d("currentpagecount","::::"+currentPage);
                 }
-/*
-                if (dy > 0)
-                {
-                    visibleItemCount11 = layoutManager.getChildCount();
-                    totalItemCount11 = layoutManager.getItemCount();
-                    pastVisibleItems11 = layoutManager.findFirstVisibleItemPosition();
-                    Log.d("visibleItemCount","::::"+visibleItemCount11+":::"+totalItemCount11+"::"+pastVisibleItems11+":::"+loading11);
-                    if (!loading11) {
-                        // if ((visibleItemCount11 + pastVisibleItems11) >= totalItemCount11 && visibleItemCount11 >= 0 && totalItemCount11 >= tags.size()) {
-                        Log.d("checkpage","::"+layoutManager.findLastCompletelyVisibleItemPosition()+":::"+tags.size());
-                        if(layoutManager.findLastCompletelyVisibleItemPosition() == tags.size()-1){
-                            loading11 = true;
-                            loading=true;
-                            Log.d("printvall",":::;"+followpagination+"::"+catpagiation);
-                            if (tags.size()!=0) {
-                                if (followpagination == true) {
-                                    homeapi(homeapi_url + "/following?limit=10&skip=" + tags.size());
-                                } else if (followpagination == false && catpagiation == false && allposts == false) {
-                                    homeapi(homepagination_url + tags.size());
-                                }else if (catpagiation == true){
-                                    homeapi(homeapi_url+"/postsByCategory?limit=10&skip="+tags.size()+"&categoryId="+catid);
-                                }else if (allposts==true){
-                                    homeapi(homeapi_url + "/allPosts?limit=10&skip="+tags.size());
-                                }
-                            }else {
-                                Toast.makeText(getActivity(), "No More Data", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                }
-*/
             }
         });
         //first we will call this home api we will get the video content data
@@ -551,7 +551,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
                     if (numberPicker.getValue()==i){
                         catid= catidL.get(i);
-                        Log.d("catiddddd",":::"+catid);
+                       // Log.d("catiddddd",":::"+catid);
                         catclik=true;
                         foryou.setBackgroundResource(R.color.transparent);
                         following.setBackgroundResource(R.color.transparent);
@@ -566,7 +566,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         catpagiation=true;
                         loading=false;
                         // homeapi(homeapi_url+"?categoryId="+catid);
-                        homeapi(homeapi_url+"/postsByCategory?limit=10&skip=0&categoryId="+catid);
+                        homeapi(homeapi_url+"/postsByCategory?skip=0&categoryId="+catid);
 
                     }
                 }
@@ -577,7 +577,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.d("", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
+                //Log.d("", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
                 fadecolor.setVisibility(View.GONE);
                 newval= newVal;
             }
@@ -585,9 +585,9 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     }
 
     public void homeapi(String url){
-        Log.d("home api::::", url+loading);
+        //Log.d("home api::::", url+loading);
         if (loading){
-            p_bar.setVisibility(View.VISIBLE);
+           // p_bar.setVisibility(View.VISIBLE);
         }else {
             viewDialog.showDialog();
         }
@@ -597,9 +597,15 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response homeee", response.toString());
+                       // Log.d("Response homeee", response.toString());
                         if (loading){
-                            p_bar.setVisibility(View.GONE);
+                           // p_bar.setVisibility(View.GONE);
+                            if(tags!=null){
+                                if(tags.size()>0){
+                                    tags.remove(tags.size()-1);
+                                }
+                            }
+
                         }else {
                             viewDialog.hideDialog();
                         }
@@ -674,7 +680,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                         }
                                         String homeprofilePic = nameobj.getString("profilePic");
 
-                                        Log.d("profilepicuser",":::"+homeprofilePic);
+                                       // Log.d("profilepicuser",":::"+homeprofilePic);
                                         hm.setUserprofilepic(homeprofilePic);
                                         hm.setUserid(userid);
                                         // sm.sendData1(homeprofilePic);
@@ -696,7 +702,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                                 String tagid = tagarray.getString("_id");
                                                 if (tagarray.has("tag")) {
                                                     String tag = tagarray.getString("tag");
-                                                    Log.d("tag:::::",""+tag);
+                                                   // Log.d("tag:::::",""+tag);
 
                                                     ts.setId(tagarray.getString("_id"));
                                                     ts.setName(tagarray.getString("tag"));
@@ -754,9 +760,10 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                             }
                             homeadapter.notifyDataSetChanged();
                             loading11 = false;
+                            loading=false;
                         }else {
                             allposts=true;
-                            homeapi(homeapi_url + "/allPosts?limit=10&skip=0");
+                            homeapi(homeapi_url + "/allPosts?skip=0");
                         }
                     }
                 },
@@ -773,21 +780,22 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             if (loading){
-                                                p_bar.setVisibility(View.GONE);
+                                               // p_bar.setVisibility(View.GONE);
                                             }else {
                                                 viewDialog.hideDialog();
                                             }
                                             JSONObject errors = obj.getJSONObject("errors");
                                             String message = errors.getString("message");
-                                            String status = errors.getString("status");
-
-                                            //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                            if (status.equals("1")){
-                                                fallowpopup(message);
+                                            if (obj.has("status")) {
+                                                String status = errors.getString("status");
+                                                //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                                if (status.equals("1")) {
+                                                    fallowpopup(message);
+                                                }
                                             }
                                         }
                                     } catch (UnsupportedEncodingException e) {
@@ -819,8 +827,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
                 //  Authorization: Basic $auth
                 HashMap<String, String> headers = new HashMap<String, String>();
-                if (!token.equals("null")) {
-                    headers.put("Authorization", token);
+                if (!hometoken.equals("null")) {
+                    headers.put("Authorization", hometoken);
                     System.out.println("headddddd" + headers);
                 }
 
@@ -842,7 +850,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             @Override
             public void retry(VolleyError error) throws VolleyError {
                 if (loading){
-                    p_bar.setVisibility(View.GONE);
+                  //  p_bar.setVisibility(View.GONE);
                 }else {
                     viewDialog.hideDialog();
                 }
@@ -859,7 +867,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                        //Log.d("Response", response.toString());
                         if (response.length() != 0) {
                             for (int i = 0; i < response.length(); i++) {
                                 try {
@@ -870,7 +878,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
                                     catidL.add(_id);
                                     catnameL.add(name);
-                                    Log.d("listtttt",":::"+catnameL);
+                                   // Log.d("listtttt",":::"+catnameL);
                                     numberpickerly.setVisibility(View.VISIBLE);
                                     catswitchlay.setVisibility(View.VISIBLE);
                                     numberpicker(catidL);
@@ -895,7 +903,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -937,7 +945,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     //here we will get the comments updated respnse
     @Override
     public void onDataSent(String yourData) {
-        Log.d("cmmentdata",":::"+yourData);
+        //Log.d("cmmentdata",":::"+yourData);
         homecommenttxt.setText(yourData);
         tags.get(currentPage).setComments(yourData);
     }
@@ -974,7 +982,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             case Player.STATE_BUFFERING:
                 //Player is in state State buffering show some loading progress
                 //showProgress();
-                Log.d("playbackstate",":::"+Player.STATE_BUFFERING);
+               // Log.d("playbackstate",":::"+Player.STATE_BUFFERING);
 
                 //p_bar.setVisibility(View.VISIBLE);
                 if (countDownTimer!=null) {
@@ -1006,19 +1014,19 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     @Override
     public void onPositionDiscontinuity(int reason) {
         //here it shows the complete video and it will call post api. Here it gives 1% for 1 video watching.
-        Log.d("repeatemode","::::"+reason);
-        if (token.equals("null")){
+       // Log.d("repeatemode","::::"+reason);
+        if (hometoken.equals("null")){
             // popup();
         }else {
             // jsonearningpoints(getamount_url,currentPage);
             progressBarView.setProgress(100);
             String loginS = "{\"postId\":\"" + postid + "\"}";
-            Log.d("jsnresponse earning ", "---" + loginS);
+            //Log.d("jsnresponse earning ", "---" + loginS);
             String url = earningpost_url;
             JSONObject lstrmdt;
             try {
                 lstrmdt = new JSONObject(loginS);
-                Log.d("jsnresponse....", "---" + loginS);
+                //Log.d("jsnresponse....", "---" + loginS);
                 JSONSenderVolleyearning(lstrmdt, url ,currentPage);
 
             } catch (JSONException ignored) {
@@ -1049,8 +1057,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     //here it set the player data
     @SuppressLint("ClickableViewAccessibility")
     public void Set_Player(final int currentPage){
-        Log.d("current possss",":::::"+tags.size());
-        if (tags.size()!=0) {
+       // Log.d("current possss",":::::"+tags.size()+"::::"+tags.get(currentPage).getFile());
+        if (tags.size()!=0 && tags.get(currentPage).getFile()!=null) {
             Homescreen_model item = tags.get(currentPage);
             loading11 = false;
             unliketype = item.getLiketype();
@@ -1060,7 +1068,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             soundname = item.getSoundname();
             soundurl = item.getSoundurl();
             soundid = item.getSoundid();
-
 
             View layout = layoutManager.findViewByPosition(currentPage);
             final PlayerView playerView = layout.findViewById(R.id.home_video);
@@ -1078,7 +1085,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             p_bar=layout.findViewById(R.id.p_bar);
             ImageView shareimg=(ImageView) layout.findViewById(R.id.shareimg);
             TextView sharetxt=layout.findViewById(R.id.share);
-            sharetxt.setText(item.getShare());
+            ImageView vastore=layout.findViewById(R.id.vastore);
+
 
 
             LoadControl loadControl = new DefaultLoadControl.Builder()
@@ -1109,11 +1117,11 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 @Override
                 public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
                     dur = player.getDuration();
-                    Log.e("dur", "::::" + dur+":::"+token);
+                   // Log.e("dur", "::::" + dur+":::"+hometoken);
                     if (dur > 0) {
                         sm.sendData1(String.valueOf(dur), claimtype, climedhome);
-                        Log.e("duration", String.valueOf(sm));
-                    } else {
+                       // Log.e("duration", String.valueOf(sm));
+                        } else {
                         progressBarView.setProgress(0);
                         if (countDownTimer != null) {
                             countDownTimer.cancel();
@@ -1144,14 +1152,14 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         if(player.getVideoFormat()!=null){
                             height = player.getVideoFormat().height;
                         }
-                        Log.e("height", "::::" + height);
+                       // Log.e("height", "::::" + height);
                         if(item.getFile().contains(".mp4")) {
-                            Log.e("if mp4","");
+                           // Log.e("if mp4","");
                             if (height > 900) {
-                                Log.e("if mp4 if ","1000>");
+                                //Log.e("if mp4 if ","1000>");
                                 playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
                             } else {
-                                Log.e("if mp4 if ","1000<");
+                               // Log.e("if mp4 if ","1000<");
                                 playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
                             }
                         }
@@ -1190,7 +1198,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 @Override
                 public void onHashTagClicked(String hashTag) {
                     onPause();
-                    if (!token.equals("null")) {
+                    if (!hometoken.equals("null")) {
                         OpenHashtag(hashTag, item);
                     }
                 }
@@ -1199,17 +1207,16 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
             liketxt.setText(tags.get(currentPage).getLikes());
             homecommenttxt.setText(commentvideocount);
-
+            sharetxt.setText(item.getShare());
             if (soundurl!=null){
                 soundlay.setVisibility(View.VISIBLE);
-                song.setText(soundname +"-"+ soundurl);
+                song.setText(soundname + "-" + "\uD83C\uDFB5Use Audio\uD83C\uDFB5"+" "+" "+soundname+ "-" +"\uD83C\uDFB5Use Audio\uD83C\uDFB5 .");
                 song.setSelected(true);
             }else {
                 soundlay.setVisibility(View.INVISIBLE);
                 song.setText("Original Sound - Ski_ssj" + "  " + "Original Sound - Ski_ssj");
                 song.setSelected(true);
             }
-
             song.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1221,9 +1228,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     startActivity(intent);
                 }
             });
-
-
-
             if (item.getType().equals("0")) {
                 // Picasso.with(getActivity()).load(item.getFile()).into(imageview);
                 Glide.with(getActivity())
@@ -1231,8 +1235,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         .into(imageview);
 
                 sm.sendData1("nodata", "", climedhome);
-                Log.e("duration", String.valueOf(sm));
-
+               // Log.e("duration", String.valueOf(sm));
                 //this is image setlistener
                 imageview.setOnTouchListener(new View.OnTouchListener() {
                     private GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
@@ -1255,8 +1258,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         public void onLongPress(MotionEvent e) {
                             super.onLongPress(e);
                             // Show_video_option(item);
-                            Log.d("longpresss",":::::");
-                            if (token.equals("null")){
+                           // Log.d("longpresss",":::::");
+                            if (hometoken.equals("null")){
                                 popup();
                             }else {
                                 String postid = item.getPostid();
@@ -1266,7 +1269,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                         //it select the like while clcikng the double tap
                         @Override
                         public boolean onDoubleTap(MotionEvent e) {
-                            if (token.equals("null")) {
+                            if (hometoken.equals("null")) {
                                 //popup();
                             } else {
 
@@ -1284,13 +1287,13 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                 } else {
 
                                     String loginS = "{\"postId\":\"" + item.getPostid() + "\"}";
-                                    Log.d("jsnresponse login", "---" + loginS);
+                                   // Log.d("jsnresponse login", "---" + loginS);
                                     String url = likesend_url;
                                     JSONObject lstrmdt;
 
                                     try {
                                         lstrmdt = new JSONObject(loginS);
-                                        Log.d("jsnresponse....", "---" + loginS);
+                                        //Log.d("jsnresponse....", "---" + loginS);
                                         JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike,lottieAnimationView);
 
                                         iv.setImageDrawable(getResources().getDrawable(
@@ -1345,7 +1348,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             } else {
                 playerView.setVisibility(View.VISIBLE);
                 playerView.setPlayer(player);
-                Log.d("plaerduration", ":::::");
+               // Log.d("plaerduration", ":::::");
             }
             player.setPlayWhenReady(true);
             privious_player = player;
@@ -1362,16 +1365,16 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             likes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (token.equals("null")) {
+                    if (hometoken.equals("null")) {
                         popup();
                     } else {
                         String loginS = "{\"postId\":\"" + item.getPostid() + "\"}";
-                        Log.d("jsnresponse login", "---" + loginS);
+                       // Log.d("jsnresponse login", "---" + loginS);
                         String url = likesend_url;
                         JSONObject lstrmdt;
                         try {
                             lstrmdt = new JSONObject(loginS);
-                            Log.d("jsnresponse....", "---" + loginS);
+                            //Log.d("jsnresponse....", "---" + loginS);
                             JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike, lottieAnimationView);
                             unliketype="true";
 
@@ -1384,17 +1387,17 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             unlike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (token.equals("null")) {
+                    if (hometoken.equals("null")) {
                         popup();
                     } else {
                         String loginS = "{\"_id\":\"" + item.getPostid() + "\"}";
-                        Log.d("jsnresponse login", "---" + loginS);
+                       // Log.d("jsnresponse login", "---" + loginS);
                         String url = unlike_url;
                         JSONObject lstrmdt;
 
                         try {
                             lstrmdt = new JSONObject(loginS);
-                            Log.d("jsnresponse....", "---" + loginS);
+                            //Log.d("jsnresponse....", "---" + loginS);
 
                             JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike,lottieAnimationView);
                             unliketype="false";
@@ -1425,7 +1428,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
 
-                    if (token.equals("null")){
+                    if (hometoken.equals("null")){
                         popup();
                     }else {
                         privious_player.setPlayWhenReady(false);
@@ -1442,7 +1445,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             shareimg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (token.equals("null")){
+                    if (hometoken.equals("null")){
                         popup();
                     }else {
                         privious_player.setPlayWhenReady(false);
@@ -1450,7 +1453,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                             countDownTimer.cancel();
                         }
 
-                        final VideoAction_F fragment = new VideoAction_F(item.getFile(), item.getPostid(), new Fragment_Callback() {
+                        final VideoAction_F fragment = new VideoAction_F(item.getFile(), item.getPostid(), item.getUsername(),new Fragment_Callback() {
                             @Override
                             public void Responce(Bundle bundle) {
                                 if (bundle.getString("action").equals("save")) {
@@ -1470,6 +1473,30 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 }
             });
 
+            //vastore click
+            vastore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    if (hometoken.equals("null")) {
+                        popup();
+                    } else {
+                        if (countDownTimer != null) {
+                            countDownTimer.cancel();
+                        }
+                        popupreport("Coming Soon");
+/*
+                        Intent intent = new Intent(context, VAStoreActivity.class);
+                        context.startActivity(intent);
+*/
+                    }
+                }
+            });
 
             playerView.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
@@ -1487,17 +1514,17 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent e) {
                         super.onSingleTapUp(e);
-                        if (token.equals("null")){
+                        if (hometoken.equals("null")){
                             if (!player.getPlayWhenReady()) {
                                 privious_player.setPlayWhenReady(true);
                             }else {
                                 privious_player.setPlayWhenReady(false);
-                                Log.d("click stop", "::::");
+                                //Log.d("click stop", "::::");
                             }
                         }else {
                             if (!player.getPlayWhenReady()) {
                                 privious_player.setPlayWhenReady(true);
-                                Log.d("click start", "::::");
+                                //Log.d("click start", "::::");
                                 if (claimedtopnav.equals("true")) {
                                     progressBarView.setProgress(100);
                                     if (countDownTimer != null) {
@@ -1524,11 +1551,9 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                         countDownTimer.start();
                                     }
                                 }
-
                             } else {
                                 privious_player.setPlayWhenReady(false);
-                                Log.d("click stop", "::::");
-
+                                //Log.d("click stop", "::::");
                                 if (claimedtopnav.equals("true")) {
                                     progressBarView.setProgress(100);
                                     if (countDownTimer != null) {
@@ -1564,8 +1589,8 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     public void onLongPress(MotionEvent e) {
                         super.onLongPress(e);
                         // Show_video_option(item);
-                        Log.d("longpresss",":::::");
-                        if (token.equals("null")){
+                        //Log.d("longpresss",":::::");
+                        if (hometoken.equals("null")){
                             popup();
                         }else {
                             String postid = item.getPostid();
@@ -1576,7 +1601,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                     @Override
                     public boolean onDoubleTap(MotionEvent e) {
 
-                        if (token.equals("null")) {
+                        if (hometoken.equals("null")) {
                             //popup();
                         } else {
 
@@ -1594,13 +1619,13 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                             } else {
 
                                 String loginS = "{\"postId\":\"" + item.getPostid() + "\"}";
-                                Log.d("jsnresponse login", "---" + loginS);
+                                //Log.d("jsnresponse login", "---" + loginS);
                                 String url = likesend_url;
                                 JSONObject lstrmdt;
 
                                 try {
                                     lstrmdt = new JSONObject(loginS);
-                                    Log.d("jsnresponse....", "---" + loginS);
+                                    //Log.d("jsnresponse....", "---" + loginS);
                                     JSONSenderVolleylikessend(lstrmdt, url, currentPage, liketxt, likes, unlike,lottieAnimationView);
 
                                     iv.setImageDrawable(getResources().getDrawable(
@@ -1879,7 +1904,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
     }
     private void OpenHashtag(String tag, Homescreen_model item) {
         String userprofilepic=item.getUserprofilepic();
-        Log.d("tag","::::"+tag);
+        //Log.d("tag","::::"+tag);
 
         String tagsname=tag;
         Intent intent = new Intent(getActivity(), HashTagsDisplay.class);
@@ -1898,51 +1923,44 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         Fragment_Data_Send fragment_data_send=this;
         CommentsFragment fragment = new CommentsFragment(commentuser,postid,type,fragment_data_send);
         fragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "bottom_sheet");
-
     }
 
-
     public void JSONSenderVolleylikessend(JSONObject lstrmdt, String url, final int position, final TextView liketxt, final ImageView likes, final ImageView unlike, final ImageView lottieAnimationView) {
+       // Log.d("likedurll", "---" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
-
                 new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                       // Log.d("JSONSenderVolleylogin", "---" + response);
                         try {
                             if (response.length()!=0) {
-
                                 String message = response.getString("message");
-                                String count = response.getString("count");
 
-                                if (message.equals("liked successfully")) {
-                                    tags.get(position).setLikes(count);
-                                    tags.get(position).setLiketype("true");
+                                if (response.has("status")) {
+                                    String count = response.getString("count");
+                                    String status = response.getString("status");
 
-                                    liketxt.setText(count);
-                                    unlike.setVisibility(View.VISIBLE);
-                                    likes.setVisibility(View.GONE);
-
-                                } else if (message.equals("Unliked successfully")){
-                                    // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                    tags.get(position).setLikes(count);
-                                    tags.get(position).setLiketype("false");
-                                    liketxt.setText(count);
-                                    likes.setVisibility(View.VISIBLE);
-                                    unlike.setVisibility(View.GONE);
-
+                                    if (status.equals("4")) {
+                                        tags.get(position).setLikes(count);
+                                        tags.get(position).setLiketype("true");
+                                        liketxt.setText(count);
+                                        unlike.setVisibility(View.VISIBLE);
+                                        likes.setVisibility(View.GONE);
+                                    } else if (status.equals("5")) {
+                                        // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                                        tags.get(position).setLikes(count);
+                                        tags.get(position).setLiketype("false");
+                                        liketxt.setText(count);
+                                        likes.setVisibility(View.VISIBLE);
+                                        unlike.setVisibility(View.GONE);
+                                    }
                                 }
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 String body;
@@ -1955,7 +1973,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -1986,7 +2004,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 HashMap<String, String> headers = new HashMap<>();
                 //headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json");
-                headers.put("Authorization",token);
+                headers.put("Authorization",hometoken);
 
                 //return (headers != null || headers.isEmpty()) ? headers : super.getHeaders();
                 return headers;
@@ -2015,13 +2033,13 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
     private void jsonearningpoints(String earningpoints_url, final int pos) {
         // prepare the Request
-        Log.d("earning points", earningpoints_url);
+       // Log.d("earning points", earningpoints_url);
         final JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, earningpoints_url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
-                        Log.d("Responses earning", response.toString());
+                        //Log.d("Responses earning", response.toString());
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
                             try {
@@ -2060,7 +2078,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -2078,7 +2096,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                        //Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");
@@ -2117,7 +2135,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
                 //  Authorization: Basic $auth
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization",token);
+                headers.put("Authorization",hometoken);
 
                 return headers;
             }
@@ -2141,20 +2159,15 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
             }
         });
-
     }
-
     public void JSONSenderVolleyearning(JSONObject lstrmdt, String url , final int pos) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
-
+        //Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
-
                 new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleyclaim", "---" + response);
+                        //Log.d("JSONSenderVolleyclaim", "---" + response);
                         try {
                             if (response.length()!=0) {
                                 String message = response.getString("message");
@@ -2163,6 +2176,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                     if (status.equals("1")) {
                                         String amount = response.getString("vidAmount");
                                         String claim = response.getString("claim");
+
                                         // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                         if (claim.equals("true")) {
                                             clamlay.setBackgroundResource(R.drawable.clamback);
@@ -2197,16 +2211,30 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                                             });
                                         }
                                         else {
-                                            clamlay.setBackgroundResource(R.drawable.roundedbtn);
-                                            earningpoints.setText(amount + "" + "%");
-                                            claimtext.setVisibility(View.GONE);
-                                            earningtxt.setVisibility(View.VISIBLE);
-                                            earningtxt.setText("Earnings");
-                                            // claimedL.set(pos, "true");
-                                            tags.get(pos).setClaim("true");
-                                            progressBarView.setProgress(0);
-                                            if (countDownTimer != null) {
-                                                countDownTimer.start();
+                                            if (message.equals("Balance Updated")){
+                                                clamlay.setBackgroundResource(R.drawable.roundedbtn);
+                                                earningpoints.setText(amount + "" + "%");
+                                                claimtext.setVisibility(View.GONE);
+                                                earningtxt.setVisibility(View.VISIBLE);
+                                                earningtxt.setText("Earnings");
+                                                // claimedL.set(pos, "true");
+                                                tags.get(pos).setClaim("true");
+                                                progressBarView.setProgress(100);
+                                                if (countDownTimer != null) {
+                                                    countDownTimer.cancel();
+                                                }
+                                            }else {
+                                                clamlay.setBackgroundResource(R.drawable.roundedbtn);
+                                                earningpoints.setText(amount + "" + "%");
+                                                claimtext.setVisibility(View.GONE);
+                                                earningtxt.setVisibility(View.VISIBLE);
+                                                earningtxt.setText("Earnings");
+                                                // claimedL.set(pos, "true");
+                                                tags.get(pos).setClaim("true");
+                                                progressBarView.setProgress(0);
+                                                if (countDownTimer != null) {
+                                                    countDownTimer.start();
+                                                }
                                             }
                                         }
                                     } else if (status.equals("3")) {
@@ -2234,7 +2262,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -2262,7 +2290,7 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 HashMap<String, String> headers = new HashMap<>();
                 //headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json");
-                headers.put("Authorization",token);
+                headers.put("Authorization",hometoken);
 
                 //return (headers != null || headers.isEmpty()) ? headers : super.getHeaders();
                 return headers;
@@ -2345,10 +2373,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
             public void onClick(View v) {
 
                 dialog.dismiss();
-/*
-                Intent intent=new Intent(getActivity(), OtherprofileActivity.class);
-                startActivity(intent);
-*/
             }
         });
 
@@ -2378,8 +2402,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 foryou.setBackgroundResource(R.drawable.homeback);
                 following.setBackgroundResource(R.color.transparent);
                 fadecolor.setVisibility(View.GONE);
-
-
                 tags=new ArrayList<>();
                 des=new ArrayList<>();
                 homeadapter = new FragmentInner(tags,des,getActivity());
@@ -2432,18 +2454,24 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
         reportbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String loginS = "{\"postId\":\"" + postid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
-                Log.d("jsnresponse reason", "---" + loginS);
-                String url = postreport_url;
-                JSONObject lstrmdt;
+                if (selectedItemText.equals("Select Reasons")){
+                   // popupreport("please select the reasons");
+                    Toast.makeText(getActivity(), "please select reasons", Toast.LENGTH_SHORT).show();
 
-                try {
-                    lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                }else {
+                    String loginS = "{\"postId\":\"" + postid + "\",\"reason\":\"" + selectedItemText + "\",\"description\":\"" + desE.getText().toString() + "\"}";
+                    //Log.d("jsnresponse reason", "---" + loginS);
+                    String url = postreport_url;
+                    JSONObject lstrmdt;
 
-                    JSONSenderVolleyearning(lstrmdt,url,currentPage);
+                    try {
+                        lstrmdt = new JSONObject(loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
 
-                } catch (JSONException ignored) {
+                        JSONSenderVolleyearning(lstrmdt, url, currentPage);
+
+                    } catch (JSONException ignored) {
+                    }
                 }
             }
         });
@@ -2472,7 +2500,6 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
 
 
     public void Save_Video(Homescreen_model item){
-
         Functions.Show_determinent_loader(getActivity(),false,false);
         PRDownloader.initialize(getActivity().getApplicationContext());
         DownloadRequest prDownloader= PRDownloader.download(item.getFile(), Environment.getExternalStorageDirectory() +"/Tittic/", item.getPostid()/*+"no_watermark"*/+".mp4")
@@ -2492,128 +2519,269 @@ public class HomeFragment extends Fragment implements Player.EventListener ,Frag
                 .setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel() {
-
                     }
                 })
                 .setOnProgressListener(new OnProgressListener() {
                     @Override
                     public void onProgress(Progress progress) {
-
                         int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
                         Functions.Show_loading_progress(prog/2);
 
                     }
                 });
-
-
         prDownloader.start(new OnDownloadListener() {
             @Override
             public void onDownloadComplete() {
                 Functions.cancel_determinent_loader();
                 //Delete_file_no_watermark(item);
-                Scan_file(item);
-
+               // Scan_file(item);
                 // Applywatermark(item);
-            }
+                Functions.cancel_determinent_loader();
+                Functions.Show_determinent_loader(getActivity(),false,false);
+                //  Scan_file(resolveInfo);
+                String path=Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+".mp4";
+                // defaultVideo=Environment.getExternalStorageDirectory() +"/Tittic/watermark/"+postid+".mp4";
 
+                try {
+                    File f = new File(Environment.getExternalStorageDirectory() + File.separator + item.getPostid()+".mp4");
+
+                    defaultVideo=f.getAbsolutePath();
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // String[] imageCommand =  { "-y", "-i", path, "-y", "-i", saveAppIcon(), "-filter_complex", "overlay=x=20:y=20", "-strict", "experimental", defaultVideo};
+                ///String[]  imageCommand = {"-i",  path,  "-vf", "drawtext=fontfile=/system/fonts/DroidSans.ttf:text='SiteName hulluway':fontsize=30:fontcolor=white: x=20:y=20", "-acodec", "copy", "-y",  defaultVideo};
+
+                String[] imageCommand =  { "-y", "-i", path, "-y", "-i", saveAppIcon(), "-filter_complex", "overlay=x=20:y=20,drawtext=fontfile=/system/fonts/DroidSans.ttf:text='"+item.getUsername()+"':fontsize=18:fontcolor=white: x=20:y=80", "-strict", "experimental","-preset", "ultrafast", defaultVideo};
+
+
+                execFFmpegBinary(imageCommand,new File(path),item);
+
+            }
             @Override
             public void onError(Error error) {
-                //  Delete_file_no_watermark(item);
-                Log.d("error","::::"+error);
+                Delete_file_no_watermark(item);
+                //Log.d("error","::::"+error);
                 Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 Functions.cancel_determinent_loader();
             }
-
-
         });
     }
 
 
-    public void Applywatermark(Homescreen_model item){
-
-        Bitmap myLogo = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.ic_action_action_search)).getBitmap();
-        Bitmap bitmap_resize=Bitmap.createScaledBitmap(myLogo, 50, 50, false);
-        GlWatermarkFilter filter=new GlWatermarkFilter(bitmap_resize, GlWatermarkFilter.Position.LEFT_TOP);
-        new GPUMp4Composer(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+"no_watermark"+".mp4",
-                Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+".mp4")
-                .filter(filter)
-                .listener(new GPUMp4Composer.Listener() {
-                    @Override
-                    public void onProgress(double progress) {
-                        Log.d("resp",""+(int) (progress*100));
-                        Functions.Show_loading_progress((int)((progress*100)/2)+50);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Functions.cancel_determinent_loader();
-                        //Delete_file_no_watermark(item);
-                        Scan_file(item);
-
-                    }
-
-                    @Override
-                    public void onCanceled() {
-                        Log.d("resp", "onCanceled");
-                    }
-
-                    @Override
-                    public void onFailed(Exception exception) {
-
-                        Log.d("resp",exception.toString());
-
-                        try {
-
-                            Delete_file_no_watermark(item);
-                            Functions.cancel_determinent_loader();
-                            Toast.makeText(getActivity(), "Try Again", Toast.LENGTH_SHORT).show();
-
-                        }catch (Exception e){
-
-                        }
-
-/*
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-
-                                    Delete_file_no_watermark(item);
-                                    Functions.cancel_determinent_loader();
-                                    Toast.makeText(context, "Try Again", Toast.LENGTH_SHORT).show();
-
-                                }catch (Exception e){
-
-                                }
-                            }
-                        });
-*/
-
-                    }
-                })
-                .start();
-    }
-
     public void Scan_file(Homescreen_model item){
         MediaScannerConnection.scanFile(getActivity(),
-                new String[] { Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+".mp4" },
+                new String[] { defaultVideo },
                 null,
                 new MediaScannerConnection.OnScanCompletedListener() {
-
                     public void onScanCompleted(String path, Uri uri) {
+                       // Log.i("ExternalStorage", "Scanned " + path + ":");
+                       // Log.i("ExternalStorage", "-> uri=" + uri);
 
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
+
                     }
                 });
     }
 
     public void Delete_file_no_watermark(Homescreen_model item){
-        File file=new File(Environment.getExternalStorageDirectory() +"/Tittic/"+item.getPostid()+"no_watermark"+".mp4");
+        File file=new File(Environment.getExternalStorageDirectory() +"/SmashitLive/"+item.getPostid()+"no_watermark"+".mp4");
         if(file.exists()){
             file.delete();
         }
     }
+
+
+    private void loadFFMpegBinary() {
+        try {
+            if (ffmpeg == null) {
+                //Log.d("", "ffmpeg : era nulo");
+                ffmpeg = FFmpeg.getInstance(getActivity());
+            }
+            ffmpeg.loadBinary(new LoadBinaryResponseHandler() {
+                @Override
+                public void onFailure() {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                   // Log.d(TAG, "ffmpeg : correct Loaded");
+                }
+            });
+        } catch (FFmpegNotSupportedException e) {
+
+        } catch (Exception e) {
+           // Log.d(TAG, "EXception no controlada : " + e);
+        }
+    }
+
+
+    private void execFFmpegBinary(final String[] command, File file, Homescreen_model item) {
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//use one of overloaded setDataSource() functions to set your data source
+            retriever.setDataSource(getActivity(), Uri.fromFile(file));
+            String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            long totalDur = Long.parseLong(time );
+            retriever.release();
+            if (totalDur != 0) {
+/*
+                            float progress = (Integer.parseInt(matchSplit[0]) * 3600 +
+                                    Integer.parseInt(matchSplit[1]) * 60 +
+                                    Float.parseFloat(matchSplit[2])) / totalDur;
+                            float showProgress = (progress * 1000);
+                            Log.d(TAG, "=======PROGRESS======== "+progress+" showProgress  **** " + showProgress);
+                            Functions.Show_loading_progress((int)(showProgress));
+*/
+
+
+                String timeInterval = String.valueOf(totalDur);
+                int endTime = Integer.parseInt(timeInterval); // up to finish time
+               // Log.d("onTick progress","::::"+endTime);
+
+
+                countDownTimer = new CountDownTimer(endTime /** 1000*/, 1000) {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                       // Log.d("onTick progress","::::"+progress);
+                        //setProgress(progress, endTime / 1000);
+                        Functions.Show_loading_progress(progress);
+                        progress=progress+1;
+                    }
+                    @Override
+                    public void onFinish() {
+                        //  Functions.Show_loading_progress((int)(endTime));
+                        if (countDownTimerhome!=null){
+                            countDownTimerhome.cancel();
+                        }
+                    }
+                };
+            }
+            ffmpeg.execute(command, new ExecuteBinaryResponseHandler() {
+                @Override
+                public void onFailure(String s) {
+                   // Log.d("tag", "FAILED with output : " + s);
+                    Functions.cancel_determinent_loader();
+                }
+
+                @Override
+                public void onSuccess(String s) {
+                    //Log.d("tag", "sucess with output : " + s);
+                    Functions.cancel_determinent_loader();
+                    if (countDownTimerhome!=null){
+                        countDownTimerhome.cancel();
+                    }
+                    privious_player.setPlayWhenReady(true);
+                    if (countDownTimer != null) {
+                        countDownTimer.start();
+                    }
+                    Toast.makeText(getActivity(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+
+                    Scan_file(item);
+
+                }
+
+                @Override
+                public void onProgress(String message) {
+                    countDownTimer.start();
+/*
+                    Log.d("tag", "onProgress  progress1 " + message);
+                    Log.d(TAG, "Started command : ffmpeg " + Arrays.toString(command));
+                    Log.d(TAG, "progress : " + message);
+*/
+                    Pattern timePattern = Pattern.compile("(?<=time=)[\\d:.]*");
+                    Scanner sc = new Scanner(message);
+
+                    String match = sc.findWithinHorizon(timePattern, 0);
+                    if (match != null) {
+                        String[] matchSplit = match.split(":");
+                        // int totalDur=25;
+
+                    }
+                 /*   int start = message.indexOf("time=");
+                    int end = message.indexOf(" bitrate");
+                    if (start != -1 && end != -1) {
+                        String duration = message.substring(start+5, end);
+                        if (duration != "") {
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                              //  dialog.setProgress((int)sdf.parse("1970-01-01 "+ duration).getTime());
+                              //  Functions.Show_loading_progress((int)((progress*100)/2)+50);
+                                Functions.Show_loading_progress((int)sdf.parse("1970-01-01 "+ duration).getTime());
+
+
+                            }catch (ParseException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }*/
+
+
+                }
+
+                @Override
+                public void onStart() {
+                    //Log.d("tag", "Started command : ffmpeg " + command);
+
+
+
+                }
+
+                @Override
+                public void onFinish() {
+                    //Log.d("tag", "Finished command : ffmpeg " + command);
+
+
+                }
+            });
+        } catch (FFmpegCommandAlreadyRunningException e) {
+            // do nothing for now
+        }
+    }
+
+    private String saveAppIcon(){
+        String imagePath=null;
+        try{
+            Bitmap myLogo = ((BitmapDrawable)getActivity().getResources().getDrawable(R.drawable.watermarkicon)).getBitmap();
+            Bitmap bitmap_resize=Bitmap.createScaledBitmap(myLogo, 150, 60, false);
+
+
+            // Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.launchicon);
+
+            //replace "R.drawable.bubble_green" with the image resource you want to share from drawable
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap_resize.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+            // you can create a new file name "test.jpg" in sdcard folder.
+            File f = new File(Environment.getExternalStorageDirectory() + File.separator + "test.png");
+
+            imagePath=f.getAbsolutePath();
+
+            f.createNewFile();
+
+            // write the bytes in file
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+
+            // remember close de FileOutput
+            fo.close();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //Log.d("","imagePath  "+imagePath);
+        return imagePath;
+
+
+    }
+
 
 
 }

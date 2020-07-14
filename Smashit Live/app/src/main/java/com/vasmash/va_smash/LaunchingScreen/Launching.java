@@ -69,24 +69,13 @@ public class Launching extends AppCompatActivity {
 
 
     ImageView imglogo;
-    private String accesstoken;
-    int version;
-    AlertDialog.Builder builder;
     String token;
     public static boolean currentposlaunch;
 
     private static int SPLASH_TIME_OUT = 1500;
 
-    private RequestQueue mQueue;
     ViewDialog viewDialog;
-
-    ArrayList<Model_Trading> searchindividualmodel;
-    ArrayList<Tags> des;
     String dynamiccondition="null";
-    public static ArrayList<String> likeL;
-    public static ArrayList<String> commentL;
-    public static ArrayList<String> userlikesL;
-    public static ArrayList<String> sharecountL;
     public static ArrayList<String> fileL;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
@@ -140,9 +129,6 @@ public class Launching extends AppCompatActivity {
     private void splashMethod(){
         viewDialog = new ViewDialog(Launching.this);
 
-
-        mQueue = Volley.newRequestQueue(Launching.this);
-
         SharedPreferences phoneauthshard = PreferenceManager.getDefaultSharedPreferences(Launching.this);
         token = phoneauthshard.getString("token", "null");
 
@@ -155,24 +141,16 @@ public class Launching extends AppCompatActivity {
                         Uri deepLink = null;
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
-                            Log.d("deeplink",":::"+deepLink);
+                           // Log.d("deeplink",":::"+deepLink);
                             String reflink=deepLink.toString();
                             try {
                                 reflink=reflink.substring(reflink.lastIndexOf("?")+1);
-                                Log.d("reflink",":::"+reflink);
+                                //Log.d("reflink",":::"+reflink);
                                 String postiddynamic=reflink.substring(0,reflink.indexOf("-"));
                                 String linkcondition=reflink.substring(reflink.indexOf("-")+1);
-                                Log.d("linkcondition",":::"+linkcondition);
+                                //Log.d("linkcondition",":::"+linkcondition);
 
-                                if (linkcondition.equals("true")) {
-                                    if (token.equals("null")){
-                                        Intent i = new Intent(Launching.this, TopNavigationview.class);
-                                        startActivity(i);
-                                        finish();
-                                    }else {
-                                        Log.d("linkcondition", ":::" + linkcondition);
-                                        jsongetvastore(dynamiclink_url+postiddynamic);                                    }
-                                }else if (linkcondition.equals("hashtags")){
+                                if (linkcondition.equals("hashtags")){
                                     if (token.equals("null")){
                                         Intent i = new Intent(Launching.this, TopNavigationview.class);
                                         startActivity(i);
@@ -211,7 +189,7 @@ public class Launching extends AppCompatActivity {
                 .addOnFailureListener(Launching.this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("", "getDynamicLink:onFailure", e);
+                       // Log.w("", "getDynamicLink:onFailure", e);
                     }
                 });
     }
@@ -242,304 +220,6 @@ public class Launching extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
 
-    }
-
-    public void sleep(){
-        Handler handler;
-        handler=new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                StartAnimations();
-                finish();
-            }
-        },2000);
-    }
-
-
-    private void jsongetvastore(String profiledetails_url) {
-        viewDialog.showDialog();
-        Log.d("jsonParseuser", "profile data" + profiledetails_url);
-        searchindividualmodel = new ArrayList<>();
-        des=new ArrayList<>();
-
-        likeL=new ArrayList<>();
-        commentL=new ArrayList<>();
-        userlikesL=new ArrayList<>();
-        sharecountL=new ArrayList<>();
-        fileL=new ArrayList<>();
-        commentL.clear();
-        userlikesL.clear();
-        sharecountL.clear();
-        fileL.clear();
-        likeL.clear();
-
-        des.clear();
-        searchindividualmodel.clear();
-        // prepare the Request
-        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, profiledetails_url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // display response
-                        Log.d("dynamic res", response.toString());
-                        viewDialog.hideDialog();
-
-                        if (response.length() != 0) {
-                            // Iterate the inner "data" array
-                            for (int j = 0; j < response.length() ; j++ ) {
-                                Log.d("lengtharayyy", ":::" + j);
-                                JSONObject lkks = null;
-                                try {
-                                    lkks = response.getJSONObject(j);
-                                    Model_Trading searchhm = new Model_Trading();
-                                    if (lkks.has("_id")) {
-                                        searchhm.setId(lkks.getString("_id"));
-                                    } else {
-                                        searchhm.setId("");
-                                    }
-                                    if (lkks.has("file")) {
-                                        searchhm.setImage(lkks.getString("file"));
-                                        fileL.add(lkks.getString("file"));
-                                    } else {
-                                        searchhm.setImage("");
-                                        fileL.add("");
-                                    }
-                                    if (lkks.has("likes")) {
-                                        searchhm.setCount(lkks.getString("likes"));
-                                        likeL.add(lkks.getString("likes"));
-                                    } else {
-                                        searchhm.setCount("");
-                                        likeL.add("");
-                                    }
-                                    if (lkks.has("userLikes")) {
-                                        searchhm.setLikescondition(lkks.getString("userLikes"));
-                                        userlikesL.add(lkks.getString("userLikes"));
-                                    } else {
-                                        searchhm.setLikescondition("");
-                                        userlikesL.add("");
-                                    }
-                                    if (lkks.has("type")) {
-                                        searchhm.setType(lkks.getString("type"));
-                                    } else {
-                                        searchhm.setType("");
-
-                                    }
-                                    if (lkks.has("comments")) {
-                                        searchhm.setComment(lkks.getString("comments"));
-                                        commentL.add(lkks.getString("comments"));
-                                    } else {
-                                        searchhm.setComment("");
-                                        commentL.add("");
-                                    }
-                                    if (lkks.has("shareCount")) {
-                                        String shareCount = lkks.getString("shareCount");
-                                        searchhm.setSharecount(shareCount);
-                                        sharecountL.add(shareCount);
-                                    } else {
-                                        searchhm.setComment("");
-                                        sharecountL.add("");
-                                    }
-
-                                    if (lkks.has("name")) {
-                                        searchhm.setUsername(lkks.getString("name"));
-                                    } else {
-                                        searchhm.setUsername("");
-                                    }
-                                    if (lkks.has("description")) {
-                                        String description = lkks.getString("description");
-                                        searchhm.setDescription(description);
-                                    } else {
-                                        searchhm.setDescription("");
-                                    }
-
-
-                                    if (lkks.has("userId")) {
-                                        JSONObject nameobj=lkks.getJSONObject("userId");
-                                        String userid = nameobj.getString("_id");
-                                        if(nameobj.has("name")) {
-                                            String username = nameobj.getString("name");
-                                            searchhm.setUsername(username);
-                                        }
-                                        String homeprofilePic = nameobj.getString("profilePic");
-
-                                        Log.d("profilepicuser",":::"+homeprofilePic);
-                                        searchhm.setProfilepic(homeprofilePic);
-                                        searchhm.setUserid(userid);
-                                        // sm.sendData1(homeprofilePic);
-
-                                    }else {
-                                        String username = "name";
-                                        searchhm.setUsername(username);
-                                        searchhm.setProfilepic("null");
-                                        searchhm.setUserid("");
-                                        //sm.sendData1("null");
-                                    }
-
-                                    if (lkks.has("tags")) {
-                                        JSONArray tagsarray = lkks.getJSONArray("tags");
-                                        Tags ts = new Tags();
-
-                                        if (tagsarray.length() != 0) {
-                                            for (int k1 = 0; k1 < tagsarray.length(); k1++) {
-                                                JSONObject tagarray = tagsarray.getJSONObject(k1);
-
-                                                String tagid = tagarray.getString("_id");
-                                                if (tagarray.has("tag")) {
-                                                    String tag = tagarray.getString("tag");
-                                                    Log.d("tag:::::", "" + tag);
-                                                    ts.setId(tagarray.getString("_id"));
-                                                    ts.setName(tagarray.getString("tag"));
-                                                    des.add(ts);
-                                                } else {
-                                                    String tag = " ";
-                                                    ts.setId("");
-                                                    ts.setName("no tags");
-
-                                                    des.add(ts);
-                                                }
-                                            }
-                                        } else {
-                                            String tag = "..";
-                                            ts.setId("");
-                                            ts.setName("no tags");
-                                            des.add(ts);
-                                        }
-                                    }
-/*
-                                            if (!userimg.equals("null")) {
-                                                searchhm.setProfilepic(userimg);
-                                            }else {
-                                                searchhm.setProfilepic("null");
-                                            }
-*/
-                                    searchindividualmodel.add(searchhm);
-                                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(Launching.this);
-                                    SharedPreferences.Editor editor = sharedPrefs.edit();
-                                    Gson gson = new Gson();
-
-                                    String json = gson.toJson(searchindividualmodel);
-                                    editor.putString("arraydata", json);
-                                    //  editor.putString("dess", String.valueOf(des));
-                                    editor.putString("likecount", String.valueOf(likeL));
-                                    editor.putString("comment", String.valueOf(commentL));
-                                    editor.putString("userlike", String.valueOf(userlikesL));
-                                    editor.putString("share", String.valueOf(sharecountL));
-                                    editor.apply();
-
-                                    dynamiccondition="true";
-                                    Intent intent = new Intent(Launching.this, SearchVerticalData.class);
-                                    intent.putExtra("clikpos",j);
-                                    intent.putExtra("dynamiclink",dynamiccondition);
-                                    intent.putStringArrayListExtra("fileL",(ArrayList<String>) fileL);
-                                    startActivity(intent);
-                                    //commentimg
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Log.d("Error.Response1111111", error.toString());
-                        String body;
-                        //get status code here
-                        //Log.d("statusCode", "---" + error.toString());
-                        NetworkResponse response = error.networkResponse;
-                        if(response != null && response.data != null){
-                            switch(response.statusCode){
-                                case 422:
-                                    try {
-                                        body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
-                                        JSONObject obj = new JSONObject(body);
-                                        if (obj.has("errors")) {
-                                            viewDialog.hideDialog();
-                                            JSONObject errors = obj.getJSONObject("errors");
-                                            String message = errors.getString("message");
-                                            // Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    break;
-
-                                case 404:
-                                    try {
-                                        String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
-                                        JSONObject obj = new JSONObject(bodyerror);
-                                        if (obj.has("errors")) {
-                                            viewDialog.hideDialog();
-                                            JSONObject errors = obj.getJSONObject("errors");
-                                            String message = errors.getString("message");
-                                            //Toast.makeText(GACalculator.this, message, Toast.LENGTH_SHORT).show();
-
-                                        }
-
-                                    } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-        )
-        {
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                //Log.d("", "volleyError" + volleyError.getMessage());
-                return super.parseNetworkError(volleyError);
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                //Log.d("paamssssssss","" +params);
-
-                return new HashMap<>();
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-
-                //  Authorization: Basic $auth
-                HashMap<String, String> headers = new HashMap<String, String>();
-
-                headers.put("Content-Type","application/json");
-                headers.put("Authorization",token);
-                // Log.d("headresspro",":::::"+token);
-
-
-                return headers;
-            }
-        };
-
-        // add it to the RequestQueue
-        mQueue.add(getRequest);
-        getRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-                viewDialog.hideDialog();
-            }
-        });
     }
 
 

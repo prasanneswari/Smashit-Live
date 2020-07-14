@@ -2,7 +2,6 @@ package com.vasmash.va_smash.createcontent.filters.gpu.egl;
 
 import android.graphics.SurfaceTexture;
 
-import com.daasuu.gpuv.egl.GlPreview;
 
 
 public class GlSurfaceTexture implements SurfaceTexture.OnFrameAvailableListener {

@@ -27,7 +27,7 @@
 
         <ImageView
             android:id="@+id/sound_cate_img"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/sound_normal"
             />

@@ -17,6 +17,7 @@ public class Functions {
 
         determinant_dialog = new Dialog(context);
         determinant_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         determinant_dialog.setContentView(R.layout.item_determinant_progress_layout);
         determinant_dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.d_round_white_background));
 

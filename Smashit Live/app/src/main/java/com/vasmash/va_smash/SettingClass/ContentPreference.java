@@ -120,7 +120,7 @@ public class ContentPreference extends AppCompatActivity {
                 JSONObject update;
                 try {
                     update = new JSONObject(AddS);
-                    Log.d("register", "---" + AddS);
+                    //Log.d("register", "---" + AddS);
                     viewDialog.showDialog();
                     updateregst(update);
                 } catch (JSONException ignored) {
@@ -141,7 +141,7 @@ public class ContentPreference extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response", response.toString());
+                        //Log.d("Response", response.toString());
                         viewDialog.hideDialog();
 
                         modelArrayList = new ArrayList<>();
@@ -165,7 +165,7 @@ public class ContentPreference extends AppCompatActivity {
                             if (laungeclick) {
                                 lv.setVisibility(View.VISIBLE);
                                 catlist.setVisibility(View.GONE);
-                                Log.d("laungnamearray",":::"+laungaddjavaL);
+                               // Log.d("laungnamearray",":::"+laungaddjavaL);
                                 language_popup_adapter = new AdapterlaungContent(ContentPreference.this, modelArrayList);
                                 lv.setAdapter(language_popup_adapter);
 
@@ -197,7 +197,7 @@ public class ContentPreference extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             viewDialog.hideDialog();
@@ -241,13 +241,17 @@ public class ContentPreference extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderprferen", "---" + response);
+                        //Log.d("JSONSenderprferen", "---" + response);
                         viewDialog.hideDialog();
                         try {
                             String message=response.getString("message");
-                            if (message.equals("User Preferences Updated")){
+                            //if (message.equals("User Preferences Updated")){
                                 Toast.makeText(ContentPreference.this, message, Toast.LENGTH_SHORT).show();
-                            }
+/*
+                            language_popup_adapter1.notifyDataSetChanged();
+                            language_popup_adapter.notifyDataSetChanged();
+*/
+                            //}
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -262,7 +266,7 @@ public class ContentPreference extends AppCompatActivity {
                         case 400:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj1 = new JSONObject(body);
                                 if (obj1.has("errors")) {
                                     viewDialog.hideDialog();
@@ -281,7 +285,7 @@ public class ContentPreference extends AppCompatActivity {
                         case 422:
                             try {
                                 String body1 = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body1);
+                               // Log.d("body", "---" + body1);
                                 JSONObject obj = new JSONObject(body1);
                                 if (obj.has("errors")) {
                                     viewDialog.hideDialog();
@@ -363,7 +367,7 @@ public class ContentPreference extends AppCompatActivity {
 
                         // display response
                         langapi(laungurl);
-                        Log.d("preference respoooo", response.toString());
+                        //Log.d("preference respoooo", response.toString());
                         if (response.length() != 0) {
                             try {
 
@@ -373,7 +377,7 @@ public class ContentPreference extends AppCompatActivity {
                                     JSONObject object1 = employee.getJSONObject("languageId");
                                     String languageId = object1.getString("_id");
                                     String name = object1.getString("name");
-                                    Log.d("nameLLLL", name);
+                                    //Log.d("nameLLLL", name);
                                     selecedlaungname.add(name);
                                     selecedlaungcode.add(languageId);
                                 }
@@ -382,13 +386,13 @@ public class ContentPreference extends AppCompatActivity {
                                         for (int i = 0; i < categories.length(); i++) {
                                             JSONObject employee = categories.getJSONObject(i);
                                             JSONObject object1 = employee.getJSONObject("categoryId");
-                                            Log.d("object1",":::"+object1);
+                                           // Log.d("object1",":::"+object1);
 
                                             String categoryId = object1.getString("_id");
                                                 String name = object1.getString("name");
                                                 settingscatL.add(categoryId);
                                                 settingscatnameL.add(name);
-                                                Log.d("settingssss",":::"+name);
+                                               // Log.d("settingssss",":::"+name);
                                         }
                                 }
                                 } catch (JSONException e) {
@@ -410,7 +414,7 @@ public class ContentPreference extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             viewDialog.hideDialog();

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,19 +57,18 @@ import static com.vasmash.va_smash.VASmashAPIS.APIs.originalsound_url;
 public class OriginalSoundDisplay extends AppCompatActivity {
 
     TextView originalosund,viewstxt;
-    EditText usesound;
+    Button usesound;
     RecyclerView soundlist;
     LinearLayout soundlay;
     ArrayList<Model_Trading> searchindividualmodel;
-    private Adapter_TradingTabs mAdapter;
+    public static Adapter_TradingTabs mAdaptersounds;
     Dialog dialog;
     private RequestQueue mQueue;
     String token;
-    String likeusername="null",likeprofilePic="null",likeuserid="null";
     //this is the loading animation
     LottieAnimationView animationView;
     public static ArrayList<String> fileL;
-    String soundid, soundurl,dynamiclink;
+    String soundid, soundurl ,dynamiclink="null";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class OriginalSoundDisplay extends AppCompatActivity {
             soundid = intent.getStringExtra("soundid");
             dynamiclink = intent.getStringExtra("dynamiclink");
 
-            Log.d("dynamiclinkss",":::"+dynamiclink);
+            //Log.d("dynamiclinkss",":::"+dynamiclink+"::"+songname);
             jsonhashtags(soundid);
         }
 
@@ -115,7 +115,7 @@ public class OriginalSoundDisplay extends AppCompatActivity {
     }
     //this is the json hashtags response
     private void jsonhashtags(String hashtagname) {
-        Log.d("jsonParseuser", "sound" + originalsound_url+hashtagname);
+        //Log.d("jsonParseuser", "sound" + originalsound_url+hashtagname);
         loader();
         searchindividualmodel = new ArrayList<>();
         fileL=new ArrayList<>();
@@ -141,11 +141,14 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                     sounds = response.getJSONObject(j);
                                     soundurl=sounds.getString("url");
                                     String views=sounds.getString("views");
-                                    viewstxt.setText(views+" "+"Views");
-                                    Log.d("views", views);
+                                    viewstxt.setText(views+" "+"Posts");
+                                    //Log.d("views", views);
                                     searchhm.setSoundurl(soundurl);
                                     searchhm.setSoundpostid(soundurl);
-
+                                    if (sounds.has("name")) {
+                                        String soundname = sounds.getString("name");
+                                        searchhm.setSoundname(soundname);
+                                    }
                                     if (sounds.has("userId")) {
                                         JSONObject userarray = sounds.getJSONObject("userId");
                                         String  likeusername = userarray.getString("name");
@@ -154,13 +157,26 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                         searchhm.setUsername(likeusername);
                                         searchhm.setProfilepic(likeprofilePic);
                                         searchhm.setUserid(likeuserid);
-                                        if (userarray.has("username")) {
-                                            String soundname = userarray.getString("username");
-                                            searchhm.setSoundname(soundname);
-                                        }
+                                    }
+                                    if (sounds.has("likes")) {
+                                        searchhm.setCount(sounds.getString("likes"));
+                                    } else {
+                                        searchhm.setCount("");
+                                    }
+                                    if (sounds.has("userLikes")) {
+                                        searchhm.setLikescondition(sounds.getString("userLikes"));
+                                    } else {
+                                        searchhm.setLikescondition("");
+                                    }
+                                    if (sounds.has("comments")) {
+                                        searchhm.setComment(sounds.getString("comments"));
+                                    } else {
+                                        searchhm.setComment("");
                                     }
 
+
                                     JSONArray postarray=sounds.getJSONArray("posts");
+                                    //Log.d("audio array","::::"+postarray);
                                     for (int k=0;k<postarray.length();k++) {
 
                                         JSONObject lkks = postarray.getJSONObject(j);
@@ -176,25 +192,11 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                             searchhm.setImage("");
                                             fileL.add("");
                                         }
-                                        if (lkks.has("likes")) {
-                                            searchhm.setCount(lkks.getString("likes"));
-                                        } else {
-                                            searchhm.setCount("");
-                                        }
-                                        if (lkks.has("userLikes")) {
-                                            searchhm.setLikescondition(lkks.getString("userLikes"));
-                                        } else {
-                                            searchhm.setLikescondition("");
-                                        }
+
                                         if (lkks.has("type")) {
                                             searchhm.setType(lkks.getString("type"));
                                         } else {
                                             searchhm.setType("");
-                                        }
-                                        if (lkks.has("comments")) {
-                                            searchhm.setComment(lkks.getString("comments"));
-                                        } else {
-                                            searchhm.setComment("");
                                         }
                                         if (lkks.has("shareCount")) {
                                             String shareCount = lkks.getString("shareCount");
@@ -202,13 +204,11 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                         } else {
                                             searchhm.setComment("");
                                         }
-
                                         if (lkks.has("thumb")) {
                                             searchhm.setGifimg(lkks.getString("thumb"));
                                         } else {
                                             searchhm.setGifimg(" ");
                                         }
-
                                         if (lkks.has("description")) {
                                             String description = lkks.getString("description");
                                             searchhm.setDescription(description);
@@ -230,6 +230,7 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                         }
 
                                         }
+
                                     soundlist.setHasFixedSize(true);
                                     // set a GridLayoutManager with 3 number of columns
                                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
@@ -237,8 +238,8 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                     soundlist.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
                                     searchindividualmodel.add(searchhm);
-                                    mAdapter = new Adapter_TradingTabs(OriginalSoundDisplay.this, searchindividualmodel,fileL);
-                                    soundlist.setAdapter(mAdapter);
+                                    mAdaptersounds = new Adapter_TradingTabs(OriginalSoundDisplay.this, searchindividualmodel,fileL);
+                                    soundlist.setAdapter(mAdaptersounds);
 
                                 }catch (Exception e){
                                     e.printStackTrace();
@@ -260,7 +261,7 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                       // Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -280,7 +281,7 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                       // Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -349,11 +350,8 @@ public class OriginalSoundDisplay extends AppCompatActivity {
             }
         });
     }
-
-
     public void createreflink(String  soundis){
-        Log.d("entringlink",":::");
-
+       // Log.d("entringlink",":::");
         Task<ShortDynamicLink> dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://sh.vasmash.com"+"?"+soundis+"-"+"originalsound"))
                 .setDomainUriPrefix("https://sh.vasmash.com")
@@ -372,17 +370,17 @@ public class OriginalSoundDisplay extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Short link created
                             Uri shortLink = task.getResult().getShortLink();
-                            Log.d("shortlink",":::"+shortLink);
+                           // Log.d("shortlink",":::"+shortLink);
                             Uri flowchartLink = task.getResult().getPreviewLink();
                             Intent i = new Intent(android.content.Intent.ACTION_SEND);
                             i.setType("text/plain");
-                            String sub="\n Hi, have a look. I found this crazy stuff in VA-Smash!!\n";
+                            String sub="\n Hi, have a look. I found this crazy stuff in Smashit Live!!\n";
                             String shareMessage= sub+" " +"\n"+ shortLink +"\n"+" "+ "\n I am enjoying and earning. Install to join me.\n\n";
                             i.putExtra(android.content.Intent.EXTRA_TEXT, shareMessage.toString());
                             startActivity(Intent.createChooser(i, "Share Via"));
 
                         } else {
-                            Log.d("error",":::"+task);
+                            //Log.d("error",":::"+task);
                             // Error
                             // ...
                         }
@@ -393,14 +391,15 @@ public class OriginalSoundDisplay extends AppCompatActivity {
 
 
     public void finishActivity(View v){
-        if (dynamiclink.equals("null")) {
-            finish();
-        } else {
+       // Log.d("dynamiclink",":::"+dynamiclink);
+        if (dynamiclink!=null && (!dynamiclink.equals("null"))) {
             Intent intent = new Intent(OriginalSoundDisplay.this, TopNavigationview.class);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+        } else {
+            finish();
         }
     }
     //this is the loader class

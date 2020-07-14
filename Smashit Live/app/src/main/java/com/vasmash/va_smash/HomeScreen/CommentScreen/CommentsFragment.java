@@ -273,13 +273,13 @@ public class CommentsFragment extends BottomSheetDialogFragment {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("countdowm111","::"+claimedtopnav+":::"+clamiedget+":::"+claimhometopnav);
+                //Log.d("countdowm111","::"+claimedtopnav+":::"+clamiedget+":::"+claimhometopnav);
 
-                Log.d("commentsearchclick",":::"+commentsearchclick);
+                //Log.d("commentsearchclick",":::"+commentsearchclick);
                 if (!commentsearchclick.equals("null")){
                     dialog.dismiss();
                 }else {
-                    Log.d("entrincommentclose","::::");
+                    //Log.d("entrincommentclose","::::");
 
                     if (claimedtopnav.equals("true")) {
                         progressBarView.setProgress(100);
@@ -390,13 +390,13 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                 } else {
 
                     String loginS = "{\"postId\":\"" + postid + "\",\"comment\":\"" + commenttxtS + "\"}";
-                    Log.d("jsnresponse login", "---" + loginS);
+                    //Log.d("jsnresponse login", "---" + loginS);
                     String url=posteomment_url;
                     JSONObject lstrmdt;
 
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         loader(dialog);
                         JSONSenderVolleycommentsend(lstrmdt,url,dialog);
 
@@ -517,7 +517,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
         loader(dialog);
 
         // prepare the Request
-        Log.d("comment_url+getid", url);
+        //Log.d("comment_url+getid", url);
 
         tags=new ArrayList<>();
         replymodel=new ArrayList<>();
@@ -536,14 +536,14 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Responsestoredata0000", response.toString());
+                        //Log.d("Responsestoredata0000", response.toString());
                         animationView.cancelAnimation();
                         animationView.setVisibility(View.GONE);
 
                         if (response.length() != 0) {
                             // Iterate the inner "data" array
                             for (int j = 0; j < response.length() ; j++ ) {
-                                Log.d("lengtharayyy",  ":::"+j);
+                                //Log.d("lengtharayyy",  ":::"+j);
 
                                 Model_Commentlist ts=new Model_Commentlist();
                                 try {
@@ -576,7 +576,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                                 if (_idarray.has("user")) {
                                                     JSONObject object = _idarray.getJSONObject("user");
                                                     String _id = object.getString("_id");
-                                                    Log.d("userid", "::" + _id);
+                                                    //Log.d("userid", "::" + _id);
                                                     ts.setUserid(_id);
                                                     if (object.has("name")) {
                                                         ts.setName(object.getString("name"));
@@ -622,7 +622,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                                     if (repltarray.has("user")) {
                                                         JSONObject object = repltarray.getJSONObject("user");
                                                         String _id = object.getString("_id");
-                                                        Log.d("userid", "::" + _id);
+                                                        //Log.d("userid", "::" + _id);
                                                         reply.setUserid(_id);
                                                         if (object.has("name")) {
                                                             reply.setName(object.getString("name"));
@@ -644,7 +644,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                                     reply.setIsowner(isOwner);
                                                     reply.setPostid(postId);
                                                     reply.setCommentid(commentid);
-                                                    Log.d("commentsreplyyy","::"+repltarray.getString("comment"));
+                                                    //Log.d("commentsreplyyy","::"+repltarray.getString("comment"));
 
                                                     reply.setLikecount(repltarray.getString("likecomments"));
                                                     reply.setLiketype(likeUserComments);
@@ -657,7 +657,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                         ts.setReplymodel(replymodel);
                                         tags.add(ts);
 
-                                        Log.d("tagssss","::"+tags.size());
+                                        //Log.d("tagssss","::"+tags.size());
                                         commentlst.setHasFixedSize(true);
                                         // use a linear layout manager
                                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -690,7 +690,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -710,7 +710,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                                 case 404:
                                     try {
                                         String bodyerror = new String(error.networkResponse.data,"UTF-8");
-                                        Log.d("bodyerror", "---" + bodyerror);
+                                        //Log.d("bodyerror", "---" + bodyerror);
                                         JSONObject obj = new JSONObject(bodyerror);
                                         if (obj.has("errors")) {
                                             animationView.cancelAnimation();
@@ -779,7 +779,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
     }
     public void JSONSenderVolleycommentsend(JSONObject lstrmdt, String url,Dialog dialog) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
+       // Log.d("555555", "login" + url);
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
 
@@ -787,7 +787,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                        //Log.d("JSONSenderVolleylogin", "---" + response);
                         animationView.cancelAnimation();
                         animationView.setVisibility(View.GONE);
 
@@ -829,7 +829,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                             try {
 
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -908,7 +908,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
         if (!commentsearchclick.equals("null")){
             dialog.dismiss();
         }else {
-            Log.d("entrincommentfinish","::::");
+            //Log.d("entrincommentfinish","::::");
             if (claimedtopnav.equals("true")) {
                 progressBarView.setProgress(100);
                 privious_player.setPlayWhenReady(true);
@@ -942,7 +942,7 @@ public class CommentsFragment extends BottomSheetDialogFragment {
                     dialog.dismiss();
                 }
             } else {
-                Log.d("entringelse","::::");
+                //Log.d("entringelse","::::");
                 if (type.equals("0")){
                     if (countDownTimer != null) {
                         countDownTimer.cancel();

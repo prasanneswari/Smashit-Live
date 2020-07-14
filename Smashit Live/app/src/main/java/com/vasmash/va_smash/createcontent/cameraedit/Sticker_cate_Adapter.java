@@ -46,7 +46,7 @@ public class Sticker_cate_Adapter extends RecyclerView.Adapter<Sticker_cate_Adap
         holder.itemView.setTag(personUtils12.get(position));
 
         Sound_catemodel pu = personUtils12.get(position);
-        Log.e("filter",pu.getSound_cate()+" "+pu.getSound_code()+" "+pu.isSelected());
+        //Log.e("filter",pu.getSound_cate()+" "+pu.getSound_code()+" "+pu.isSelected());
         holder.catename.setText(pu.getSound_cate());
 
 
@@ -65,7 +65,7 @@ public class Sticker_cate_Adapter extends RecyclerView.Adapter<Sticker_cate_Adap
                 Sound_catemodel model = personUtils12.get(position);
                 code =pu.getSound_code();
 
-                Log.e("filter",code);
+              //  Log.e("filter",code);
 
                 personUtils12.get(position).setSelected(true);
 

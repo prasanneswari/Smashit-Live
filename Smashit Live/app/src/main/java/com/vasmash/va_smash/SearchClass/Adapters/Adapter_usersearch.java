@@ -106,12 +106,12 @@ public class Adapter_usersearch extends RecyclerView.Adapter<Adapter_usersearch.
             @Override
             public void onClick(View v) {
                 String loginS = "{\"userId\":\"" + mainmodels.get(position).getUsersearchid() + "\",\"isCurrent\":\""+true+"\"}";
-                Log.d("jsnresponse follow", "---" + loginS);
+               // Log.d("jsnresponse follow", "---" + loginS);
                 String url = userfollow_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                   // Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleylogin(lstrmdt, url, holder);
                 } catch (JSONException ignored) {
                 }
@@ -121,12 +121,12 @@ public class Adapter_usersearch extends RecyclerView.Adapter<Adapter_usersearch.
             @Override
             public void onClick(View v) {
                 String loginS = "{\"followingId\":\"" + mainmodels.get(position).getUsersearchid() + "\",\"isCurrent\":\""+true+"\"}";
-                Log.d("jsnresponse follow", "---" + loginS);
+               // Log.d("jsnresponse follow", "---" + loginS);
                 String url = userunfollow_url;
                 JSONObject lstrmdt;
                 try {
                     lstrmdt = new JSONObject(loginS);
-                    Log.d("jsnresponse....", "---" + loginS);
+                    //Log.d("jsnresponse....", "---" + loginS);
                     JSONSenderVolleylogin(lstrmdt, url, holder);
                 } catch (JSONException ignored) {
                 }
@@ -162,12 +162,12 @@ public class Adapter_usersearch extends RecyclerView.Adapter<Adapter_usersearch.
 
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url,ViewHolder holder) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "url" + url);
+        //Log.d("555555", "url" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONfollowand unfollow", "---" + response);
+                       // Log.d("JSONfollowand unfollow", "---" + response);
                         try {
                             String message = response.getString("message");
                             String status = response.getString("status");
@@ -200,7 +200,7 @@ public class Adapter_usersearch extends RecyclerView.Adapter<Adapter_usersearch.
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data, "UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {

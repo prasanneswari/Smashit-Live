@@ -72,13 +72,13 @@ public class ForgetFragment extends AppCompatActivity {
                 //this is the mobile validation condition
                 if (isValidMobile(mailS)) {
                     String loginS = "{\"username\":\"" + mailS + "\",\"countryCode\":\"" + " " + "\"}";
-                    Log.d("jsnresponse loginotp", "---" + loginS);
+                    //Log.d("jsnresponse loginotp", "---" + loginS);
                     String url=forgetpwd_url;
                     JSONObject lstrmdt;
 
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         viewDialog.showDialog();
                         JSONSenderVolleylogin(lstrmdt, url);
 
@@ -89,13 +89,12 @@ public class ForgetFragment extends AppCompatActivity {
                 //this is the email validation condition
                 else if (isEmailValid(mailS)){
                     String loginS = "{\"username\":\"" + mailS + "\",\"countryCode\":\"" + " " + "\"}";
-                    Log.d("jsnresponse loginotp", "---" + loginS);
+                    //Log.d("jsnresponse loginotp", "---" + loginS);
                     String url=forgetpwd_url;
                     JSONObject lstrmdt;
-
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         viewDialog.showDialog();
                         JSONSenderVolleylogin(lstrmdt, url);
 
@@ -104,14 +103,14 @@ public class ForgetFragment extends AppCompatActivity {
                 }else{
                     if (mailS.isEmpty()) {
                         //Toast.makeText(RegisterFragment.this, "Please enter the All Fields", Toast.LENGTH_SHORT).show();
-                        popup("Please Enter Email or Mobile Number");
+                        popup("Please enter email Id/mobile number");
                     }else{
                         String regexStr = "^[0-9]*$";
                         if (requestotp.getText().toString().trim().matches(regexStr)) {
                             //write code here for success
-                            popup("Please Enter Valid Mobile Number");
+                            popup("Please enter valid mobile number");
                         } else {
-                            popup("Please Enter Valid Email");
+                            popup("Please enter valid email Id");
                         }
                     }
                 }
@@ -130,12 +129,12 @@ public class ForgetFragment extends AppCompatActivity {
     }
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "login" + url);
+        //Log.d("555555", "login" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONSenderVolleylogin", "---" + response);
+                       // Log.d("JSONSenderVolleylogin", "---" + response);
                         viewDialog.hideDialog();
                         // Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
                         try {
@@ -168,7 +167,7 @@ public class ForgetFragment extends AppCompatActivity {
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                               // Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -281,12 +280,8 @@ public class ForgetFragment extends AppCompatActivity {
         boolean check;
         Pattern p;
         Matcher m;
-
-        String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
+        String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         p = Pattern.compile(EMAIL_STRING);
-
         m = p.matcher(email);
         check = m.matches();
 

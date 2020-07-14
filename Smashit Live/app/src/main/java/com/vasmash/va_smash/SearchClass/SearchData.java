@@ -139,11 +139,11 @@ public class SearchData extends AppCompatActivity {
         addtrndins.add("Trending");
         both = new ArrayList(addtrndins);
         both.addAll(catnameL);
-        Log.d("both111",":::"+both);
+        //Log.d("both111",":::"+both);
 
 
         for (int k = 0; k < both.size(); k++) {
-            Log.d("lengthhh",":::"+both.size());
+            //Log.d("lengthhh",":::"+both.size());
             tabLayout.addTab(tabLayout.newTab().setText(both.get(k)));
         }
 
@@ -198,14 +198,14 @@ public class SearchData extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 // you can call or do what you want with your EditText here
                 // yourEditText...
-                Log.d("editetxtval",":::;"+s+":::::"+model);
+                //Log.d("editetxtval",":::;"+s+":::::"+model);
                 if (searchview.getText().toString().trim().equals("")){
-/*
-                    if(model.size() != 0 && !(model == null)){
-                        model.clear();
-                        commentimgAdapter.notifyDataSetChanged();
+                    if(model!=null){
+                        if(model.size()>0){
+                            model.clear();
+                            commentimgAdapter.notifyDataSetChanged();
+                        }
                     }
-*/
                 }else {
                     searchlistlay.setVisibility(View.VISIBLE);
                     searchdatalay.setVisibility(View.GONE);
@@ -269,7 +269,7 @@ public class SearchData extends AppCompatActivity {
             peopleintentval=intent.getStringExtra("key");
             if (peopleintentval.equals("true")) {
                 searchtxtdata=intent.getStringExtra("enteringval");
-                Log.d("entringvl","::::"+searchtxtdata);
+                //Log.d("entringvl","::::"+searchtxtdata);
                 searchlistlay.setVisibility(View.GONE);
                 searchdatalay.setVisibility(View.GONE);
                 searchtxtlay.setVisibility(View.GONE);
@@ -377,7 +377,7 @@ public class SearchData extends AppCompatActivity {
 
     public void searchapi(String homeapi_url){
 
-        Log.d("search api::::", homeapi_url);
+        //Log.d("search api::::", homeapi_url);
         des=new ArrayList<>();
         model = new ArrayList<>();
         searchindividualmodel = new ArrayList<>();
@@ -403,7 +403,7 @@ public class SearchData extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // display response
-                        Log.d("Response search", response.toString());
+                        //Log.d("Response search", response.toString());
                         createvideosclick="false";
 
                         if (response.length() != 0) {
@@ -451,7 +451,7 @@ public class SearchData extends AppCompatActivity {
                                 case 422:
                                     try {
                                         body = new String(error.networkResponse.data, "UTF-8");
-                                        Log.d("body", "---" + body);
+                                        //Log.d("body", "---" + body);
                                         JSONObject obj = new JSONObject(body);
                                         if (obj.has("errors")) {
                                             JSONObject errors = obj.getJSONObject("errors");

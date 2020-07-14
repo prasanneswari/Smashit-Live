@@ -56,7 +56,7 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
         this.tempCustomer = new ArrayList<Model_userfollow_unfollow>(mainmodels);
         this.suggestions = new ArrayList<Model_userfollow_unfollow>(mainmodels);
         this.context = context;
-        Log.d("mainmodell",":::"+mainmodels);
+        //Log.d("mainmodell",":::"+mainmodels);
         notifyDataSetChanged();
     }
 
@@ -77,45 +77,58 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
         userprofilefollow=mainmodels.get(position).getUserprofilefollow();
         // Log.d("followuserdata","::::"+userprofilefollow);
 
+        Picasso.with(context).load(userpic).placeholder(R.drawable.uploadpiclight).into(holder.userpic);
+
+/*
         if (!userpic.equals("null")) {
             Picasso.with(context).load(userpic).placeholder(R.drawable.uploadpictureold).into(holder.userpic);
         }else {
             Picasso.with(context).load(R.drawable.uploadpictureold).placeholder(R.drawable.uploadpictureold).into(holder.userpic);
+        }
+*/
+        String followinguser=mainmodels.get(position).getFollowinguser();
+
+        if (followinguser.equals("true")){
+            holder.follow.setVisibility(View.GONE);
+            holder.unfollow.setVisibility(View.VISIBLE);
+        }else {
+            holder.follow.setVisibility(View.VISIBLE);
+            holder.unfollow.setVisibility(View.GONE);
         }
 
         holder.userpic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userid=mainmodels.get(position).getUserid();
-                Intent intent = new Intent(context, OtherprofileActivity.class);
-                intent.putExtra("posteduserid", userid);
-                context.startActivity(intent);
-
+                if (userid!=null) {
+                    Intent intent = new Intent(context, OtherprofileActivity.class);
+                    intent.putExtra("posteduserid", userid);
+                    context.startActivity(intent);
+                }
             }
         });
-
         holder.follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (profiletype.equals("userprofile")) {
                     String loginS = "{\"userId\":\"" + mainmodels.get(position).getUserid() + "\",\"isCurrent\":\"" + true + "\"}";
-                    Log.d("jsnresponse follow", "---" + loginS);
+                   // Log.d("jsnresponse follow", "---" + loginS);
                     String url = userfollow_url;
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleylogin(lstrmdt, url, holder,position);
                     } catch (JSONException ignored) {
                     }
                 }else if (profiletype.equals("otherprofile")) {
                     String loginS = "{\"userId\":\"" + mainmodels.get(position).getUserid() + "\",\"isCurrent\":\"" + false + "\"}";
-                    Log.d("jsnresponse follow", "---" + loginS);
+                    //Log.d("jsnresponse follow", "---" + loginS);
                     String url = userfollow_url;
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleylogin(lstrmdt, url, holder, position);
                     } catch (JSONException ignored) {
                     }
@@ -128,23 +141,23 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
             public void onClick(View v) {
                 if (profiletype.equals("userprofile")) {
                     String loginS = "{\"followingId\":\"" + mainmodels.get(position).getUserid() + "\",\"isCurrent\":\"" + true + "\"}";
-                    Log.d("jsnresponse follow", "---" + loginS);
+                   // Log.d("jsnresponse follow", "---" + loginS);
                     String url = userunfollow_url;
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                       // Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleylogin(lstrmdt, url, holder, position);
                     } catch (JSONException ignored) {
                     }
                 }else if (profiletype.equals("otherprofile")) {
                     String loginS = "{\"followingId\":\"" + mainmodels.get(position).getUserid() + "\",\"isCurrent\":\"" + false + "\"}";
-                    Log.d("jsnresponse follow", "---" + loginS);
+                   // Log.d("jsnresponse follow", "---" + loginS);
                     String url = userunfollow_url;
                     JSONObject lstrmdt;
                     try {
                         lstrmdt = new JSONObject(loginS);
-                        Log.d("jsnresponse....", "---" + loginS);
+                        //Log.d("jsnresponse....", "---" + loginS);
                         JSONSenderVolleylogin(lstrmdt, url, holder, position);
                     } catch (JSONException ignored) {
                     }
@@ -175,12 +188,12 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
     }
     public void JSONSenderVolleylogin(JSONObject lstrmdt, String url, ViewHolder holder, int position) {
         // Log.d("---reqotpurl-----", "---" + login_url);
-        Log.d("555555", "url" + url);
+        //Log.d("555555", "url" + url);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest (Request.Method.POST, url,lstrmdt,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("JSONfollowand unfollow", "---" + response);
+                        //Log.d("JSONfollowand unfollow", "---" + response);
                         try {
                             String message = response.getString("message");
                             String status = response.getString("status");
@@ -194,20 +207,19 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
                                 holder.follow.setVisibility(View.GONE);
                                 holder.unfollow.setVisibility(View.VISIBLE);
                                 if (profiletype.equals("userprofile")) {
-                                    followingbtn.setText("Following" + " " + followcount);
+                                    followingbtn.setText("Following");
                                 }
                             } else if (status.equals("2")) {
                                 // popup(message);
-
                                 holder.follow.setVisibility(View.VISIBLE);
                                 holder.unfollow.setVisibility(View.GONE);
                                 if (profiletype.equals("userprofile")) {
                                     if (userprofilefollow.equals("following")) {
                                         mainmodels.remove(position);
                                         adapterfollowing.notifyDataSetChanged();
-                                        followingbtn.setText("Following" + " " + followcount);
+                                        followingbtn.setText("Following");
                                     }else {
-                                        followingbtn.setText("Following" + " " + followcount);
+                                        followingbtn.setText("Following");
                                     }
                                 }
                             }
@@ -227,7 +239,7 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
                         case 422:
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
-                                Log.d("body", "---" + body);
+                                //Log.d("body", "---" + body);
                                 JSONObject obj = new JSONObject(body);
                                 String id = null;
                                 if (obj.has("id")) {
@@ -306,7 +318,7 @@ public class Adapter_following extends RecyclerView.Adapter<Adapter_following.Vi
                 for (Model_userfollow_unfollow cust : tempCustomer) {
                     if (cust.getName().toLowerCase().startsWith(constraint.toString().toLowerCase())) {
                         suggestions.add(cust);
-                        Log.d("followname",":::"+cust.getName());
+                       // Log.d("followname",":::"+cust.getName());
                     }
                 }
 

@@ -42,11 +42,11 @@ public class MyFirebase_Messaging_Service extends FirebaseMessagingService {
         // Main class instance
 
 
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        //Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            //Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
 
 /*
@@ -69,7 +69,7 @@ public class MyFirebase_Messaging_Service extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            //Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

@@ -1,7 +1,6 @@
 package com.vasmash.va_smash.createcontent.filters.gpu.egl;
 
 
-import com.daasuu.gpuv.egl.DefaultConfigChooser;
 
 public class GlConfigChooser extends DefaultConfigChooser {
 
